@@ -5,7 +5,7 @@
 
 import {markdownElements, validateMarkdownModel} from '../markdown-model/index.js';
 import test from 'ava';
-import {validateElements} from 'schema-markdown/index.js';
+import {validateElements} from 'element-model/index.js';
 
 
 test('markdownElements', (t) => {

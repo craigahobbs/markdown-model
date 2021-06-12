@@ -20,7 +20,8 @@
         "test": "ava -v 'src/tests/**/*.js'"
     },
     "dependencies": {
-        "schema-markdown": "0.9.15"
+        "element-model": "~0.9.2",
+        "schema-markdown": "~0.9.15"
     },
     "devDependencies": {
         "ava": "4.0.0-alpha.2",
