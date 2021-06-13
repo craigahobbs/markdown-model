@@ -43,6 +43,35 @@ export function validateMarkdownModel(markdown) {
 }
 
 
+/**
+ * Get a Markdown model's title. Returns null if no title is found.
+ *
+ * @param {Object} markdown - The markdown model
+ * @returns {string|null}
+ */
+export function getMarkdownTitle(markdown) {
+    for (const part of markdown.parts) {
+        if ('paragraph' in part &amp;&amp; 'style' in part.paragraph) {
+            return part.paragraph.spans.map(getSpanText).join('');
+        }
+    }
+    return null;
+}
+
+
+// Helpter function to get a Markdown span object's text
+function getSpanText(span) {
+    if ('image' in span) {
+        return span.image.alt;
+    } else if ('link' in span) {
+        return span.link.spans.map(getSpanText).join('');
+    } else if ('style' in span) {
+        return span.style.spans.map(getSpanText).join('');
+    }
+    return span.text;
+}
+
+
 // The Mardown model defined as Schema Markdown
 const markdownModelSmd = `\
 # Markdown document struct
@@ -192,7 +221,7 @@ export const markdownModel = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#markdownElements">markdownElements</a></li><li><a href="global.html#parseMarkdown">parseMarkdown</a></li><li><a href="global.html#validateMarkdownModel">validateMarkdownModel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#getMarkdownTitle">getMarkdownTitle</a></li><li><a href="global.html#markdownElements">markdownElements</a></li><li><a href="global.html#parseMarkdown">parseMarkdown</a></li><li><a href="global.html#validateMarkdownModel">validateMarkdownModel</a></li></ul>
 </nav>
 
 <br class="clear">
