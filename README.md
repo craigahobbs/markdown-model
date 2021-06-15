@@ -5,7 +5,7 @@
 
 [API Documentation](https://craigahobbs.github.io/markdown-model/)
 
-[Markdown Model Documentation](https://craigahobbs.github.io/schema-markdown-js/doc/#url=../../markdown-model/markdown-model.json&name=Markdown)
+[Markdown Model Documentation](https://craigahobbs.github.io/schema-markdown-doc/#url=https://craigahobbs.github.io/markdown-model/markdown-model.json&name=Markdown)
 
 Coming soon!
 
