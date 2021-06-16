@@ -1,3 +1,7 @@
+## 0.9.5 (2021-06-16)
+
+- [224a9d7](https://github.com/craigahobbs/markdown-model/commit/224a9d7) - image-link support
+
 ## 0.9.4 (2021-06-16)
 
 - [202eeea](https://github.com/craigahobbs/markdown-model/commit/202eeea) - update to schema-markdown 1.0
