@@ -998,3 +998,23 @@ test('parseMarkdown, image escapes', (t) => {
         }
     );
 });
+
+
+test('parseMarkdown, image link', (t) => {
+    const markdown = parseMarkdown('[![alt](src)](url)');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'link': {'href': 'url', 'spans': [
+                            {'image': {'alt': 'alt', 'src': 'src'}}
+                        ]}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
