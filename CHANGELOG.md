@@ -1,3 +1,7 @@
+## 0.9.6 (2021-07-07)
+
+- [2762351](https://github.com/craigahobbs/markdown-model/commit/2762351) - add static/markdown-model.css
+
 ## 0.9.5 (2021-06-16)
 
 - [224a9d7](https://github.com/craigahobbs/markdown-model/commit/224a9d7) - image-link support
