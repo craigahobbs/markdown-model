@@ -15,7 +15,7 @@
     "files": [
         "index.js",
         "src/markdown-model/**/*",
-        "static/*"
+        "static/markdown-model.css"
     ],
     "scripts": {
         "test": "ava -v 'src/tests/**/*.js'"
