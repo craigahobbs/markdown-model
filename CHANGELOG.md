@@ -1,3 +1,7 @@
+## 0.9.7 (2021-07-07)
+
+- [347f43d](https://github.com/craigahobbs/markdown-model/commit/347f43d) - update markdown-model.css
+
 ## 0.9.6 (2021-07-07)
 
 - [2762351](https://github.com/craigahobbs/markdown-model/commit/2762351) - add static/markdown-model.css
