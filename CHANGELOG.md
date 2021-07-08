@@ -1,3 +1,7 @@
+## 0.9.8 (2021-07-08)
+
+- [28de760](https://github.com/craigahobbs/markdown-model/commit/28de760) - markdown-model.css set text-size-adjust to 100%
+
 ## 0.9.7 (2021-07-07)
 
 - [347f43d](https://github.com/craigahobbs/markdown-model/commit/347f43d) - update markdown-model.css
