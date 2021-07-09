@@ -1,3 +1,7 @@
+## 0.9.9 (2021-07-09)
+
+- [cac3643](https://github.com/craigahobbs/markdown-model/commit/cac3643) - fix fenced code block issue
+
 ## 0.9.8 (2021-07-08)
 
 - [28de760](https://github.com/craigahobbs/markdown-model/commit/28de760) - markdown-model.css set text-size-adjust to 100%
