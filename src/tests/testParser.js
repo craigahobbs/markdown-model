@@ -644,6 +644,28 @@ test('parseMarkdown, code block nested', (t) => {
 });
 
 
+test('parseMarkdown, code block indented first line', (t) => {
+    const markdown = parseMarkdown(`
+This is some code:
+
+\`\`\`
+    foo();
+    bar();
+\`\`\`
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
+                {'codeBlock': {'lines': ['    foo();', '    bar();']}}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, spans', (t) => {
     const markdown = parseMarkdown(`
 These are some basic styles: **bold**, *italic*, ***bold-italic***.
