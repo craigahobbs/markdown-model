@@ -139,7 +139,7 @@ export function parseMarkdown(markdown) {
                 }
 
             // Code block start?
-            } else if (!lines.length &amp;&amp; lineIndent >= codeBlockIndent) {
+            } else if (paragraphFenced === null &amp;&amp; !lines.length &amp;&amp; lineIndent >= codeBlockIndent) {
                 // Add the code block part
                 paragraph = {'codeBlock': {}};
                 addPart(paragraph);
