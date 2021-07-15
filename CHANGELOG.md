@@ -1,3 +1,7 @@
+## 0.9.10 (2021-07-15)
+
+- [6e24376](https://github.com/craigahobbs/markdown-model/commit/6e24376) - fix scheme-less absolute links
+
 ## 0.9.9 (2021-07-09)
 
 - [cac3643](https://github.com/craigahobbs/markdown-model/commit/cac3643) - fix fenced code block issue
