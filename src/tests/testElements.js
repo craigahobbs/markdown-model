@@ -374,6 +374,10 @@ test('markdownElements, relative and absolute URLs', (t) => {
                             'spans': [{'text': 'Absolute link URL'}]
                         }},
                         {'link': {
+                            'href': '/schema-markdown/doc/',
+                            'spans': [{'text': 'Absolute link URL without scheme'}]
+                        }},
+                        {'link': {
                             'href': '#anchor',
                             'spans': [{'text': 'Anchor link'}]
                         }},
@@ -406,6 +410,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {'href': 'https://craigahobbs.github.io/schema-markdown/doc/'},
                         'elem': [{'text': 'Absolute link URL'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': '/schema-markdown/doc/'},
+                        'elem': [{'text': 'Absolute link URL without scheme'}],
                         'html': 'a'
                     },
                     {
@@ -449,6 +458,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {'href': 'https://craigahobbs.github.io/schema-markdown/doc/'},
                         'elem': [{'text': 'Absolute link URL'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': '/schema-markdown/doc/'},
+                        'elem': [{'text': 'Absolute link URL without scheme'}],
                         'html': 'a'
                     },
                     {
