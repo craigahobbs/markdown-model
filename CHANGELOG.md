@@ -1,3 +1,7 @@
+## 0.9.11 (2021-07-16)
+
+- [847a4db](https://github.com/craigahobbs/markdown-model/commit/847a4db) - fix query-string-only links
+
 ## 0.9.10 (2021-07-15)
 
 - [6e24376](https://github.com/craigahobbs/markdown-model/commit/6e24376) - fix scheme-less absolute links
