@@ -1,7 +1,7 @@
 {
     "type": "module",
     "name": "markdown-model",
-    "version": "0.9.10",
+    "version": "0.9.11",
     "description": "Markdown object model, parser, and renderer",
     "keywords": "markdown model render",
     "homepage": "https://github.com/craigahobbs/markdown-model#readme",
