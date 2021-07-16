@@ -382,6 +382,10 @@ test('markdownElements, relative and absolute URLs', (t) => {
                             'spans': [{'text': 'Anchor link'}]
                         }},
                         {'link': {
+                            'href': '?foo=bar',
+                            'spans': [{'text': 'Query string'}]
+                        }},
+                        {'link': {
                             'href': 'doc/',
                             'spans': [{'text': 'Relative link URL'}]
                         }},
@@ -420,6 +424,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {'href': '#anchor'},
                         'elem': [{'text': 'Anchor link'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': '?foo=bar'},
+                        'elem': [{'text': 'Query string'}],
                         'html': 'a'
                     },
                     {
@@ -468,6 +477,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {'href': '#anchor'},
                         'elem': [{'text': 'Anchor link'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': '?foo=bar'},
+                        'elem': [{'text': 'Query string'}],
                         'html': 'a'
                     },
                     {
