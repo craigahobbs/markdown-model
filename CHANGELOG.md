@@ -1,3 +1,7 @@
+## 0.9.12 (2021-07-21)
+
+- [5a84c76](https://github.com/craigahobbs/markdown-model/commit/5a84c76) - fix markdown files with windows line endings
+
 ## 0.9.11 (2021-07-16)
 
 - [847a4db](https://github.com/craigahobbs/markdown-model/commit/847a4db) - fix query-string-only links
