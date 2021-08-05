@@ -1,3 +1,7 @@
+## 0.9.13 (2021-08-05)
+
+- [2b9476a](https://github.com/craigahobbs/markdown-model/commit/2b9476a) - update readme
+
 ## 0.9.12 (2021-07-21)
 
 - [5a84c76](https://github.com/craigahobbs/markdown-model/commit/5a84c76) - fix markdown files with windows line endings
