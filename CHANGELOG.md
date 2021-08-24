@@ -1,3 +1,7 @@
+## 0.9.14 (2021-08-24)
+
+- [40e5498](https://github.com/craigahobbs/markdown-model/commit/40e5498) - updates from javascript-template
+
 ## 0.9.13 (2021-08-05)
 
 - [2b9476a](https://github.com/craigahobbs/markdown-model/commit/2b9476a) - update readme
