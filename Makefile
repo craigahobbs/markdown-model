@@ -22,7 +22,7 @@ clean:
 doc:
 	mkdir -p build/doc/doc/
 	$(NODE_DOCKER) node --input-type=module \
-		-e 'import {markdownModel} from "./src/markdown-model/model.js"; console.log(JSON.stringify(markdownModel))' \
+		-e 'import {markdownModel} from "./src/markdown-model/markdownModel.js"; console.log(JSON.stringify(markdownModel))' \
 		> build/doc/doc/markdown-model.json
 	(cd build/doc/doc/ && $(call WGET_CMD, https://craigahobbs.github.io/schema-markdown-doc/index.html))
 	sed -E "s/\\.run\(window\);/.run(window, 'markdown-model.json');/" build/doc/doc/index.html > build/doc/doc/index.html.tmp
