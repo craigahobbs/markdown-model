@@ -63,6 +63,5 @@ This project is developed using [JavaScript Build](https://github.com/craigahobb
 using [javascript-template](https://github.com/craigahobbs/javascript-template#readme) as follows:
 
 ```
-
 template-specialize javascript-template/template/ markdown-model/ -k package markdown-model -k name 'Craig A. Hobbs' -k email 'craigahobbs@gmail.com' -k github 'craigahobbs' -k noapp 1
 ```
