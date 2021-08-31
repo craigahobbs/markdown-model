@@ -1,3 +1,7 @@
+## 1.0.1 (2021-08-31)
+
+- [80e0a60](https://github.com/craigahobbs/markdown-model/commit/80e0a60) - update readme
+
 ## 1.0.0 (2021-08-31)
 
 - [39f2088](https://github.com/craigahobbs/markdown-model/commit/39f2088) - update readme
