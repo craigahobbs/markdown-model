@@ -1,7 +1,7 @@
 # Licensed under the MIT License
 # https://github.com/craigahobbs/markdown-model/blob/main/LICENSE
 
-# Download JavaScript Build
+# Download javascript-build
 define WGET
 ifeq '$$(wildcard $(notdir $(1)))' ''
 $$(info Downloading $(notdir $(1)))
@@ -13,7 +13,7 @@ $(eval $(call WGET, https://raw.githubusercontent.com/craigahobbs/javascript-bui
 $(eval $(call WGET, https://raw.githubusercontent.com/craigahobbs/javascript-build/main/jsdoc.json))
 $(eval $(call WGET, https://raw.githubusercontent.com/craigahobbs/javascript-build/main/.eslintrc.cjs))
 
-# Include JavaScript Build
+# Include javascript-build
 include Makefile.base
 
 clean:
