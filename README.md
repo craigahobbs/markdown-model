@@ -25,7 +25,7 @@ To render the Markdown model in a web browser, use the
 component function with the
 [renderElements](https://craigahobbs.github.io/element-model/global.html#renderElements)
 function from the
-[element-model](https://craigahobbs.github.io/element-model/)
+[element-model](https://www.npmjs.com/package/element-model)
 package:
 
 
