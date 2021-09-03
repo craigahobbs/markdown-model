@@ -374,6 +374,10 @@ test('markdownElements, relative and absolute URLs', (t) => {
                             'spans': [{'text': 'Absolute link URL'}]
                         }},
                         {'link': {
+                            'href': 'mailto:johndoe@gmail.com',
+                            'spans': [{'text': 'Email absolute URL'}]
+                        }},
+                        {'link': {
                             'href': '/schema-markdown/doc/',
                             'spans': [{'text': 'Absolute link URL without scheme'}]
                         }},
@@ -414,6 +418,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {'href': 'https://craigahobbs.github.io/schema-markdown/doc/'},
                         'elem': [{'text': 'Absolute link URL'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': 'mailto:johndoe@gmail.com'},
+                        'elem': [{'text': 'Email absolute URL'}],
                         'html': 'a'
                     },
                     {
@@ -467,6 +476,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {'href': 'https://craigahobbs.github.io/schema-markdown/doc/'},
                         'elem': [{'text': 'Absolute link URL'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': 'mailto:johndoe@gmail.com'},
+                        'elem': [{'text': 'Email absolute URL'}],
                         'html': 'a'
                     },
                     {
