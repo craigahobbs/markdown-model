@@ -1,3 +1,7 @@
+## 1.0.2 (2021-09-03)
+
+- [6ab3f9c](https://github.com/craigahobbs/markdown-model/commit/6ab3f9c) - fix mailto links
+
 ## 1.0.1 (2021-08-31)
 
 - [80e0a60](https://github.com/craigahobbs/markdown-model/commit/80e0a60) - update readme
