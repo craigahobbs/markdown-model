@@ -3,7 +3,11 @@
     "name": "markdown-model",
     "version": "1.0.2",
     "description": "Markdown object model, parser, and renderer",
-    "keywords": "markdown model render",
+    "keywords": [
+        "markdown",
+        "parser",
+        "render"
+    ],
     "homepage": "https://github.com/craigahobbs/markdown-model#readme",
     "bugs": "https://github.com/craigahobbs/markdown-model/issues",
     "license": "MIT",
