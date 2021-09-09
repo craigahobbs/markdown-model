@@ -1,3 +1,7 @@
+## 1.0.3 (2021-09-09)
+
+- [6765b30](https://github.com/craigahobbs/markdown-model/commit/6765b30) - fix package keywords
+
 ## 1.0.2 (2021-09-03)
 
 - [6ab3f9c](https://github.com/craigahobbs/markdown-model/commit/6ab3f9c) - fix mailto links
