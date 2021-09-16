@@ -3,8 +3,13 @@
 
 /* eslint-disable id-length */
 
-import {parseMarkdown, validateMarkdownModel} from '../markdown-model/index.js';
+import {encodeMarkdownText, parseMarkdown, validateMarkdownModel} from '../markdown-model/index.js';
 import test from 'ava';
+
+
+test('encodeMarkdownText', (t) => {
+    t.is(encodeMarkdownText('Encode me: \\ [ ] ( ) *'), 'Encode me: \\\\ \\[ \\] \\( \\) \\*');
+});
 
 
 test('parseMarkdown', (t) => {
