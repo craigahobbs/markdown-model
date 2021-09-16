@@ -337,8 +337,8 @@ test('markdownElements, code block with language', (t) => {
 
 
 test('markdownElements, code block with language override', (t) => {
-    const codeBlockLanguages = {
-        'fooscript': (codeBlock) => ({'text': codeBlock.lines.join('---')})
+    const codeBlocks = {
+        'fooscript': (language, lines) => ({'text': `${language}, ${JSON.stringify(lines)}`})
     };
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
@@ -352,12 +352,12 @@ test('markdownElements, code block with language override', (t) => {
                 }
             }
         ]
-    }), null, codeBlockLanguages);
+    }), {'codeBlocks': codeBlocks});
     validateElements(elements);
     t.deepEqual(
         elements,
         [
-            {'text': 'foo();---bar();'}
+            {'text': 'fooscript, ["foo();","bar();"]'}
         ]
     );
 });
@@ -466,7 +466,7 @@ test('markdownElements, relative and absolute URLs', (t) => {
     );
 
     // Test with file URL
-    const elementsURL = markdownElements(markdown, 'https://foo.com/index.md');
+    const elementsURL = markdownElements(markdown, {'url': 'https://foo.com/index.md'});
     validateElements(elementsURL);
     t.deepEqual(
         elementsURL,
