@@ -480,65 +480,70 @@ test('markdownElements, relative and absolute URLs', (t) => {
         ]
     });
 
-    // Test without file URL
+    // Default elements
+    const defaultElements = [
+        {
+            'elem': [
+                {
+                    'attr': {'href': 'https://craigahobbs.github.io/schema-markdown/doc/'},
+                    'elem': [{'text': 'Absolute link URL'}],
+                    'html': 'a'
+                },
+                {
+                    'attr': {'href': 'mailto:johndoe@gmail.com'},
+                    'elem': [{'text': 'Email absolute URL'}],
+                    'html': 'a'
+                },
+                {
+                    'attr': {'href': '/schema-markdown/doc/'},
+                    'elem': [{'text': 'Absolute link URL without scheme'}],
+                    'html': 'a'
+                },
+                {
+                    'attr': {'href': '#anchor'},
+                    'elem': [{'text': 'Anchor link'}],
+                    'html': 'a'
+                },
+                {
+                    'attr': {'href': '?foo=bar'},
+                    'elem': [{'text': 'Query string'}],
+                    'html': 'a'
+                },
+                {
+                    'attr': {'href': 'doc/'},
+                    'elem': [{'text': 'Relative link URL'}],
+                    'html': 'a'
+                },
+                {
+                    'attr': {
+                        'src': 'https://craigahobbs.github.io/schema-markdown/doc/doc.svg',
+                        'alt': 'Absolute image URL'
+                    },
+                    'html': 'img'
+                },
+                {
+                    'attr': {
+                        'src': 'doc.svg',
+                        'alt': 'Relative image URL'
+                    },
+                    'html': 'img'
+                }
+            ],
+            'html': 'p'
+        }
+    ];
+
+    // Test without options
     const elements = markdownElements(markdown);
     validateElements(elements);
-    t.deepEqual(
-        elements,
-        [
-            {
-                'elem': [
-                    {
-                        'attr': {'href': 'https://craigahobbs.github.io/schema-markdown/doc/'},
-                        'elem': [{'text': 'Absolute link URL'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': 'mailto:johndoe@gmail.com'},
-                        'elem': [{'text': 'Email absolute URL'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': '/schema-markdown/doc/'},
-                        'elem': [{'text': 'Absolute link URL without scheme'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': '#anchor'},
-                        'elem': [{'text': 'Anchor link'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': '?foo=bar'},
-                        'elem': [{'text': 'Query string'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': 'doc/'},
-                        'elem': [{'text': 'Relative link URL'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {
-                            'src': 'https://craigahobbs.github.io/schema-markdown/doc/doc.svg',
-                            'alt': 'Absolute image URL'
-                        },
-                        'html': 'img'
-                    },
-                    {
-                        'attr': {
-                            'src': 'doc.svg',
-                            'alt': 'Relative image URL'
-                        },
-                        'html': 'img'
-                    }
-                ],
-                'html': 'p'
-            }
-        ]
-    );
+    t.deepEqual(elements, defaultElements);
 
-    // Test with file URL
+    // Test with null URL option
+    const elementsNullURL = markdownElements(markdown, {'url': null});
+    validateElements(elements);
+    t.deepEqual(elementsNullURL, defaultElements);
+
+    // Test with URL option
     const elementsURL = markdownElements(markdown, {'url': 'https://foo.com/index.md'});
     validateElements(elementsURL);
     t.deepEqual(
@@ -596,7 +601,12 @@ test('markdownElements, relative and absolute URLs', (t) => {
         ]
     );
 
-    // Test with hashPrefix
+    // Test with null hashPrefix option
+    const elementsNullHashPrefix = markdownElements(markdown, {'hashPrefix': null});
+    validateElements(elements);
+    t.deepEqual(elementsNullHashPrefix, defaultElements);
+
+    // Test with hashPrefix option
     const elementsHashPrefix = markdownElements(markdown, {'hashPrefix': 'url=README.md'});
     validateElements(elementsURL);
     t.deepEqual(
