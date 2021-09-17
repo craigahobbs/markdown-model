@@ -546,6 +546,10 @@ test('markdownElements, relative and absolute URLs', (t) => {
                             'spans': [{'text': 'Anchor link'}]
                         }},
                         {'link': {
+                            'href': '#foo=bar',
+                            'spans': [{'text': 'Page link'}]
+                        }},
+                        {'link': {
                             'href': '?foo=bar',
                             'spans': [{'text': 'Query string'}]
                         }},
@@ -589,6 +593,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                 {
                     'attr': {'href': '#anchor'},
                     'elem': [{'text': 'Anchor link'}],
+                    'html': 'a'
+                },
+                {
+                    'attr': {'href': '#foo=bar'},
+                    'elem': [{'text': 'Page link'}],
                     'html': 'a'
                 },
                 {
@@ -659,6 +668,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                         'html': 'a'
                     },
                     {
+                        'attr': {'href': '#foo=bar'},
+                        'elem': [{'text': 'Page link'}],
+                        'html': 'a'
+                    },
+                    {
                         'attr': {'href': '?foo=bar'},
                         'elem': [{'text': 'Query string'}],
                         'html': 'a'
@@ -724,6 +738,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {'href': '#url=README.md&anchor'},
                         'elem': [{'text': 'Anchor link'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': '#foo=bar'},
+                        'elem': [{'text': 'Page link'}],
                         'html': 'a'
                     },
                     {

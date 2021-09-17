@@ -133,7 +133,7 @@ function paragraphSpanElements(spans, options) {
             let {href} = link;
 
             // Page link (e.g., "#sub-section") fixup?
-            if (href.startsWith('#')) {
+            if (href.startsWith('#') && href.indexOf('=') === -1) {
                 if ('hashPrefix' in options && options.hashPrefix !== null && options.hashPrefix !== '') {
                     href = `#${options.hashPrefix}&${href.slice(1)}`;
                 }
