@@ -1,3 +1,11 @@
+## 1.1.0 (2021-09-17)
+
+- [dae4af8](https://github.com/craigahobbs/markdown-model/commit/dae4af8) - add header anchor ids
+
+- [f92e355](https://github.com/craigahobbs/markdown-model/commit/f92e355) - replace markdownElements optional arguments with optional options argument
+
+- [804298e](https://github.com/craigahobbs/markdown-model/commit/804298e) - add encodeMarkdownText
+
 ## 1.0.3 (2021-09-09)
 
 - [6765b30](https://github.com/craigahobbs/markdown-model/commit/6765b30) - fix package keywords
