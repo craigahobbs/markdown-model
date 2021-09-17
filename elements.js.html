@@ -161,7 +161,7 @@ function paragraphSpanElements(spans, options) {
             let {href} = link;
 
             // Page link (e.g., "#sub-section") fixup?
-            if (href.startsWith('#')) {
+            if (href.startsWith('#') &amp;&amp; href.indexOf('=') === -1) {
                 if ('hashPrefix' in options &amp;&amp; options.hashPrefix !== null &amp;&amp; options.hashPrefix !== '') {
                     href = `#${options.hashPrefix}&amp;${href.slice(1)}`;
                 }
