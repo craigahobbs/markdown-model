@@ -1,3 +1,7 @@
+## 1.1.4 (2021-09-17)
+
+- [4bb159d](https://github.com/craigahobbs/markdown-model/commit/4bb159d) - fixup header ids for hashPrefix
+
 ## 1.1.3 (2021-09-17)
 
 - [df0b37a](https://github.com/craigahobbs/markdown-model/commit/df0b37a) - support null url and hashPrefix options
