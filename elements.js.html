@@ -81,6 +81,11 @@ function markdownPartElements(parts, options) {
                         headerId = headerIdNew;
                     }
                     options.usedHeaderIds.add(headerId);
+
+                    // Hash prefix fixup?
+                    if ('hashPrefix' in options &amp;&amp; options.hashPrefix !== null) {
+                        headerId = `${options.hashPrefix}&amp;${headerId}`;
+                    }
                 }
 
                 partElements.push({
