@@ -1,3 +1,9 @@
+## 1.1.2 (2021-09-17)
+
+- [2f57903](https://github.com/craigahobbs/markdown-model/commit/2f57903) - add markdownElements headerIds option
+
+- [0c9b90c](https://github.com/craigahobbs/markdown-model/commit/0c9b90c) - add markdownElements hashPrefix option
+
 ## 1.1.1 (2021-09-17)
 
 - [7a5d1eb](https://github.com/craigahobbs/markdown-model/commit/7a5d1eb) - fix headerId generation issues
