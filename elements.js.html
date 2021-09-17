@@ -83,7 +83,7 @@ function markdownPartElements(parts, options) {
                     options.usedHeaderIds.add(headerId);
 
                     // Hash prefix fixup?
-                    if ('hashPrefix' in options &amp;&amp; options.hashPrefix !== null) {
+                    if ('hashPrefix' in options &amp;&amp; options.hashPrefix !== null &amp;&amp; options.hashPrefix !== '') {
                         headerId = `${options.hashPrefix}&amp;${headerId}`;
                     }
                 }
@@ -162,7 +162,7 @@ function paragraphSpanElements(spans, options) {
 
             // Page link (e.g., "#sub-section") fixup?
             if (href.startsWith('#')) {
-                if ('hashPrefix' in options &amp;&amp; options.hashPrefix !== null) {
+                if ('hashPrefix' in options &amp;&amp; options.hashPrefix !== null &amp;&amp; options.hashPrefix !== '') {
                     href = `#${options.hashPrefix}&amp;${href.slice(1)}`;
                 }
 
