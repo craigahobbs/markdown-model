@@ -211,6 +211,35 @@ test('markdownElements, header IDs', (t) => {
 });
 
 
+test('markdownElements, header IDs hashPrefix', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'paragraph': {
+                    'style': 'h1',
+                    'spans': [
+                        {'text': "The @#$ Page's Title!!"}
+                    ]
+                }
+            }
+        ]
+    }), {'headerIds': true, 'hashPrefix': 'url=README.md'});
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'h1',
+                'attr': {'id': 'url=README.md&the-pages-title'},
+                'elem': [
+                    {'text': "The @#$ Page's Title!!"}
+                ]
+            }
+        ]
+    );
+});
+
+
 test('markdownElements, duplicate header IDs', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [

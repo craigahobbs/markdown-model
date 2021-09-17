@@ -53,6 +53,11 @@ function markdownPartElements(parts, options) {
                         headerId = headerIdNew;
                     }
                     options.usedHeaderIds.add(headerId);
+
+                    // Hash prefix fixup?
+                    if ('hashPrefix' in options && options.hashPrefix !== null) {
+                        headerId = `${options.hashPrefix}&${headerId}`;
+                    }
                 }
 
                 partElements.push({
