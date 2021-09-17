@@ -55,7 +55,7 @@ function markdownPartElements(parts, options) {
                     options.usedHeaderIds.add(headerId);
 
                     // Hash prefix fixup?
-                    if ('hashPrefix' in options && options.hashPrefix !== null) {
+                    if ('hashPrefix' in options && options.hashPrefix !== null && options.hashPrefix !== '') {
                         headerId = `${options.hashPrefix}&${headerId}`;
                     }
                 }
@@ -134,7 +134,7 @@ function paragraphSpanElements(spans, options) {
 
             // Page link (e.g., "#sub-section") fixup?
             if (href.startsWith('#')) {
-                if ('hashPrefix' in options && options.hashPrefix !== null) {
+                if ('hashPrefix' in options && options.hashPrefix !== null && options.hashPrefix !== '') {
                     href = `#${options.hashPrefix}&${href.slice(1)}`;
                 }
 

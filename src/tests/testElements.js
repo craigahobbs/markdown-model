@@ -240,6 +240,64 @@ test('markdownElements, header IDs hashPrefix', (t) => {
 });
 
 
+test('markdownElements, header IDs hashPrefix null', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'paragraph': {
+                    'style': 'h1',
+                    'spans': [
+                        {'text': "The @#$ Page's Title!!"}
+                    ]
+                }
+            }
+        ]
+    }), {'headerIds': true, 'hashPrefix': null});
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'h1',
+                'attr': {'id': 'the-pages-title'},
+                'elem': [
+                    {'text': "The @#$ Page's Title!!"}
+                ]
+            }
+        ]
+    );
+});
+
+
+test('markdownElements, header IDs hashPrefix empty', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'paragraph': {
+                    'style': 'h1',
+                    'spans': [
+                        {'text': "The @#$ Page's Title!!"}
+                    ]
+                }
+            }
+        ]
+    }), {'headerIds': true, 'hashPrefix': ''});
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'h1',
+                'attr': {'id': 'the-pages-title'},
+                'elem': [
+                    {'text': "The @#$ Page's Title!!"}
+                ]
+            }
+        ]
+    );
+});
+
+
 test('markdownElements, duplicate header IDs', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
@@ -634,6 +692,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
     const elementsNullHashPrefix = markdownElements(markdown, {'hashPrefix': null});
     validateElements(elements);
     t.deepEqual(elementsNullHashPrefix, defaultElements);
+
+    // Test with empty hashPrefix option
+    const elementsEmptyHashPrefix = markdownElements(markdown, {'hashPrefix': ''});
+    validateElements(elements);
+    t.deepEqual(elementsEmptyHashPrefix, defaultElements);
 
     // Test with hashPrefix option
     const elementsHashPrefix = markdownElements(markdown, {'hashPrefix': 'url=README.md'});
