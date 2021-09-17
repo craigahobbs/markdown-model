@@ -11,11 +11,12 @@ import {getMarkdownParagraphText} from './markdownModel.js';
  * @param {Object} [options.codeBlocks] - Optional map of code block language to render function with signature
  *     (language, lines) => elements.
  * @param {string} [options.hashPrefix] - Optional hash link prefix
+ * @param {boolean} [options.headerIds] - If true, generate header IDs
  * @param {string} [options.url] - Optional markdown file URL
  * @returns {Array}
  */
 export function markdownElements(markdown, options = {}) {
-    return markdownPartElements(markdown.parts, {...options, 'headerIds': new Set()});
+    return markdownPartElements(markdown.parts, {...options, 'usedHeaderIds': new Set()});
 }
 
 
@@ -34,25 +35,29 @@ function markdownPartElements(parts, options) {
         if ('paragraph' in markdownPart) {
             const {paragraph} = markdownPart;
             if ('style' in paragraph) {
-                let headerId = getMarkdownParagraphText(paragraph).toLowerCase().
-                    replace(rHeaderStart, '').replace(rHeaderEnd, '').
-                    replace(rHeaderIdRemove, '').replace(rHeaderIdDash, '-');
+                // Determine the header ID, if requested
+                let headerId = null;
+                if ('headerIds' in options && options.headerIds) {
+                    headerId = getMarkdownParagraphText(paragraph).toLowerCase().
+                        replace(rHeaderStart, '').replace(rHeaderEnd, '').
+                        replace(rHeaderIdRemove, '').replace(rHeaderIdDash, '-');
 
-                // Duplicate header ID?
-                if (options.headerIds.has(headerId)) {
-                    let ix = 1;
-                    let headerIdNew;
-                    do {
-                        ix += 1;
-                        headerIdNew = `${headerId}${ix}`;
-                    } while (options.headerIds.has(headerIdNew));
-                    headerId = headerIdNew;
+                    // Duplicate header ID?
+                    if (options.usedHeaderIds.has(headerId)) {
+                        let ix = 1;
+                        let headerIdNew;
+                        do {
+                            ix += 1;
+                            headerIdNew = `${headerId}${ix}`;
+                        } while (options.usedHeaderIds.has(headerIdNew));
+                        headerId = headerIdNew;
+                    }
+                    options.usedHeaderIds.add(headerId);
                 }
-                options.headerIds.add(headerId);
 
                 partElements.push({
                     'html': paragraph.style,
-                    'attr': {'id': headerId},
+                    'attr': headerId !== null ? {'id': headerId} : null,
                     'elem': paragraphSpanElements(paragraph.spans, options)
                 });
             } else {

@@ -99,7 +99,7 @@ test('markdownElements', (t) => {
     t.deepEqual(
         elements,
         [
-            {'html': 'h1', 'attr': {'id': 'the-title'}, 'elem': [{'text': 'The Title'}]},
+            {'html': 'h1', 'attr': null, 'elem': [{'text': 'The Title'}]},
             {
                 'html': 'p',
                 'elem': [
@@ -182,7 +182,7 @@ test('markdownElements', (t) => {
 });
 
 
-test('markdownElements, header ID cleanup', (t) => {
+test('markdownElements, header IDs', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -194,7 +194,7 @@ test('markdownElements, header ID cleanup', (t) => {
                 }
             }
         ]
-    }));
+    }), {'headerIds': true});
     validateElements(elements);
     t.deepEqual(
         elements,
@@ -231,7 +231,7 @@ test('markdownElements, duplicate header IDs', (t) => {
                 }
             }
         ]
-    }));
+    }), {'headerIds': true});
     validateElements(elements);
     t.deepEqual(
         elements,
