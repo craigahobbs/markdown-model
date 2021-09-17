@@ -182,6 +182,79 @@ test('markdownElements', (t) => {
 });
 
 
+test('markdownElements, header ID cleanup', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'paragraph': {
+                    'style': 'h1',
+                    'spans': [
+                        {'text': "The @#$ Page's Title!!"}
+                    ]
+                }
+            }
+        ]
+    }));
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'h1',
+                'attr': {'id': 'the-pages-title'},
+                'elem': [
+                    {'text': "The @#$ Page's Title!!"}
+                ]
+            }
+        ]
+    );
+});
+
+
+test('markdownElements, duplicate header IDs', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'paragraph': {
+                    'style': 'h1',
+                    'spans': [
+                        {'text': 'The Title'}
+                    ]
+                }
+            },
+            {
+                'paragraph': {
+                    'style': 'h2',
+                    'spans': [
+                        {'text': 'The Title'}
+                    ]
+                }
+            }
+        ]
+    }));
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'h1',
+                'attr': {'id': 'the-title'},
+                'elem': [
+                    {'text': 'The Title'}
+                ]
+            },
+            {
+                'html': 'h2',
+                'attr': {'id': 'the-title2'},
+                'elem': [
+                    {'text': 'The Title'}
+                ]
+            }
+        ]
+    );
+});
+
+
 test('markdownElements, line break', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
