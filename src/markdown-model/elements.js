@@ -8,14 +8,14 @@ import {getMarkdownParagraphText} from './markdownModel.js';
  * Generate an element model from a markdown model
  *
  * @param {Object} markdown - The markdown model
- * @param {string} [options.url] - Optional markdown file URL
  * @param {Object} [options.codeBlocks] - Optional map of code block language to render function with signature
  *     (language, lines) => elements.
+ * @param {string} [options.hashPrefix] - Optional hash link prefix
+ * @param {string} [options.url] - Optional markdown file URL
  * @returns {Array}
  */
 export function markdownElements(markdown, options = {}) {
-    const optionsCopy = {...options, 'headerIds': new Set()};
-    return markdownPartElements(markdown.parts, optionsCopy);
+    return markdownPartElements(markdown.parts, {...options, 'headerIds': new Set()});
 }
 
 
@@ -120,7 +120,19 @@ function paragraphSpanElements(spans, options) {
         // Link span?
         } else if ('link' in span) {
             const {link} = span;
-            const href = 'url' in options && isRelativeURL(link.href) ? `${getBaseURL(options.url)}${link.href}` : link.href;
+            let {href} = link;
+
+            // Page link (e.g., "#sub-section") fixup?
+            if (href.startsWith('#')) {
+                if ('hashPrefix' in options) {
+                    href = `#${options.hashPrefix}&${href.slice(1)}`;
+                }
+
+            // Relative link fixup?
+            } else if ('url' in options && isRelativeURL(link.href)) {
+                href = `${getBaseURL(options.url)}${link.href}`;
+            }
+
             const linkElements = {
                 'html': 'a',
                 'attr': {'href': href},

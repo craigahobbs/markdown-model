@@ -595,4 +595,62 @@ test('markdownElements, relative and absolute URLs', (t) => {
             }
         ]
     );
+
+    // Test with hashPrefix
+    const elementsHashPrefix = markdownElements(markdown, {'hashPrefix': 'url=README.md'});
+    validateElements(elementsURL);
+    t.deepEqual(
+        elementsHashPrefix,
+        [
+            {
+                'elem': [
+                    {
+                        'attr': {'href': 'https://craigahobbs.github.io/schema-markdown/doc/'},
+                        'elem': [{'text': 'Absolute link URL'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': 'mailto:johndoe@gmail.com'},
+                        'elem': [{'text': 'Email absolute URL'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': '/schema-markdown/doc/'},
+                        'elem': [{'text': 'Absolute link URL without scheme'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': '#url=README.md&anchor'},
+                        'elem': [{'text': 'Anchor link'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': '?foo=bar'},
+                        'elem': [{'text': 'Query string'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': 'doc/'},
+                        'elem': [{'text': 'Relative link URL'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {
+                            'src': 'https://craigahobbs.github.io/schema-markdown/doc/doc.svg',
+                            'alt': 'Absolute image URL'
+                        },
+                        'html': 'img'
+                    },
+                    {
+                        'attr': {
+                            'src': 'doc.svg',
+                            'alt': 'Relative image URL'
+                        },
+                        'html': 'img'
+                    }
+                ],
+                'html': 'p'
+            }
+        ]
+    );
 });
