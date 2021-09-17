@@ -11,7 +11,7 @@ import {validateElements} from 'element-model/index.js';
 test('markdownElements', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
-            {'paragraph': {'style': 'h1', 'spans': [{'text': 'Title'}]}},
+            {'paragraph': {'style': 'h1', 'spans': [{'text': 'The Title'}]}},
             {
                 'paragraph': {
                     'spans': [
@@ -99,7 +99,7 @@ test('markdownElements', (t) => {
     t.deepEqual(
         elements,
         [
-            {'html': 'h1', 'elem': [{'text': 'Title'}]},
+            {'html': 'h1', 'attr': {'id': 'the-title'}, 'elem': [{'text': 'The Title'}]},
             {
                 'html': 'p',
                 'elem': [

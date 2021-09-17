@@ -1,6 +1,8 @@
 // Licensed under the MIT License
 // https://github.com/craigahobbs/markdown-model/blob/main/LICENSE
 
+import {getMarkdownParagraphText} from './markdownModel.js';
+
 
 /**
  * Generate an element model from a markdown model
@@ -17,6 +19,10 @@ export function markdownElements(markdown, options = {}) {
 }
 
 
+// Regex for cleaning-up anchor text
+const rAnchorText = /\s+/g;
+
+
 // Helper function to generate an element model from a markdown part model array
 function markdownPartElements(parts, options) {
     const partElements = [];
@@ -24,10 +30,19 @@ function markdownPartElements(parts, options) {
         // Paragraph?
         if ('paragraph' in markdownPart) {
             const {paragraph} = markdownPart;
-            partElements.push({
-                'html': 'style' in paragraph ? paragraph.style : 'p',
-                'elem': paragraphSpanElements(paragraph.spans, options)
-            });
+            if ('style' in paragraph) {
+                const anchorId = getMarkdownParagraphText(paragraph).toLowerCase().replace(rAnchorText, '-');
+                partElements.push({
+                    'html': paragraph.style,
+                    'attr': {'id': anchorId},
+                    'elem': paragraphSpanElements(paragraph.spans, options)
+                });
+            } else {
+                partElements.push({
+                    'html': 'p',
+                    'elem': paragraphSpanElements(paragraph.spans, options)
+                });
+            }
 
         // Horizontal rule?
         } else if ('hr' in markdownPart) {

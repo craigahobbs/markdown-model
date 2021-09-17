@@ -3,7 +3,7 @@
 
 /* eslint-disable id-length */
 
-import {getMarkdownTitle, parseMarkdown, validateMarkdownModel} from '../markdown-model/index.js';
+import {getMarkdownParagraphText, getMarkdownTitle, parseMarkdown, validateMarkdownModel} from '../markdown-model/index.js';
 import test from 'ava';
 
 
@@ -90,4 +90,16 @@ This is some text
 This is more text
 `);
     t.is(getMarkdownTitle(markdownModel), null);
+});
+
+
+test('getMarkdownParagraphText', (t) => {
+    const markdownModel = parseMarkdown(`\
+This is a [link](link.html)
+and some more text
+
+Some other text
+`);
+    const [{paragraph}] = markdownModel.parts;
+    t.is(getMarkdownParagraphText(paragraph), 'This is a link\nand some more text');
 });

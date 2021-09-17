@@ -3,16 +3,16 @@
 
 
 /**
- * Escape Markdown text
+ * Encode a string for inclusion in Markdown text
  *
  * @param {string} text
  * @returns {string}
  */
 export function encodeMarkdownText(text) {
-    return text.replace(regexEncodeMarkdownText, '\\$1');
+    return text.replace(rEncodeMarkdownText, '\\$1');
 }
 
-const regexEncodeMarkdownText = /([\\[\]()*])/g;
+const rEncodeMarkdownText = /([\\[\]()*])/g;
 
 
 // Markdown regex

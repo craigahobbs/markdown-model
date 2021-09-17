@@ -3,4 +3,4 @@
 
 export {markdownElements} from './elements.js';
 export {encodeMarkdownText, parseMarkdown} from './parser.js';
-export {getMarkdownTitle, validateMarkdownModel} from './markdownModel.js';
+export {getMarkdownParagraphText, getMarkdownTitle, validateMarkdownModel} from './markdownModel.js';
