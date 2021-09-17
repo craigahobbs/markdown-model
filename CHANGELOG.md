@@ -1,3 +1,7 @@
+## 1.1.5 (2021-09-17)
+
+- [23101e0](https://github.com/craigahobbs/markdown-model/commit/23101e0) - handle empty hashPrefix option
+
 ## 1.1.4 (2021-09-17)
 
 - [4bb159d](https://github.com/craigahobbs/markdown-model/commit/4bb159d) - fixup header ids for hashPrefix
