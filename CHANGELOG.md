@@ -1,3 +1,7 @@
+## 1.1.1 (2021-09-17)
+
+- [7a5d1eb](https://github.com/craigahobbs/markdown-model/commit/7a5d1eb) - fix headerId generation issues
+
 ## 1.1.0 (2021-09-17)
 
 - [dae4af8](https://github.com/craigahobbs/markdown-model/commit/dae4af8) - add header anchor ids
