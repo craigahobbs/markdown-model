@@ -1,3 +1,7 @@
+## 1.1.3 (2021-09-17)
+
+- [df0b37a](https://github.com/craigahobbs/markdown-model/commit/df0b37a) - support null url and hashPrefix options
+
 ## 1.1.2 (2021-09-17)
 
 - [2f57903](https://github.com/craigahobbs/markdown-model/commit/2f57903) - add markdownElements headerIds option
