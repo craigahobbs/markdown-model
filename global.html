@@ -104,6 +104,316 @@
     
 
     
+    <h4 class="name" id="encodeMarkdownText"><span class="type-signature"></span>encodeMarkdownText<span class="signature">(text)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Encode a string for inclusion in Markdown text
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="parser.js.html">parser.js</a>, <a href="parser.js.html#line11">line 11</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="getMarkdownParagraphText"><span class="type-signature"></span>getMarkdownParagraphText<span class="signature">(paragraph)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Get a Markdown paragraph model's text
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>paragraph</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The markdown paragraph model</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="markdownModel.js.html">markdownModel.js</a>, <a href="markdownModel.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="getMarkdownTitle"><span class="type-signature"></span>getMarkdownTitle<span class="signature">(markdown)</span><span class="type-signature"> &rarr; {string|null}</span></h4>
     
 
@@ -262,7 +572,7 @@
     
 
     
-    <h4 class="name" id="markdownElements"><span class="type-signature"></span>markdownElements<span class="signature">(markdown, url<span class="signature-attributes">nullable</span>, codeBlockLanguages<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span></h4>
+    <h4 class="name" id="markdownElements"><span class="type-signature"></span>markdownElements<span class="signature">(markdown)</span><span class="type-signature"> &rarr; {Array}</span></h4>
     
 
     
@@ -339,7 +649,7 @@
 
         <tr>
             
-                <td class="name"><code>url</code></td>
+                <td class="name"><code>options.url</code></td>
             
 
             <td class="type">
@@ -354,9 +664,9 @@
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -365,14 +675,14 @@
 
             
 
-            <td class="description last">The markdown file's URL</td>
+            <td class="description last">Optional markdown file URL</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>codeBlockLanguages</code></td>
+                <td class="name"><code>options.codeBlocks</code></td>
             
 
             <td class="type">
@@ -387,9 +697,9 @@
             
                 <td class="attributes">
                 
-
+                    &lt;optional><br>
                 
-                    &lt;nullable><br>
+
                 
 
                 
@@ -398,7 +708,8 @@
 
             
 
-            <td class="description last">Optional map of language to code block render function with signature (lines) => elements.</td>
+            <td class="description last">Optional map of code block language to render function with signature
+    (language, lines) => elements.</td>
         </tr>
 
     
@@ -439,7 +750,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line13">line 13</a>
+        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
@@ -475,7 +786,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;Object></span>
+<span class="param-type">Array</span>
 
 
     </dd>
@@ -597,7 +908,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="parser.js.html">parser.js</a>, <a href="parser.js.html#line20">line 20</a>
+        <a href="parser.js.html">parser.js</a>, <a href="parser.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -820,7 +1131,7 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#getMarkdownTitle">getMarkdownTitle</a></li><li><a href="global.html#markdownElements">markdownElements</a></li><li><a href="global.html#parseMarkdown">parseMarkdown</a></li><li><a href="global.html#validateMarkdownModel">validateMarkdownModel</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#encodeMarkdownText">encodeMarkdownText</a></li><li><a href="global.html#getMarkdownParagraphText">getMarkdownParagraphText</a></li><li><a href="global.html#getMarkdownTitle">getMarkdownTitle</a></li><li><a href="global.html#markdownElements">markdownElements</a></li><li><a href="global.html#parseMarkdown">parseMarkdown</a></li><li><a href="global.html#validateMarkdownModel">validateMarkdownModel</a></li></ul>
 </nav>
 
 <br class="clear">
