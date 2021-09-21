@@ -1,3 +1,7 @@
+## 1.1.8 (2021-09-21)
+
+- [3d67e8b](https://github.com/craigahobbs/markdown-model/commit/3d67e8b) - merge hashPrefix and hash params
+
 ## 1.1.7 (2021-09-21)
 
 - [b8d8963](https://github.com/craigahobbs/markdown-model/commit/b8d8963) - fix "#" url with hashPrefix
