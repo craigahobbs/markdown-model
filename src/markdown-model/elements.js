@@ -135,7 +135,7 @@ function paragraphSpanElements(spans, options) {
             // Page link (e.g., "#sub-section") fixup?
             if (href.startsWith('#') && href.indexOf('=') === -1) {
                 if ('hashPrefix' in options && options.hashPrefix !== null && options.hashPrefix !== '') {
-                    href = `#${options.hashPrefix}&${href.slice(1)}`;
+                    href = `#${options.hashPrefix}${href === '#' ? '' : '&'}${href.slice(1)}`;
                 }
 
             // Relative link fixup?

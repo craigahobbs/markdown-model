@@ -542,6 +542,10 @@ test('markdownElements, relative and absolute URLs', (t) => {
                             'spans': [{'text': 'Absolute link URL without scheme'}]
                         }},
                         {'link': {
+                            'href': '#',
+                            'spans': [{'text': 'Top link'}]
+                        }},
+                        {'link': {
                             'href': '#anchor',
                             'spans': [{'text': 'Anchor link'}]
                         }},
@@ -588,6 +592,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                 {
                     'attr': {'href': '/schema-markdown/doc/'},
                     'elem': [{'text': 'Absolute link URL without scheme'}],
+                    'html': 'a'
+                },
+                {
+                    'attr': {'href': '#'},
+                    'elem': [{'text': 'Top link'}],
                     'html': 'a'
                 },
                 {
@@ -663,6 +672,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                         'html': 'a'
                     },
                     {
+                        'attr': {'href': '#'},
+                        'elem': [{'text': 'Top link'}],
+                        'html': 'a'
+                    },
+                    {
                         'attr': {'href': '#anchor'},
                         'elem': [{'text': 'Anchor link'}],
                         'html': 'a'
@@ -733,6 +747,11 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {'href': '/schema-markdown/doc/'},
                         'elem': [{'text': 'Absolute link URL without scheme'}],
+                        'html': 'a'
+                    },
+                    {
+                        'attr': {'href': '#url=README.md'},
+                        'elem': [{'text': 'Top link'}],
                         'html': 'a'
                     },
                     {
