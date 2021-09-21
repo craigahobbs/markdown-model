@@ -1,3 +1,7 @@
+## 1.1.7 (2021-09-21)
+
+- [b8d8963](https://github.com/craigahobbs/markdown-model/commit/b8d8963) - fix "#" url with hashPrefix
+
 ## 1.1.6 (2021-09-17)
 
 - [adc0234](https://github.com/craigahobbs/markdown-model/commit/adc0234) - fix non-anchor page links with hashPrefix
