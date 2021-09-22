@@ -1,3 +1,7 @@
+## 1.1.9 (2021-09-22)
+
+- [bf19617](https://github.com/craigahobbs/markdown-model/commit/bf19617) - scroll pre tag x-overflow
+
 ## 1.1.8 (2021-09-21)
 
 - [3d67e8b](https://github.com/craigahobbs/markdown-model/commit/3d67e8b) - merge hashPrefix and hash params
