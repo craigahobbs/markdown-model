@@ -1,3 +1,7 @@
+## 1.1.10 (2021-09-27)
+
+- [ed13f3e](https://github.com/craigahobbs/markdown-model/commit/ed13f3e) - variable-ize font-size and line-height in markdown-model.css
+
 ## 1.1.9 (2021-09-22)
 
 - [bf19617](https://github.com/craigahobbs/markdown-model/commit/bf19617) - scroll pre tag x-overflow
