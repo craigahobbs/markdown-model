@@ -1,3 +1,7 @@
+## 1.1.11 (2021-09-29)
+
+- [a868f17](https://github.com/craigahobbs/markdown-model/commit/a868f17) - update default font size to 12pt
+
 ## 1.1.10 (2021-09-27)
 
 - [ed13f3e](https://github.com/craigahobbs/markdown-model/commit/ed13f3e) - variable-ize font-size and line-height in markdown-model.css
