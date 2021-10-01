@@ -1,3 +1,7 @@
+## 1.1.12 (2021-10-01)
+
+- [2885d56](https://github.com/craigahobbs/markdown-model/commit/2885d56) - remove unneeded styles
+
 ## 1.1.11 (2021-09-29)
 
 - [a868f17](https://github.com/craigahobbs/markdown-model/commit/a868f17) - update default font size to 12pt
