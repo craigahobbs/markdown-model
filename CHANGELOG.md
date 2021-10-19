@@ -1,3 +1,7 @@
+## 1.1.13 (2021-10-19)
+
+- [acbb530](https://github.com/craigahobbs/markdown-model/commit/acbb530) - treat tab characters as 8 spaces
+
 ## 1.1.12 (2021-10-01)
 
 - [2885d56](https://github.com/craigahobbs/markdown-model/commit/2885d56) - remove unneeded styles
