@@ -1,3 +1,7 @@
+## 1.1.14 (2021-10-19)
+
+- [10ed5a2](https://github.com/craigahobbs/markdown-model/commit/10ed5a2) - treat tab characters as 4 spaces
+
 ## 1.1.13 (2021-10-19)
 
 - [acbb530](https://github.com/craigahobbs/markdown-model/commit/acbb530) - treat tab characters as 8 spaces
