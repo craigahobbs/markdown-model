@@ -60,6 +60,22 @@ test('parseMarkdown, lines', (t) => {
 });
 
 
+test('parseMarkdown, tabs', (t) => {
+    const markdown = parseMarkdown([
+        'This is a tab "\t".'
+    ]);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [{'text': 'This is a tab "        ".'}]}},
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, empty', (t) => {
     const markdown = parseMarkdown('');
     validateMarkdownModel(markdown);
