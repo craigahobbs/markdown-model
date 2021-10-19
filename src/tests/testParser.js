@@ -69,7 +69,7 @@ test('parseMarkdown, tabs', (t) => {
         markdown,
         {
             'parts': [
-                {'paragraph': {'spans': [{'text': 'This is a tab "        ".'}]}},
+                {'paragraph': {'spans': [{'text': 'This is a tab "        ".'}]}}
             ]
         }
     );
