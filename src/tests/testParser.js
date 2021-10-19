@@ -61,15 +61,46 @@ test('parseMarkdown, lines', (t) => {
 
 
 test('parseMarkdown, tabs', (t) => {
-    const markdown = parseMarkdown([
-        'This is a tab "\t".'
-    ]);
+    const markdown = parseMarkdown(`
+This is a tab "\t".
+
+ * List 1 - 1
+\t* List 2 - 1
+\t* List 2 - 2
+`);
     validateMarkdownModel(markdown);
     t.deepEqual(
         markdown,
         {
             'parts': [
-                {'paragraph': {'spans': [{'text': 'This is a tab "        ".'}]}}
+                {'paragraph': {'spans': [{'text': 'This is a tab "    ".'}]}},
+                {
+                    'list': {
+                        'items': [
+                            {
+                                'parts': [
+                                    {'paragraph': {'spans': [{'text': 'List 1 - 1'}]}},
+                                    {
+                                        'list': {
+                                            'items': [
+                                                {
+                                                    'parts': [
+                                                        {'paragraph': {'spans': [{'text': 'List 2 - 1'}]}}
+                                                    ]
+                                                },
+                                                {
+                                                    'parts': [
+                                                        {'paragraph': {'spans': [{'text': 'List 2 - 2'}]}}
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
             ]
         }
     );
@@ -324,8 +355,7 @@ another
                             },
                             {
                                 'parts': [
-                                    {'paragraph': {'spans': [{'text': 'item 3'}]}
-                                    }
+                                    {'paragraph': {'spans': [{'text': 'item 3'}]}}
                                 ]
                             }
                         ]
@@ -368,8 +398,7 @@ another
                             },
                             {
                                 'parts': [
-                                    {'paragraph': {'spans': [{'text': 'item 3'}]}
-                                    }
+                                    {'paragraph': {'spans': [{'text': 'item 3'}]}}
                                 ]
                             }
                         ]
