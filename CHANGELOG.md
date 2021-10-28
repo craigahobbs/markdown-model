@@ -1,3 +1,7 @@
+## 1.1.15 (2021-10-28)
+
+- [7369f95](https://github.com/craigahobbs/markdown-model/commit/7369f95) - export elements.isRelativeURL and elements.getBaseURL
+
 ## 1.1.14 (2021-10-19)
 
 - [10ed5a2](https://github.com/craigahobbs/markdown-model/commit/10ed5a2) - treat tab characters as 4 spaces
