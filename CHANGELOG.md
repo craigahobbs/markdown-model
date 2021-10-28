@@ -1,3 +1,7 @@
+## 1.1.16 (2021-10-28)
+
+- [8e0268b](https://github.com/craigahobbs/markdown-model/commit/8e0268b) - add getBaseURL and isRelativeURL to index.js
+
 ## 1.1.15 (2021-10-28)
 
 - [7369f95](https://github.com/craigahobbs/markdown-model/commit/7369f95) - export elements.isRelativeURL and elements.getBaseURL
