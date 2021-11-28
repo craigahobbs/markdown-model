@@ -211,7 +211,7 @@ test('markdownElements, header IDs', (t) => {
 });
 
 
-test('markdownElements, header IDs hashPrefix', (t) => {
+test('markdownElements, header IDs hashFn', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -223,7 +223,7 @@ test('markdownElements, header IDs hashPrefix', (t) => {
                 }
             }
         ]
-    }), {'headerIds': true, 'hashPrefix': 'url=README.md'});
+    }), {'headerIds': true, 'hashFn': (url) => `#url=README.md&${url.slice(1)}`});
     validateElements(elements);
     t.deepEqual(
         elements,
@@ -231,64 +231,6 @@ test('markdownElements, header IDs hashPrefix', (t) => {
             {
                 'html': 'h1',
                 'attr': {'id': 'url=README.md&the-pages-title'},
-                'elem': [
-                    {'text': "The @#$ Page's Title!!"}
-                ]
-            }
-        ]
-    );
-});
-
-
-test('markdownElements, header IDs hashPrefix null', (t) => {
-    const elements = markdownElements(validateMarkdownModel({
-        'parts': [
-            {
-                'paragraph': {
-                    'style': 'h1',
-                    'spans': [
-                        {'text': "The @#$ Page's Title!!"}
-                    ]
-                }
-            }
-        ]
-    }), {'headerIds': true, 'hashPrefix': null});
-    validateElements(elements);
-    t.deepEqual(
-        elements,
-        [
-            {
-                'html': 'h1',
-                'attr': {'id': 'the-pages-title'},
-                'elem': [
-                    {'text': "The @#$ Page's Title!!"}
-                ]
-            }
-        ]
-    );
-});
-
-
-test('markdownElements, header IDs hashPrefix empty', (t) => {
-    const elements = markdownElements(validateMarkdownModel({
-        'parts': [
-            {
-                'paragraph': {
-                    'style': 'h1',
-                    'spans': [
-                        {'text': "The @#$ Page's Title!!"}
-                    ]
-                }
-            }
-        ]
-    }), {'headerIds': true, 'hashPrefix': ''});
-    validateElements(elements);
-    t.deepEqual(
-        elements,
-        [
-            {
-                'html': 'h1',
-                'attr': {'id': 'the-pages-title'},
                 'elem': [
                     {'text': "The @#$ Page's Title!!"}
                 ]
@@ -652,11 +594,6 @@ test('markdownElements, relative and absolute URLs', (t) => {
     validateElements(elements);
     t.deepEqual(elements, defaultElements);
 
-    // Test with null URL option
-    const elementsNullURL = markdownElements(markdown, {'url': null});
-    validateElements(elements);
-    t.deepEqual(elementsNullURL, defaultElements);
-
     // Test with URL option
     const elementsURL = markdownElements(markdown, {'url': 'https://foo.com/index.md'});
     validateElements(elementsURL);
@@ -730,18 +667,8 @@ test('markdownElements, relative and absolute URLs', (t) => {
         ]
     );
 
-    // Test with null hashPrefix option
-    const elementsNullHashPrefix = markdownElements(markdown, {'hashPrefix': null});
-    validateElements(elements);
-    t.deepEqual(elementsNullHashPrefix, defaultElements);
-
-    // Test with empty hashPrefix option
-    const elementsEmptyHashPrefix = markdownElements(markdown, {'hashPrefix': ''});
-    validateElements(elements);
-    t.deepEqual(elementsEmptyHashPrefix, defaultElements);
-
-    // Test with hashPrefix option
-    const elementsHashPrefix = markdownElements(markdown, {'hashPrefix': 'url=README.md'});
+    // Test with hashFn option
+    const elementsHashPrefix = markdownElements(markdown, {'hashFn': (url) => `#url=README.md&${url.slice(1)}`});
     validateElements(elementsURL);
     t.deepEqual(
         elementsHashPrefix,
@@ -764,7 +691,7 @@ test('markdownElements, relative and absolute URLs', (t) => {
                         'html': 'a'
                     },
                     {
-                        'attr': {'href': '#url=README.md'},
+                        'attr': {'href': '#url=README.md&'},
                         'elem': [{'text': 'Top link'}],
                         'html': 'a'
                     },
@@ -774,12 +701,12 @@ test('markdownElements, relative and absolute URLs', (t) => {
                         'html': 'a'
                     },
                     {
-                        'attr': {'href': '#foo=bar&url=README.md'},
+                        'attr': {'href': '#url=README.md&foo=bar'},
                         'elem': [{'text': 'Page link'}],
                         'html': 'a'
                     },
                     {
-                        'attr': {'href': '#foo=bar&url=bar.md'},
+                        'attr': {'href': '#url=README.md&foo=bar&url=bar.md'},
                         'elem': [{'text': 'Page link with url param'}],
                         'html': 'a'
                     },
