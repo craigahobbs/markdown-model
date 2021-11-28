@@ -1,3 +1,7 @@
+## 1.2.0 (2021-11-28)
+
+- [90bb9c6](https://github.com/craigahobbs/markdown-model/commit/90bb9c6) - add hashFn option, replaces hashPrefix option
+
 ## 1.1.16 (2021-10-28)
 
 - [8e0268b](https://github.com/craigahobbs/markdown-model/commit/8e0268b) - add getBaseURL and isRelativeURL to index.js
