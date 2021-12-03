@@ -1,3 +1,7 @@
+## 1.3.1 (2021-12-03)
+
+- [93b125b](https://github.com/craigahobbs/markdown-model/commit/93b125b) - fix readme links
+
 ## 1.3.0 (2021-12-02)
 
 - [5bdbd93](https://github.com/craigahobbs/markdown-model/commit/5bdbd93) - updates from javascript-template
