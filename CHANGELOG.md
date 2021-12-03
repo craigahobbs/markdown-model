@@ -1,3 +1,7 @@
+## 1.3.0 (2021-12-02)
+
+- [5bdbd93](https://github.com/craigahobbs/markdown-model/commit/5bdbd93) - updates from javascript-template
+
 ## 1.2.0 (2021-11-28)
 
 - [90bb9c6](https://github.com/craigahobbs/markdown-model/commit/90bb9c6) - add hashFn option, replaces hashPrefix option
