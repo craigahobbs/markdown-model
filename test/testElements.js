@@ -3,9 +3,10 @@
 
 /* eslint-disable id-length */
 
-import {markdownElements, validateMarkdownModel} from '../markdown-model/index.js';
+import {markdownElements} from '../lib/elements.js';
 import test from 'ava';
-import {validateElements} from 'element-model/index.js';
+import {validateElements} from 'element-model/lib/elementModel.js';
+import {validateMarkdownModel} from '../lib/markdownModel.js';
 
 
 test('markdownElements', (t) => {

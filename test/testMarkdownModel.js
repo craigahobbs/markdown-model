@@ -3,7 +3,8 @@
 
 /* eslint-disable id-length */
 
-import {getMarkdownParagraphText, getMarkdownTitle, parseMarkdown, validateMarkdownModel} from '../markdown-model/index.js';
+import {getMarkdownParagraphText, getMarkdownTitle, validateMarkdownModel} from '../lib/markdownModel.js';
+import {parseMarkdown} from '../lib/parser.js';
 import test from 'ava';
 
 

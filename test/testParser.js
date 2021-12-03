@@ -3,8 +3,9 @@
 
 /* eslint-disable id-length */
 
-import {encodeMarkdownText, parseMarkdown, validateMarkdownModel} from '../markdown-model/index.js';
+import {encodeMarkdownText, parseMarkdown} from '../lib/parser.js';
 import test from 'ava';
+import {validateMarkdownModel} from '../lib/markdownModel.js';
 
 
 test('encodeMarkdownText', (t) => {
