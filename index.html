@@ -54,7 +54,7 @@ an abstract model of a Markdown document.</p>
 <p>To parse a Markdown document and produce a Markdown model, use the
 <a href="https://craigahobbs.github.io/markdown-model/module-lib_parser.html#.parseMarkdown">parseMarkdown</a>
 function:</p>
-<pre class="prettyprint source lang-javascript"><code>import {parseMarkdown} from 'markdown-model/index.js';
+<pre class="prettyprint source lang-javascript"><code>import {parseMarkdown} from 'markdown-model/parser.js';
 
 const markdownModel = parseMarkdown(markdownText);
 </code></pre>
@@ -65,22 +65,22 @@ component function with the
 function from the
 <a href="https://www.npmjs.com/package/element-model">element-model</a>
 package:</p>
-<pre class="prettyprint source lang-javascript"><code>import {markdownElements} from 'markdown-model/index.js';
-import {renderElements} from 'element-model/index.js';
+<pre class="prettyprint source lang-javascript"><code>import {markdownElements} from 'markdown-model/elements.js';
+import {renderElements} from 'element-model/elementModel.js';
 
 renderElements(document.body, markdownElements(markdownModel));
 </code></pre>
 <p>You can compute the title of a Markdown document from the Markdown model using the
 <a href="https://craigahobbs.github.io/markdown-model/module-lib_markdownModel.html#.getMarkdownTitle">getMarkdownTitle</a>
 function:</p>
-<pre class="prettyprint source lang-javascript"><code>import {getMarkdownTitle} from 'markdown-model/index.js';
+<pre class="prettyprint source lang-javascript"><code>import {getMarkdownTitle} from 'markdown-model/markdownModel.js';
 
 const markdownTitle = getMarkdownTitle(markdownModel);
 </code></pre>
 <p>The
 <a href="https://craigahobbs.github.io/markdown-model/module-lib_markdownModel.html#.validateMarkdownModel">validateMarkdownModel</a>
 function is used to validate Markdown models from untrusted sources or for testing the validity of any code that produces a Markdown model:</p>
-<pre class="prettyprint source lang-javascript"><code>import {validateMarkdownModel} from 'markdown-model/index.js';
+<pre class="prettyprint source lang-javascript"><code>import {validateMarkdownModel} from 'markdown-model/markdownModel.js';
 
 validateMarkdownModel(markdownModel);
 </code></pre>
