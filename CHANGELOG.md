@@ -1,3 +1,7 @@
+## 1.3.3 (2022-01-05)
+
+- [3fec82c](https://github.com/craigahobbs/markdown-model/commit/3fec82c) - improve markdownElements options documentation
+
 ## 1.3.2 (2021-12-09)
 
 - [1d7e5f6](https://github.com/craigahobbs/markdown-model/commit/1d7e5f6) - update readme
