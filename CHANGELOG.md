@@ -1,3 +1,7 @@
+## 1.4.0 (2022-02-01)
+
+- [2e906eb](https://github.com/craigahobbs/markdown-model/commit/2e906eb) - move getMarkdownTitle and getMarkdownParagraphText to parser to avoid model import
+
 ## 1.3.3 (2022-01-05)
 
 - [3fec82c](https://github.com/craigahobbs/markdown-model/commit/3fec82c) - improve markdownElements options documentation
