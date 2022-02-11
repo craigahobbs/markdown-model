@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: markdownModel.js</title>
+    <title>JSDoc: Source: model.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: markdownModel.js</h1>
+    <h1 class="page-title">Source: model.js</h1>
 
     
 
@@ -29,7 +29,7 @@
             <pre class="prettyprint source linenums"><code>// Licensed under the MIT License
 // https://github.com/craigahobbs/markdown-model/blob/main/LICENSE
 
-/** @module lib/markdownModel */
+/** @module lib/model */
 
 import {SchemaMarkdownParser} from 'schema-markdown/lib/parser.js';
 import {validateType} from 'schema-markdown/lib/schema.js';
@@ -180,7 +180,7 @@ struct CodeBlock
 `;
 
 
-// The Markdown model
+/** The Markdown schema-markdown model */
 export const markdownModel = {
     'title': 'The Markdown Model',
     'types': (new SchemaMarkdownParser(markdownModelSmd)).types
@@ -195,7 +195,7 @@ export const markdownModel = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-lib_elements.html">lib/elements</a></li><li><a href="module-lib_markdownModel.html">lib/markdownModel</a></li><li><a href="module-lib_parser.html">lib/parser</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-lib_elements.html">lib/elements</a></li><li><a href="module-lib_model.html">lib/model</a></li><li><a href="module-lib_parser.html">lib/parser</a></li></ul>
 </nav>
 
 <br class="clear">
