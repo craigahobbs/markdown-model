@@ -5,7 +5,7 @@
 
 import {encodeMarkdownText, getMarkdownParagraphText, getMarkdownTitle, parseMarkdown} from '../lib/parser.js';
 import test from 'ava';
-import {validateMarkdownModel} from '../lib/markdownModel.js';
+import {validateMarkdownModel} from '../lib/model.js';
 
 
 test('getMarkdownTitle', (t) => {

@@ -3,10 +3,10 @@
 
 /* eslint-disable id-length */
 
-import {markdownElements} from '../lib/elements.js';
+import {markdownElements, markdownElementsAsync} from '../lib/elements.js';
 import test from 'ava';
 import {validateElements} from 'element-model/lib/elementModel.js';
-import {validateMarkdownModel} from '../lib/markdownModel.js';
+import {validateMarkdownModel} from '../lib/model.js';
 
 
 test('markdownElements', (t) => {
@@ -183,6 +183,89 @@ test('markdownElements', (t) => {
 });
 
 
+test('markdownElementsAsync', async (t) => {
+    const elements = await markdownElementsAsync(
+        validateMarkdownModel({
+            'parts': [
+                {'paragraph': {'style': 'h1', 'spans': [{'text': 'The Title'}]}},
+                {
+                    'list': {
+                        'items': [
+                            {
+                                'parts': [
+                                    {
+                                        'codeBlock': {
+                                            'lines': [
+                                                'Line 1',
+                                                'Line 2'
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        'codeBlock': {
+                                            'language': 'async-code-block',
+                                            'lines': [
+                                                'Line 1',
+                                                'Line 2'
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }),
+        {
+            'codeBlocks': {
+                'async-code-block': async (language, lines) => {
+                    const awaitPromise = new Promise((resolve) => {
+                        resolve(lines.join(', '));
+                    });
+                    const joinedLines = await awaitPromise;
+                    return new Promise((resolve) => {
+                        resolve({'html': 'p', 'elem': {'text': joinedLines}});
+                    });
+                }
+            }
+        }
+    );
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {'html': 'h1', 'attr': null, 'elem': [{'text': 'The Title'}]},
+            {
+                'html': 'ul',
+                'attr': null,
+                'elem': [
+                    {
+                        'html': 'li',
+                        'elem': [
+                            {
+                                'html': 'pre',
+                                'elem': {
+                                    'html': 'code',
+                                    'elem': [
+                                        {'text': 'Line 1\n'},
+                                        {'text': 'Line 2\n'}
+                                    ]
+                                }
+                            },
+                            {
+                                'html': 'p',
+                                'elem': {'text': 'Line 1, Line 2'}
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    );
+});
+
+
 test('markdownElements, header IDs', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
@@ -253,10 +336,20 @@ test('markdownElements, duplicate header IDs', (t) => {
                 }
             },
             {
-                'paragraph': {
-                    'style': 'h2',
-                    'spans': [
-                        {'text': 'The Title'}
+                'list': {
+                    'items': [
+                        {
+                            'parts': [
+                                {
+                                    'paragraph': {
+                                        'style': 'h2',
+                                        'spans': [
+                                            {'text': 'The Title'}
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
                     ]
                 }
             }
@@ -274,10 +367,163 @@ test('markdownElements, duplicate header IDs', (t) => {
                 ]
             },
             {
-                'html': 'h2',
-                'attr': {'id': 'the-title2'},
+                'html': 'ul',
+                'attr': null,
+                'elem': [
+                    {
+                        'html': 'li',
+                        'elem': [
+                            {
+                                'html': 'h2',
+                                'attr': {'id': 'the-title2'},
+                                'elem': [
+                                    {'text': 'The Title'}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    );
+});
+
+
+test('markdownElements, duplicate header IDs with usedHeaderIds option', (t) => {
+    const elements = markdownElements(
+        validateMarkdownModel({
+            'parts': [
+                {
+                    'paragraph': {
+                        'style': 'h1',
+                        'spans': [
+                            {'text': 'The Title'}
+                        ]
+                    }
+                },
+                {
+                    'list': {
+                        'items': [
+                            {
+                                'parts': [
+                                    {
+                                        'paragraph': {
+                                            'style': 'h2',
+                                            'spans': [
+                                                {'text': 'The Title'}
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }),
+        {
+            'headerIds': true,
+            'usedHeaderIds': new Set(['the-title', 'the-title2'])
+        }
+    );
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'h1',
+                'attr': {'id': 'the-title3'},
                 'elem': [
                     {'text': 'The Title'}
+                ]
+            },
+            {
+                'html': 'ul',
+                'attr': null,
+                'elem': [
+                    {
+                        'html': 'li',
+                        'elem': [
+                            {
+                                'html': 'h2',
+                                'attr': {'id': 'the-title4'},
+                                'elem': [
+                                    {'text': 'The Title'}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    );
+});
+
+
+test('markdownElementsAsync, duplicate header IDs with usedHeaderIds option', async (t) => {
+    const elements = await markdownElementsAsync(
+        validateMarkdownModel({
+            'parts': [
+                {
+                    'paragraph': {
+                        'style': 'h1',
+                        'spans': [
+                            {'text': 'The Title'}
+                        ]
+                    }
+                },
+                {
+                    'list': {
+                        'items': [
+                            {
+                                'parts': [
+                                    {
+                                        'paragraph': {
+                                            'style': 'h2',
+                                            'spans': [
+                                                {'text': 'The Title'}
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        }),
+        {
+            'headerIds': true,
+            'usedHeaderIds': new Set(['the-title', 'the-title2'])
+        }
+    );
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'h1',
+                'attr': {'id': 'the-title3'},
+                'elem': [
+                    {'text': 'The Title'}
+                ]
+            },
+            {
+                'html': 'ul',
+                'attr': null,
+                'elem': [
+                    {
+                        'html': 'li',
+                        'elem': [
+                            {
+                                'html': 'h2',
+                                'attr': {'id': 'the-title4'},
+                                'elem': [
+                                    {'text': 'The Title'}
+                                ]
+                            }
+                        ]
+                    }
                 ]
             }
         ]

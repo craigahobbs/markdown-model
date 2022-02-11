@@ -26,7 +26,7 @@ clean:
 doc:
 	mkdir -p build/doc/doc/
 	$(NODE_DOCKER) node --input-type=module \
-		-e 'import {markdownModel} from "./lib/markdownModel.js"; console.log(JSON.stringify(markdownModel))' \
+		-e 'import {markdownModel} from "./lib/model.js"; console.log(JSON.stringify(markdownModel))' \
 		> build/doc/doc/model.json
 	(cd build/doc/doc/ && $(call WGET_CMD, https://craigahobbs.github.io/schema-markdown-doc/static/index.html))
 	sed -E 's/>Title</>The Markdown Model</; s/"Description"/"The Markdown Model"/' build/doc/doc/index.html > build/doc/doc/index.html.tmp
