@@ -1,3 +1,7 @@
+## 1.4.1 (2022-02-11)
+
+- [1522ae8](https://github.com/craigahobbs/markdown-model/commit/1522ae8) - add markdownElementsAsync function
+
 ## 1.4.0 (2022-02-01)
 
 - [2e906eb](https://github.com/craigahobbs/markdown-model/commit/2e906eb) - move getMarkdownTitle and getMarkdownParagraphText to parser to avoid model import
