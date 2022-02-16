@@ -3,7 +3,7 @@
 
 /* eslint-disable id-length */
 
-import {markdownElements, markdownElementsAsync} from '../lib/elements.js';
+import {getBaseURL, isRelativeURL, markdownElements, markdownElementsAsync} from '../lib/elements.js';
 import test from 'ava';
 import {validateElements} from 'element-model/lib/elementModel.js';
 import {validateMarkdownModel} from '../lib/model.js';
@@ -295,7 +295,7 @@ test('markdownElements, header IDs', (t) => {
 });
 
 
-test('markdownElements, header IDs hashFn', (t) => {
+test('markdownElements, header IDs urlFn', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -307,7 +307,7 @@ test('markdownElements, header IDs hashFn', (t) => {
                 }
             }
         ]
-    }), {'headerIds': true, 'hashFn': (url) => `#url=README.md&${url.slice(1)}`});
+    }), {'headerIds': true, 'urlFn': (url) => `#url=README.md&${url.slice(1)}`});
     validateElements(elements);
     t.deepEqual(
         elements,
@@ -841,8 +841,10 @@ test('markdownElements, relative and absolute URLs', (t) => {
     validateElements(elements);
     t.deepEqual(elements, defaultElements);
 
-    // Test with URL option
-    const elementsURL = markdownElements(markdown, {'url': 'https://foo.com/index.md'});
+    // Test with urlFn option - relative file fixup
+    const elementsURL = markdownElements(markdown, {
+        'urlFn': (url) => (isRelativeURL(url) ? getBaseURL('https://foo.com/index.md') + url : url)
+    });
     validateElements(elementsURL);
     t.deepEqual(
         elementsURL,
@@ -904,79 +906,6 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {
                             'src': 'https://foo.com/doc.svg',
-                            'alt': 'Relative image URL'
-                        },
-                        'html': 'img'
-                    }
-                ],
-                'html': 'p'
-            }
-        ]
-    );
-
-    // Test with hashFn option
-    const elementsHashPrefix = markdownElements(markdown, {'hashFn': (url) => `#url=README.md&${url.slice(1)}`});
-    validateElements(elementsURL);
-    t.deepEqual(
-        elementsHashPrefix,
-        [
-            {
-                'elem': [
-                    {
-                        'attr': {'href': 'https://craigahobbs.github.io/schema-markdown/doc/'},
-                        'elem': [{'text': 'Absolute link URL'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': 'mailto:johndoe@gmail.com'},
-                        'elem': [{'text': 'Email absolute URL'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': '/schema-markdown/doc/'},
-                        'elem': [{'text': 'Absolute link URL without scheme'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': '#url=README.md&'},
-                        'elem': [{'text': 'Top link'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': '#url=README.md&anchor'},
-                        'elem': [{'text': 'Anchor link'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': '#url=README.md&foo=bar'},
-                        'elem': [{'text': 'Page link'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': '#url=README.md&foo=bar&url=bar.md'},
-                        'elem': [{'text': 'Page link with url param'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': '?foo=bar'},
-                        'elem': [{'text': 'Query string'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {'href': 'doc/'},
-                        'elem': [{'text': 'Relative link URL'}],
-                        'html': 'a'
-                    },
-                    {
-                        'attr': {
-                            'src': 'https://craigahobbs.github.io/schema-markdown/doc/doc.svg',
-                            'alt': 'Absolute image URL'
-                        },
-                        'html': 'img'
-                    },
-                    {
-                        'attr': {
-                            'src': 'doc.svg',
                             'alt': 'Relative image URL'
                         },
                         'html': 'img'
