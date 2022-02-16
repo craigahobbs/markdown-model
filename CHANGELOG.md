@@ -1,3 +1,7 @@
+## 1.4.2 (2022-02-16)
+
+- [d981902](https://github.com/craigahobbs/markdown-model/commit/d981902) - consolidate hashFn and url options into the urlFn option \(breaking change\)
+
 ## 1.4.1 (2022-02-11)
 
 - [1522ae8](https://github.com/craigahobbs/markdown-model/commit/1522ae8) - add markdownElementsAsync function
