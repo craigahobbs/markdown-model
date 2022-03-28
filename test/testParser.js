@@ -1028,7 +1028,6 @@ This is another paragraph.
 
 
 test('parseMarkdown, escapes', (t) => {
-    /* eslint-disable-next-line no-useless-escape */
     const markdown = parseMarkdown('\\ \\* \\_ \\{ \\} \\[ \\] **bol\\.d** \\( \\) \\# \\+ \\- \\. \\! \\a');
     validateMarkdownModel(markdown);
     t.deepEqual(
@@ -1049,8 +1048,7 @@ test('parseMarkdown, escapes', (t) => {
 
 
 test('parseMarkdown, link escapes', (t) => {
-    /* eslint-disable-next-line no-useless-escape */
-    const markdown = parseMarkdown('[tex\]t](hre\.f "titl\.e")');
+    const markdown = parseMarkdown('[tex\\]t](hre\\.f "titl\\.e")');
     validateMarkdownModel(markdown);
     t.deepEqual(
         markdown,
@@ -1107,8 +1105,7 @@ test('parseMarkdown, link href alternate space end', (t) => {
 
 
 test('parseMarkdown, image escapes', (t) => {
-    /* eslint-disable-next-line no-useless-escape */
-    const markdown = parseMarkdown('![al\]t](sr\.c "titl\.e")');
+    const markdown = parseMarkdown('![al\\]t](sr\\.c "titl\\.e")');
     validateMarkdownModel(markdown);
     t.deepEqual(
         markdown,
