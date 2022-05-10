@@ -24,10 +24,12 @@ clean:
 
 
 doc:
-	mkdir -p build/doc/doc/
+	mkdir -p build/doc/model/
 	$(NODE_DOCKER) node --input-type=module \
-		-e 'import {markdownModel} from "./lib/model.js"; console.log(JSON.stringify(markdownModel))' \
-		> build/doc/doc/model.json
-	(cd build/doc/doc/ && $(call WGET_CMD, https://craigahobbs.github.io/schema-markdown-doc/static/index.html))
-	sed -E 's/>Title</>The Markdown Model</; s/"Description"/"The Markdown Model"/' build/doc/doc/index.html > build/doc/doc/index.html.tmp
-	mv build/doc/doc/index.html.tmp build/doc/doc/index.html
+		-e 'import {markdownModelTypes} from "./lib/model.js"; console.log(JSON.stringify(markdownModelTypes))' \
+		> build/doc/model/model.json
+	(cd build/doc/model/ && $(call WGET_CMD, https://craigahobbs.github.io/schema-markdown-doc/static/index.html))
+	TITLE='The Markdown Model' sed -E \
+		"s/>Title</>$$TITLE</; s/"\""Description"\""/"\""$$TITLE"\""/; s/(schemaMarkdownDoc)\(.*?\)/\1('model.json', '$$TITLE')/" \
+		build/doc/model/index.html > build/doc/model/index.html.tmp
+	mv build/doc/model/index.html.tmp build/doc/model/index.html
