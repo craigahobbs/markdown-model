@@ -1,3 +1,7 @@
+## 1.4.4 (2022-05-10)
+
+- [c3697a2](https://github.com/craigahobbs/markdown-model/commit/c3697a2) - fix fenced code block text within fenced code block
+
 ## 1.4.3 (2022-05-09)
 
 - [f935d91](https://github.com/craigahobbs/markdown-model/commit/f935d91) - fix markdown model documentation
