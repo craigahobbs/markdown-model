@@ -30,6 +30,6 @@ doc:
 		> build/doc/model/model.json
 	(cd build/doc/model/ && $(call WGET_CMD, https://craigahobbs.github.io/schema-markdown-doc/static/index.html))
 	TITLE='The Markdown Model' sed -E \
-		"s/>Title</>$$TITLE</; s/"\""Description"\""/"\""$$TITLE"\""/; s/(schemaMarkdownDoc)\(.*?\)/\1('model.json', '$$TITLE')/" \
+		"s/>Title</>$$TITLE</; s/"\""Description"\""/"\""$$TITLE"\""/; s/(schemaMarkdownDoc)\(.*\)/\1('model.json', '$$TITLE')/" \
 		build/doc/model/index.html > build/doc/model/index.html.tmp
 	mv build/doc/model/index.html.tmp build/doc/model/index.html
