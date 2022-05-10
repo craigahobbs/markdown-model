@@ -655,6 +655,30 @@ bar();
 });
 
 
+test('parseMarkdown, fenced code block with fenced code block text', (t) => {
+    const markdown = parseMarkdown(`
+This is some code:
+
+\`\`\`
+~~~
+foo();
+bar();
+~~~
+\`\`\`
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
+                {'codeBlock': {'lines': ['~~~', 'foo();', 'bar();', '~~~']}}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, empty fenced code block', (t) => {
     const markdown = parseMarkdown(`
 This is some code:
