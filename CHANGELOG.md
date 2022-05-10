@@ -1,3 +1,7 @@
+## 1.4.3 (2022-05-09)
+
+- [f935d91](https://github.com/craigahobbs/markdown-model/commit/f935d91) - fix markdown model documentation
+
 ## 1.4.2 (2022-02-16)
 
 - [d981902](https://github.com/craigahobbs/markdown-model/commit/d981902) - consolidate hashFn and url options into the urlFn option \(breaking change\)
