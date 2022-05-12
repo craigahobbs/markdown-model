@@ -1,3 +1,7 @@
+## 1.4.5 (2022-05-12)
+
+- [75eb5de](https://github.com/craigahobbs/markdown-model/commit/75eb5de) - update readme
+
 ## 1.4.4 (2022-05-10)
 
 - [c3697a2](https://github.com/craigahobbs/markdown-model/commit/c3697a2) - fix fenced code block text within fenced code block
