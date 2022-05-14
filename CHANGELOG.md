@@ -1,3 +1,7 @@
+## 1.4.6 (2022-05-14)
+
+- [5512f39](https://github.com/craigahobbs/markdown-model/commit/5512f39) - fix markdownElementsAsync
+
 ## 1.4.5 (2022-05-12)
 
 - [75eb5de](https://github.com/craigahobbs/markdown-model/commit/75eb5de) - update readme
