@@ -1,3 +1,7 @@
+## 1.4.7 (2022-06-28)
+
+- [8e5af38](https://github.com/craigahobbs/markdown-model/commit/8e5af38) - add code block startLineNumber
+
 ## 1.4.6 (2022-05-14)
 
 - [5512f39](https://github.com/craigahobbs/markdown-model/commit/5512f39) - fix markdownElementsAsync
