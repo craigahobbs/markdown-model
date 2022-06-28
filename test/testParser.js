@@ -66,7 +66,7 @@ test('encodeMarkdownText', (t) => {
 
 
 test('parseMarkdown', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 # Title
 
 This is a sentence.
@@ -114,7 +114,7 @@ test('parseMarkdown, lines', (t) => {
 
 
 test('parseMarkdown, tabs', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is a tab "\t".
 
  * List 1 - 1
@@ -173,7 +173,7 @@ test('parseMarkdown, empty', (t) => {
 
 
 test('parseMarkdown, horizontal rule', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 Some text
 ***
 ******
@@ -195,7 +195,7 @@ More text
 
 
 test('parseMarkdown, horizontal rule hyphens', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 Some text
 
 ---
@@ -216,7 +216,7 @@ Some text
 
 
 test('parseMarkdown, horizontal rule underscores', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 Some text
 
 ___
@@ -237,7 +237,7 @@ ______
 
 
 test('parseMarkdown, horizontal rule spaces', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 Some text
  *  *    ** 
 `);
@@ -255,7 +255,7 @@ Some text
 
 
 test('parseMarkdown, horizontal rule beyond code block', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
     *****
 `);
     validateMarkdownModel(markdown);
@@ -263,7 +263,7 @@ test('parseMarkdown, horizontal rule beyond code block', (t) => {
         markdown,
         {
             'parts': [
-                {'codeBlock': {'lines': ['*****']}}
+                {'codeBlock': {'lines': ['*****'], 'startLineNumber': 1}}
             ]
         }
     );
@@ -271,7 +271,7 @@ test('parseMarkdown, horizontal rule beyond code block', (t) => {
 
 
 test('parseMarkdown, horizontal rule following code block', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is a horizontal fule immediately following a code block:
 
     code
@@ -284,7 +284,7 @@ This is a horizontal fule immediately following a code block:
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is a horizontal fule immediately following a code block:'}]}},
-                {'codeBlock': {'lines': ['code']}},
+                {'codeBlock': {'lines': ['code'], 'startLineNumber': 3}},
                 {'hr': null}
             ]
         }
@@ -293,7 +293,7 @@ This is a horizontal fule immediately following a code block:
 
 
 test('parseMarkdown, heading alternate syntax', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 Title
 =====
 
@@ -320,7 +320,7 @@ Some words.
 
 
 test('parseMarkdown, heading alternate syntax multi-line', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 Title
 and More
   ===
@@ -338,7 +338,7 @@ and More
 
 
 test('parseMarkdown, heading alternate syntax following list', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 - Title
 and more
 =====
@@ -362,7 +362,7 @@ and more
 
 
 test('parseMarkdown, heading alternate syntax beyond code block', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 Title
     =====
 `);
@@ -379,7 +379,7 @@ Title
 
 
 test('parseMarkdown, list', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 - item 1
 
   item 1.2
@@ -421,7 +421,7 @@ another
 
 
 test('parseMarkdown, ordered list', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 1. item 1
 
    item 1.2
@@ -464,7 +464,7 @@ another
 
 
 test('parseMarkdown, list nested', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 - 1
  - 2
   - 3
@@ -577,7 +577,7 @@ asdf
 
 
 test('parseMarkdown, code block', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is some code:
 
     code 1
@@ -592,7 +592,7 @@ Cool, huh?`);
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
-                {'codeBlock': {'lines': ['code 1', 'code 2', '', 'code 3']}},
+                {'codeBlock': {'lines': ['code 1', 'code 2', '', 'code 3'], 'startLineNumber': 3}},
                 {'paragraph': {'spans': [{'text': 'Cool, huh?'}]}}
             ]
         }
@@ -601,7 +601,7 @@ Cool, huh?`);
 
 
 test('parseMarkdown, code block with fenced code block text', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is a fenced code block:
 
     ~~~ javascript
@@ -618,14 +618,17 @@ Cool, huh?`);
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is a fenced code block:'}]}},
-                {'codeBlock': {'lines': [
-                    '~~~ javascript',
-                    'code 1',
-                    'code 2',
-                    '',
-                    'code 3',
-                    '~~~'
-                ]}},
+                {'codeBlock': {
+                    'lines': [
+                        '~~~ javascript',
+                        'code 1',
+                        'code 2',
+                        '',
+                        'code 3',
+                        '~~~'
+                    ],
+                    'startLineNumber': 3
+                }},
                 {'paragraph': {'spans': [{'text': 'Cool, huh?'}]}}
             ]
         }
@@ -634,7 +637,7 @@ Cool, huh?`);
 
 
 test('parseMarkdown, fenced code block', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is some code:
 
 \`\`\` javascript
@@ -648,7 +651,7 @@ bar();
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
-                {'codeBlock': {'language': 'javascript', 'lines': ['foo();', 'bar();']}}
+                {'codeBlock': {'language': 'javascript', 'lines': ['foo();', 'bar();'], 'startLineNumber': 3}}
             ]
         }
     );
@@ -656,7 +659,7 @@ bar();
 
 
 test('parseMarkdown, fenced code block with fenced code block text', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is some code:
 
 \`\`\`
@@ -672,7 +675,7 @@ bar();
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
-                {'codeBlock': {'lines': ['~~~', 'foo();', 'bar();', '~~~']}}
+                {'codeBlock': {'lines': ['~~~', 'foo();', 'bar();', '~~~'], 'startLineNumber': 3}}
             ]
         }
     );
@@ -680,7 +683,7 @@ bar();
 
 
 test('parseMarkdown, empty fenced code block', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is some code:
 
 \`\`\` javascript
@@ -692,7 +695,7 @@ This is some code:
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
-                {'codeBlock': {'language': 'javascript', 'lines': []}}
+                {'codeBlock': {'language': 'javascript', 'lines': [], 'startLineNumber': 3}}
             ]
         }
     );
@@ -700,7 +703,7 @@ This is some code:
 
 
 test('parseMarkdown, empty, end-of-file fenced code block', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is some code:
 
 \`\`\` javascript`);
@@ -710,7 +713,7 @@ This is some code:
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
-                {'codeBlock': {'language': 'javascript', 'lines': []}}
+                {'codeBlock': {'language': 'javascript', 'lines': [], 'startLineNumber': 3}}
             ]
         }
     );
@@ -718,7 +721,7 @@ This is some code:
 
 
 test('parseMarkdown, code block fenced no language', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is some code:
 
 \`\`\`
@@ -732,7 +735,7 @@ bar();
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
-                {'codeBlock': {'lines': ['foo();', 'bar();']}}
+                {'codeBlock': {'lines': ['foo();', 'bar();'], 'startLineNumber': 3}}
             ]
         }
     );
@@ -740,7 +743,7 @@ bar();
 
 
 test('parseMarkdown, code block nested', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 - This is some code:
 
   \`\`\`
@@ -759,7 +762,7 @@ test('parseMarkdown, code block nested', (t) => {
                             {
                                 'parts': [
                                     {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
-                                    {'codeBlock': {'lines': ['foo();', 'bar();']}}
+                                    {'codeBlock': {'lines': ['foo();', 'bar();'], 'startLineNumber': 3}}
                                 ]
                             }
                         ]
@@ -772,7 +775,7 @@ test('parseMarkdown, code block nested', (t) => {
 
 
 test('parseMarkdown, code block indented first line', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is some code:
 
 \`\`\`
@@ -786,7 +789,7 @@ This is some code:
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is some code:'}]}},
-                {'codeBlock': {'lines': ['    foo();', '    bar();']}}
+                {'codeBlock': {'lines': ['    foo();', '    bar();'], 'startLineNumber': 3}}
             ]
         }
     );
@@ -794,7 +797,7 @@ This is some code:
 
 
 test('parseMarkdown, spans', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 These are some basic styles: **bold**, *italic*, ***bold-italic***.
 
 This is a [link](https://foo.com) and so is [this](https://bar.com "Bar").
@@ -858,7 +861,7 @@ This is an ![image](https://foo.com/foo.jpg) and so is ![this](https://bar.com/b
 
 
 test('parseMarkdown, nested spans', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is a [link **with *formatting***](https://foo.com)
 `);
     validateMarkdownModel(markdown);
@@ -895,7 +898,7 @@ This is a [link **with *formatting***](https://foo.com)
 
 
 test('parseMarkdown, spans spaces', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 ***no *** *** no*** **no ** ** no** *no * * no*
 `);
     validateMarkdownModel(markdown);
@@ -1016,7 +1019,7 @@ test('parseMarkdown, bold-italic multiline', (t) => {
 
 
 test('parseMarkdown, line breaks', (t) => {
-    const markdown = parseMarkdown(`
+    const markdown = parseMarkdown(`\
 This is a line break  
   this is not
 and this is  

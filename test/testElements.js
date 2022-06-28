@@ -219,9 +219,9 @@ test('markdownElementsAsync', async (t) => {
         }),
         {
             'codeBlocks': {
-                'async-code-block': async (language, lines) => {
+                'async-code-block': async (codeBlock) => {
                     const awaitPromise = new Promise((resolve) => {
-                        resolve(lines.join(', '));
+                        resolve(codeBlock.lines.join(', '));
                     });
                     const joinedLines = await awaitPromise;
                     return new Promise((resolve) => {
@@ -687,7 +687,7 @@ test('markdownElements, code block with language', (t) => {
 
 test('markdownElements, code block with language override', (t) => {
     const codeBlocks = {
-        'fooscript': (language, lines) => ({'text': `${language}, ${JSON.stringify(lines)}`})
+        'fooscript': (codeBlock) => ({'text': `${codeBlock.language}, ${JSON.stringify(codeBlock.lines)}`})
     };
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
