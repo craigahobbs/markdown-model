@@ -1,3 +1,7 @@
+## 1.4.8 (2022-07-12)
+
+- [350e518](https://github.com/craigahobbs/markdown-model/commit/350e518) - expose markdownHeaderId function
+
 ## 1.4.7 (2022-06-28)
 
 - [8e5af38](https://github.com/craigahobbs/markdown-model/commit/8e5af38) - add code block startLineNumber
