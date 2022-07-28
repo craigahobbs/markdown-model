@@ -1,3 +1,7 @@
+## 1.5.0 (2022-07-28)
+
+- [f1f17ac](https://github.com/craigahobbs/markdown-model/commit/f1f17ac) - rename encodeMarkdownText to escapeMarkdownText
+
 ## 1.4.8 (2022-07-12)
 
 - [350e518](https://github.com/craigahobbs/markdown-model/commit/350e518) - expose markdownHeaderId function
