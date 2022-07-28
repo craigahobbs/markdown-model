@@ -3,7 +3,7 @@
 
 /* eslint-disable id-length */
 
-import {encodeMarkdownText, getMarkdownParagraphText, getMarkdownTitle, parseMarkdown} from '../lib/parser.js';
+import {escapeMarkdownText, getMarkdownParagraphText, getMarkdownTitle, parseMarkdown} from '../lib/parser.js';
 import test from 'ava';
 import {validateMarkdownModel} from '../lib/model.js';
 
@@ -60,8 +60,8 @@ Some other text
 });
 
 
-test('encodeMarkdownText', (t) => {
-    t.is(encodeMarkdownText('Encode me: \\ [ ] ( ) *'), 'Encode me: \\\\ \\[ \\] \\( \\) \\*');
+test('escapeMarkdownText', (t) => {
+    t.is(escapeMarkdownText('Escape me: \\ [ ] ( ) *'), 'Escape me: \\\\ \\[ \\] \\( \\) \\*');
 });
 
 
