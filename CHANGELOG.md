@@ -1,3 +1,7 @@
+## 1.6.0 (2022-08-15)
+
+- [a4d1cda](https://github.com/craigahobbs/markdown-model/commit/a4d1cda) - add escapeMarkdownLinkURL, move escapeMarkdownText to lib/elements.js
+
 ## 1.5.0 (2022-07-28)
 
 - [f1f17ac](https://github.com/craigahobbs/markdown-model/commit/f1f17ac) - rename encodeMarkdownText to escapeMarkdownText
