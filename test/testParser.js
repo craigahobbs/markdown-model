@@ -3,7 +3,7 @@
 
 /* eslint-disable id-length */
 
-import {escapeMarkdownText, getMarkdownParagraphText, getMarkdownTitle, parseMarkdown} from '../lib/parser.js';
+import {getMarkdownParagraphText, getMarkdownTitle, parseMarkdown} from '../lib/parser.js';
 import test from 'ava';
 import {validateMarkdownModel} from '../lib/model.js';
 
@@ -57,11 +57,6 @@ Some other text
 `);
     const [{paragraph}] = markdownModel.parts;
     t.is(getMarkdownParagraphText(paragraph), 'This is a link\nand some more text');
-});
-
-
-test('escapeMarkdownText', (t) => {
-    t.is(escapeMarkdownText('Escape me: \\ [ ] ( ) *'), 'Escape me: \\\\ \\[ \\] \\( \\) \\*');
 });
 
 

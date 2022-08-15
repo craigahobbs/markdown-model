@@ -3,7 +3,9 @@
 
 /* eslint-disable id-length */
 
-import {getBaseURL, isRelativeURL, markdownElements, markdownElementsAsync} from '../lib/elements.js';
+import {
+    escapeMarkdownLinkURL, escapeMarkdownText, getBaseURL, isRelativeURL, markdownElements, markdownElementsAsync
+} from '../lib/elements.js';
 import test from 'ava';
 import {validateElements} from 'element-model/lib/elementModel.js';
 import {validateMarkdownModel} from '../lib/model.js';
@@ -915,4 +917,15 @@ test('markdownElements, relative and absolute URLs', (t) => {
             }
         ]
     );
+});
+
+
+test('escapeMarkdownText', (t) => {
+    t.is(escapeMarkdownText('Escape me: \\ [ ] ( ) *'), 'Escape me: \\\\ \\[ \\] \\( \\) \\*');
+});
+
+
+test('escapeMarkdownLinkURL', (t) => {
+    t.is(escapeMarkdownLinkURL('https://foo.com/a and b.html'), 'https://foo.com/a%20and%20b.html');
+    t.is(escapeMarkdownLinkURL('https://foo.com/a (and b).html'), 'https://foo.com/a%20(and%20b%29.html');
 });
