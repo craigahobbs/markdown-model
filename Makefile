@@ -23,8 +23,6 @@ clean:
 	rm -rf Makefile.base jsdoc.json .eslintrc.cjs
 
 
-TITLE := The Markdown Model
-
 doc:
     # Copy statics
 	cp -R static/* build/doc/
