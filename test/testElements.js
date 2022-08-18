@@ -4,7 +4,7 @@
 /* eslint-disable id-length */
 
 import {
-    escapeMarkdownLinkURL, escapeMarkdownText, getBaseURL, isRelativeURL, markdownElements, markdownElementsAsync
+    escapeMarkdownText, escapeMarkdownURL, escapeMarkdownURLComponent, getBaseURL, isRelativeURL, markdownElements, markdownElementsAsync
 } from '../lib/elements.js';
 import test from 'ava';
 import {validateElements} from 'element-model/lib/elementModel.js';
@@ -925,7 +925,13 @@ test('escapeMarkdownText', (t) => {
 });
 
 
-test('escapeMarkdownLinkURL', (t) => {
-    t.is(escapeMarkdownLinkURL('https://foo.com/a and b.html'), 'https://foo.com/a%20and%20b.html');
-    t.is(escapeMarkdownLinkURL('https://foo.com/a (and b).html'), 'https://foo.com/a%20(and%20b%29.html');
+test('escapeMarkdownURL', (t) => {
+    t.is(escapeMarkdownURL('https://foo.com/a & b.html'), 'https://foo.com/a%20&%20b.html');
+    t.is(escapeMarkdownURL('https://foo.com/a (& b).html'), 'https://foo.com/a%20(&%20b%29.html');
+});
+
+
+test('escapeMarkdownURLComponent', (t) => {
+    t.is(escapeMarkdownURLComponent('https://foo.com/a & b.html'), 'https%3A%2F%2Ffoo.com%2Fa%20%26%20b.html');
+    t.is(escapeMarkdownURLComponent('https://foo.com/a (& b).html'), 'https%3A%2F%2Ffoo.com%2Fa%20(%26%20b%29.html');
 });
