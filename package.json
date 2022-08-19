@@ -24,7 +24,7 @@
         "test": "ava -v test/"
     },
     "dependencies": {
-        "schema-markdown": "~1.1"
+        "schema-markdown": "~1.2"
     },
     "devDependencies": {
         "ava": "~4.3",
