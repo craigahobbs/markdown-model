@@ -3,6 +3,7 @@
 
 /* eslint-disable id-length */
 
+import {ValidationError} from 'schema-markdown/lib/schema.js';
 import {parseMarkdown} from '../lib/parser.js';
 import test from 'ava';
 import {validateMarkdownModel} from '../lib/model.js';
@@ -44,11 +45,8 @@ This is some text
 
 
 test('validateMarkdownModel, invalid', (t) => {
-    let errorMessage = null;
-    try {
+    const error = t.throws(() => {
         validateMarkdownModel({});
-    } catch ({message}) {
-        errorMessage = message;
-    }
-    t.is(errorMessage, "Required member 'parts' missing");
+    }, {'instanceOf': ValidationError});
+    t.is(error.message, "Required member 'parts' missing");
 });
