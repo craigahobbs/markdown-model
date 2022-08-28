@@ -1,3 +1,5 @@
+# Changelog
+
 ## 1.6.2 (2022-08-19)
 
 - [e135265](https://github.com/craigahobbs/markdown-model/commit/e135265) - schema-markdown 1.2
