@@ -180,8 +180,8 @@ More text
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'Some text'}]}},
-                {'hr': null},
-                {'hr': null},
+                {'hr': 1},
+                {'hr': 1},
                 {'paragraph': {'spans': [{'text': 'More text'}]}}
             ]
         }
@@ -202,8 +202,8 @@ Some text
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'Some text'}]}},
-                {'hr': null},
-                {'hr': null}
+                {'hr': 1},
+                {'hr': 1}
             ]
         }
     );
@@ -223,8 +223,8 @@ ______
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'Some text'}]}},
-                {'hr': null},
-                {'hr': null}
+                {'hr': 1},
+                {'hr': 1}
             ]
         }
     );
@@ -242,7 +242,7 @@ Some text
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'Some text'}]}},
-                {'hr': null}
+                {'hr': 1}
             ]
         }
     );
@@ -280,7 +280,7 @@ This is a horizontal fule immediately following a code block:
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is a horizontal fule immediately following a code block:'}]}},
                 {'codeBlock': {'lines': ['code'], 'startLineNumber': 3}},
-                {'hr': null}
+                {'hr': 1}
             ]
         }
     );
@@ -478,93 +478,366 @@ asdf
         markdown,
         {
             'parts': [
-                {
-                    'list': {
-                        'items': [
-                            {
-                                'parts': [
-                                    {'paragraph': {'spans': [{'text': '1'}]}}
-                                ]
-                            },
-                            {
-                                'parts': [
-                                    {'paragraph': {'spans': [{'text': '2'}]}},
-                                    {
-                                        'list': {
-                                            'items': [
-                                                {
-                                                    'parts': [
-                                                        {'paragraph': {'spans': [{'text': '3'}]}}
-                                                    ]
-                                                },
-                                                {
-                                                    'parts': [
-                                                        {'paragraph': {'spans': [{'text': '4'}]}},
-                                                        {
-                                                            'list': {
-                                                                'items': [
-                                                                    {
-                                                                        'parts': [
-                                                                            {'paragraph': {'spans': [{'text': '5'}]}}
-                                                                        ]
-                                                                    },
-                                                                    {
-                                                                        'parts': [
-                                                                            {'paragraph': {'spans': [{'text': '6'}]}}
-                                                                        ]
-                                                                    }
-                                                                ]
-                                                            }
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    'parts': [
-                                                        {'paragraph': {'spans': [{'text': '7'}]}},
-                                                        {
-                                                            'list': {
-                                                                'items': [
-                                                                    {
-                                                                        'parts': [
-                                                                            {'paragraph': {'spans': [{'text': '8'}]}},
-                                                                            {
-                                                                                'list': {
-                                                                                    'items': [
-                                                                                        {
-                                                                                            'parts': [
-                                                                                                {'paragraph': {'spans': [{'text': '9'}]}}
-                                                                                            ]
-                                                                                        }
-                                                                                    ]
-                                                                                }
-                                                                            }
-                                                                        ]
-                                                                    }
-                                                                ]
-                                                            }
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    'parts': [
-                                                        {'paragraph': {'spans': [{'text': '10'}]}}
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                },
-                {
-                    'paragraph': {
-                        'spans': [
-                            {'text': 'asdf'}
-                        ]
-                    }
-                }
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': '1'}]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': '2'}]}},
+                        {'list': {'items': [
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': '3'}]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': '4'}]}},
+                                {'list': {'items': [
+                                    {'parts': [
+                                        {'paragraph': {'spans': [{'text': '5'}]}}
+                                    ]},
+                                    {'parts': [
+                                        {'paragraph': {'spans': [{'text': '6'}]}}
+                                    ]}
+                                ]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': '7'}]}},
+                                {'list': {'items': [
+                                    {'parts': [
+                                        {'paragraph': {'spans': [{'text': '8'}]}},
+                                        {'list': {'items': [
+                                            {'parts': [
+                                                {'paragraph': {'spans': [{'text': '9'}]}}
+                                            ]}
+                                        ]}}
+                                    ]}
+                                ]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': '10'}]}}
+                            ]}
+                        ]}}
+                    ]}
+                ]}},
+                {'paragraph': {'spans': [{'text': 'asdf'}]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list terminated with fenced code block', (t) => {
+    const markdown = parseMarkdown(`\
+- Item 1
+
+~~~
+foo
+~~~
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'Item 1'}]}}
+                    ]}
+                ]}},
+                {'codeBlock': {'lines': ['foo'], 'startLineNumber': 3}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote', (t) => {
+    const markdown = parseMarkdown(`\
+This is a quote:
+
+> Four score and
+> twenty years ago
+> ...
+
+Cool, huh?`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [{'text': 'This is a quote:'}]}},
+                {'quote': {'parts': [
+                    {'paragraph': {'spans': [{'text': 'Four score and\ntwenty years ago\n...'}]}}
+                ]}},
+                {'paragraph': {'spans': [{'text': 'Cool, huh?'}]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote nested', (t) => {
+    const markdown = parseMarkdown(`\
+> Quote text
+>
+> > Inner text
+> >
+>    > Inner text 2
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'quote': {'parts': [
+                    {'paragraph': {'spans': [{'text': 'Quote text'}]}},
+                    {'quote': {'parts': [
+                        {'paragraph': {'spans': [{'text': 'Inner text'}]}},
+                        {'paragraph': {'spans': [{'text': 'Inner text 2'}]}}
+                    ]}}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote nested complex', (t) => {
+    const markdown = parseMarkdown(`\
+> L1-1
+>
+> > > > L4-1
+> > L2-1
+Hello?
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'quote': {'parts': [
+                    {'paragraph': {'spans': [{'text': 'L1-1'}]}},
+                    {'quote': {'parts': [
+                        {'quote': {'parts': [
+                            {'quote': {'parts': [
+                                {'paragraph': {'spans': [{'text': 'L4-1\nL2-1\nHello?'}]}}
+                            ]}}
+                        ]}}
+                    ]}}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote nested list', (t) => {
+    const markdown = parseMarkdown(`\
+>- List 1
+>
+  >> A sub-quote
+>
+   >   and more
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'quote': {'parts': [
+                    {'list': {'items': [
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'List 1'}]}}
+                        ]}
+                    ]}},
+                    {'quote': {'parts': [
+                        {'paragraph': {'spans': [{'text': 'A sub-quote'}]}}
+                    ]}},
+                    {'paragraph': {'spans': [{'text': '  and more'}]}}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote is a code block', (t) => {
+    const markdown = parseMarkdown(`\
+    > really
+    > a code block
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'codeBlock': {'lines': ['> really', '> a code block'], 'startLineNumber': 1}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote lazy', (t) => {
+    const markdown = parseMarkdown(`\
+> # Foo
+> bar
+baz
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'quote': {'parts': [
+                    {'paragraph': {'spans': [{'text': 'Foo'}], 'style': 'h1'}},
+                    {'paragraph': {'spans': [{'text': 'bar\nbaz'}]}}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote lazy mixed', (t) => {
+    const markdown = parseMarkdown(`\
+> bar
+baz
+> foo
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'quote': {'parts': [
+                    {'paragraph': {'spans': [{'text': 'bar\nbaz\nfoo'}]}}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote terminate with hr', (t) => {
+    const markdown = parseMarkdown(`\
+> foo
+---
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'quote': {'parts': [
+                    {'paragraph': {'spans': [{'text': 'foo'}]}}
+                ]}},
+                {'hr': 1}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote terminate with list', (t) => {
+    const markdown = parseMarkdown(`\
+> - foo
+- bar
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'quote': {'parts': [
+                    {'list': {'items': [
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'foo'}]}}
+                        ]}
+                    ]}}
+                ]}},
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'bar'}]}}
+                    ]}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote not terminated with code block', (t) => {
+    const markdown = parseMarkdown(`\
+>     foo
+    bar
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'quote': {'parts': [
+                    {'codeBlock': {'lines': ['foo', 'bar'], 'startLineNumber': 1}}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote terminates code block', (t) => {
+    const markdown = parseMarkdown(`\
+    foo
+> bar
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'codeBlock': {'startLineNumber': 1, 'lines': ['foo']}},
+                {'quote': {'parts': [{'paragraph': {'spans': [{'text': 'bar'}]}}]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote terminates list', (t) => {
+    const markdown = parseMarkdown(`\
+- item 1
+
+> quote
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'item 1'}]}}
+                    ]}
+                ]}},
+                {'quote': {'parts': [
+                    {'paragraph': {'spans': [{'text': 'quote'}]}}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, block quote empty', (t) => {
+    const markdown = parseMarkdown(`\
+>
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'quote': {'parts': []}}
             ]
         }
     );
@@ -791,6 +1064,233 @@ This is some code:
 });
 
 
+test('parseMarkdown, table', (t) => {
+    const markdown = parseMarkdown(`\
+This is a table:
+
+| Column A | Column B | Column C | Column D |
+| -------- | -------: | :------: | :------- |
+| A0       | B0       | C0       | D0       |
+| A1       | B1       | C1       | D1       |
+
+Neat!
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [{'text': 'This is a table:'}]}},
+                {'table': {
+                    'headers': [
+                        [{'text': 'Column A'}],
+                        [{'text': 'Column B'}],
+                        [{'text': 'Column C'}],
+                        [{'text': 'Column D'}]
+                    ],
+                    'aligns': [
+                        'left',
+                        'right',
+                        'center',
+                        'left'
+                    ],
+                    'rows': [
+                        [
+                            [{'text': 'A0'}],
+                            [{'text': 'B0'}],
+                            [{'text': 'C0'}],
+                            [{'text': 'D0'}]
+                        ],
+                        [
+                            [{'text': 'A1'}],
+                            [{'text': 'B1'}],
+                            [{'text': 'C1'}],
+                            [{'text': 'D1'}]
+                        ]
+                    ]
+                }},
+                {'paragraph': {'spans': [{'text': 'Neat!'}]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, table crowded', (t) => {
+    const markdown = parseMarkdown(`\
+This is a table:
+|Column A|
+|--------|
+|A0      |
+Neat!
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [{'text': 'This is a table:'}]}},
+                {'table': {
+                    'headers': [[{'text': 'Column A'}]],
+                    'aligns': ['left'],
+                    'rows': [
+                        [[{'text': 'A0'}]]
+                    ]
+                }},
+                {'paragraph': {'spans': [{'text': 'Neat!'}]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, table indented row', (t) => {
+    const markdown = parseMarkdown(`\
+| Column A |
+| -------- |
+| A0       |
+    | A1       |
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'table': {
+                    'headers': [[{'text': 'Column A'}]],
+                    'aligns': ['left'],
+                    'rows': [
+                        [[{'text': 'A0'}]]
+                    ]
+                }},
+                {'codeBlock': {'lines': ['| A1       |'], 'startLineNumber': 4}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, table naked', (t) => {
+    const markdown = parseMarkdown(`\
+| abc | defghi |
+:-: | -----------:
+bar | baz
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'table': {
+                    'headers': [[{'text': 'abc'}], [{'text': 'defghi'}]],
+                    'aligns': ['center', 'right'],
+                    'rows': [
+                        [[{'text': 'bar'}], [{'text': 'baz'}]]
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, table escapes', (t) => {
+    const markdown = parseMarkdown(`\
+| f\\|oo  |
+| ------ |
+| b \`\\|\` az |
+| b **\\|** im |
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'table': {
+                    'headers': [[{'text': 'f|oo'}]],
+                    'aligns': ['left'],
+                    'rows': [
+                        [[{'text': 'b '}, {'code': '|'}, {'text': ' az'}]],
+                        [[{'text': 'b '}, {'style': {'style': 'bold', 'spans': [{'text': '|'}]}}, {'text': ' im'}]]
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, table mismatched delimiter', (t) => {
+    const markdown = parseMarkdown(`\
+| abc | def |
+| --- |
+| bar |
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [
+                    {
+                        'text': `\
+| abc | def |
+| --- |
+| bar |`
+                    }
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, table short and long', (t) => {
+    const markdown = parseMarkdown(`\
+| abc | def |
+| --- | --- |
+| bar |
+| bar | baz | boo |
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'table': {
+                    'headers': [[{'text': 'abc'}], [{'text': 'def'}]],
+                    'aligns': ['left', 'left'],
+                    'rows': [
+                        [[{'text': 'bar'}]],
+                        [[{'text': 'bar'}], [{'text': 'baz'}]]
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, table empty', (t) => {
+    const markdown = parseMarkdown(`\
+| abc | def |
+| --- | --- |
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'table': {
+                    'headers': [[{'text': 'abc'}], [{'text': 'def'}]],
+                    'aligns': ['left', 'left']
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, spans', (t) => {
     const markdown = parseMarkdown(`\
 These are some basic styles: **bold**, *italic*, ***bold-italic***.
@@ -800,6 +1300,8 @@ This is a [link](https://foo.com) and so is [this](https://bar.com "Bar").
 This is another link: <https://foo.com>
 
 This is an ![image](https://foo.com/foo.jpg) and so is ![this](https://bar.com/bar.jpg "Bar").
+
+This is code \`foo = 2 * bar\`.
 `);
     validateMarkdownModel(markdown);
     t.deepEqual(
@@ -845,6 +1347,15 @@ This is an ![image](https://foo.com/foo.jpg) and so is ![this](https://bar.com/b
                             {'image': {'alt': 'image', 'src': 'https://foo.com/foo.jpg'}},
                             {'text': ' and so is '},
                             {'image': {'alt': 'this', 'src': 'https://bar.com/bar.jpg', 'title': 'Bar'}},
+                            {'text': '.'}
+                        ]
+                    }
+                },
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'This is code '},
+                            {'code': 'foo = 2 * bar'},
                             {'text': '.'}
                         ]
                     }
@@ -1013,6 +1524,306 @@ test('parseMarkdown, bold-italic multiline', (t) => {
 });
 
 
+test('parseMarkdown, code span', (t) => {
+    const markdown = parseMarkdown('This is code: `foo`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This is code: '},
+                        {'code': 'foo'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span multiple', (t) => {
+    const markdown = parseMarkdown('This is code: ``foo ` bar``');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This is code: '},
+                        {'code': 'foo ` bar'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span strip space pad', (t) => {
+    const markdown = parseMarkdown('` `` `');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': '``'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span strip space pad with extra spaces', (t) => {
+    const markdown = parseMarkdown('`  ``  `');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': ' `` '}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span begin space', (t) => {
+    const markdown = parseMarkdown('` a`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': ' a'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span end space', (t) => {
+    const markdown = parseMarkdown('`a `');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'a '}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span tab padding', (t) => {
+    const markdown = parseMarkdown('`\ta\t`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': '   a   '}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span only spaces', (t) => {
+    const markdown = parseMarkdown('` `\n`  `');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': '` ` '}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span multiline text', (t) => {
+    const markdown = parseMarkdown('`foo\nbar  \nbaz\n`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'foo bar   baz'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span multiline text last line end space', (t) => {
+    const markdown = parseMarkdown('`foo \n`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'foo '}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span backslash', (t) => {
+    const markdown = parseMarkdown('`foo\\`bar`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'foo\\'},
+                        {'text': 'bar`'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span large delimeter', (t) => {
+    const markdown = parseMarkdown('``foo`bar``');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'foo`bar'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span small delimeter', (t) => {
+    const markdown = parseMarkdown('`foo``bar`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'foo``bar'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span order', (t) => {
+    const markdown = parseMarkdown('*foo`*`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {
+                            'style': {
+                                'style': 'italic',
+                                'spans': [
+                                    {'text': 'foo`'}
+                                ]
+                            }
+                        },
+                        {'text': '`'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span mismatched', (t) => {
+    const markdown = parseMarkdown('This is code: ```foo``');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This is code: `'},
+                        {'code': 'foo'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span mismatched 2', (t) => {
+    const markdown = parseMarkdown('`foo``bar``');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'foo``bar`'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, line breaks', (t) => {
     const markdown = parseMarkdown(`\
 This is a line break  
@@ -1030,9 +1841,9 @@ This is another paragraph.
                     'paragraph': {
                         'spans': [
                             {'text': 'This is a line break'},
-                            {'br': null},
+                            {'br': 1},
                             {'text': '\n  this is not\nand this is'},
-                            {'br': null}
+                            {'br': 1}
                         ]
                     }
                 },

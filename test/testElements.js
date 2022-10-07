@@ -89,6 +89,13 @@ test('markdownElements', (t) => {
                 }
             },
             {
+                'quote': {
+                    'parts': [
+                        {'paragraph': {'spans': [{'text': 'This is a paragraph.'}]}}
+                    ]
+                }
+            },
+            {
                 'codeBlock': {
                     'lines': [
                         'Line 1',
@@ -171,6 +178,12 @@ test('markdownElements', (t) => {
                 ]
             },
             {
+                'html': 'blockquote',
+                'elem': [
+                    {'html': 'p', 'elem': [{'text': 'This is a paragraph.'}]}
+                ]
+            },
+            {
                 'html': 'pre',
                 'elem': {
                     'html': 'code',
@@ -195,25 +208,18 @@ test('markdownElementsAsync', async (t) => {
                         'items': [
                             {
                                 'parts': [
-                                    {
-                                        'codeBlock': {
-                                            'lines': [
-                                                'Line 1',
-                                                'Line 2'
-                                            ]
-                                        }
-                                    },
-                                    {
-                                        'codeBlock': {
-                                            'language': 'async-code-block',
-                                            'lines': [
-                                                'Line 1',
-                                                'Line 2'
-                                            ]
-                                        }
-                                    }
+                                    {'codeBlock': {'lines': ['Line 1', 'Line 2']}},
+                                    {'codeBlock': {'language': 'async-code-block', 'lines': ['Line 1', 'Line 2']}}
                                 ]
                             }
+                        ]
+                    }
+                },
+                {
+                    'quote': {
+                        'parts': [
+                            {'codeBlock': {'lines': ['Line 1', 'Line 2']}},
+                            {'codeBlock': {'language': 'async-code-block', 'lines': ['Line 1', 'Line 2']}}
                         ]
                     }
                 }
@@ -247,20 +253,21 @@ test('markdownElementsAsync', async (t) => {
                         'elem': [
                             {
                                 'html': 'pre',
-                                'elem': {
-                                    'html': 'code',
-                                    'elem': [
-                                        {'text': 'Line 1\n'},
-                                        {'text': 'Line 2\n'}
-                                    ]
-                                }
+                                'elem': {'html': 'code', 'elem': [{'text': 'Line 1\n'}, {'text': 'Line 2\n'}]}
                             },
-                            {
-                                'html': 'p',
-                                'elem': {'text': 'Line 1, Line 2'}
-                            }
+                            {'html': 'p', 'elem': {'text': 'Line 1, Line 2'}}
                         ]
                     }
+                ]
+            },
+            {
+                'html': 'blockquote',
+                'elem': [
+                    {
+                        'html': 'pre',
+                        'elem': {'html': 'code', 'elem': [{'text': 'Line 1\n'}, {'text': 'Line 2\n'}]}
+                    },
+                    {'html': 'p', 'elem': {'text': 'Line 1, Line 2'}}
                 ]
             }
         ]
@@ -540,7 +547,7 @@ test('markdownElements, line break', (t) => {
                 'paragraph': {
                     'spans': [
                         {'text': 'This is a line break'},
-                        {'br': null},
+                        {'br': 1},
                         {'text': 'some more text'}
                     ]
                 }
@@ -568,7 +575,7 @@ test('markdownElements, horizontal rule', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {'paragraph': {'spans': [{'text': 'Some text'}]}},
-            {'hr': null},
+            {'hr': 1},
             {'paragraph': {'spans': [{'text': 'More text'}]}}
         ]
     }));
@@ -654,6 +661,35 @@ test('markdownElements, image span with no title', (t) => {
 });
 
 
+test('markdownElements, code span', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'paragraph': {
+                    'spans': [
+                        {'text': 'This is code: '},
+                        {'code': 'foo'}
+                    ]
+                }
+            }
+        ]
+    }));
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'p',
+                'elem': [
+                    {'text': 'This is code: '},
+                    {'html': 'code', 'elem': {'text': 'foo'}}
+                ]
+            }
+        ]
+    );
+});
+
+
 test('markdownElements, code block with language', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
@@ -709,6 +745,149 @@ test('markdownElements, code block with language override', (t) => {
         elements,
         [
             {'text': 'fooscript, ["foo();","bar();"]'}
+        ]
+    );
+});
+
+
+test('markdownElements, table', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'table': {
+                    'headers': [[{'text': 'Column A'}], [{'text': 'Column B'}]],
+                    'aligns': ['left', 'right'],
+                    'rows': [
+                        [[{'text': 'A0'}], [{'text': 'B0'}]],
+                        [[{'text': 'A1'}], [{'text': 'B1'}]]
+                    ]
+                }
+            }
+        ]
+    }));
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'table',
+                'elem': [
+                    {
+                        'html': 'thead',
+                        'elem': {
+                            'html': 'tr',
+                            'elem': [
+                                {'html': 'th', 'attr': {'style': 'text-align: left'}, 'elem': [{'text': 'Column A'}]},
+                                {'html': 'th', 'attr': {'style': 'text-align: right'}, 'elem': [{'text': 'Column B'}]}
+                            ]
+                        }
+                    },
+                    {
+                        'html': 'tbody',
+                        'elem': [
+                            {
+                                'html': 'tr',
+                                'elem': [
+                                    {'html': 'td', 'attr': {'style': 'text-align: left'}, 'elem': [{'text': 'A0'}]},
+                                    {'html': 'td', 'attr': {'style': 'text-align: right'}, 'elem': [{'text': 'B0'}]}
+                                ]
+                            },
+                            {
+                                'html': 'tr',
+                                'elem': [
+                                    {'html': 'td', 'attr': {'style': 'text-align: left'}, 'elem': [{'text': 'A1'}]},
+                                    {'html': 'td', 'attr': {'style': 'text-align: right'}, 'elem': [{'text': 'B1'}]}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    );
+});
+
+
+test('markdownElements, table no rows', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'table': {
+                    'headers': [[{'text': 'Column A'}]],
+                    'aligns': ['left']
+                }
+            }
+        ]
+    }));
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'table',
+                'elem': [
+                    {
+                        'html': 'thead',
+                        'elem': {
+                            'html': 'tr',
+                            'elem': [
+                                {'html': 'th', 'attr': {'style': 'text-align: left'}, 'elem': [{'text': 'Column A'}]}
+                            ]
+                        }
+                    },
+                    null
+                ]
+            }
+        ]
+    );
+});
+
+
+test('markdownElements, table missing align', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'table': {
+                    'headers': [[{'text': 'Column A'}], [{'text': 'Column B'}]],
+                    'aligns': ['left'],
+                    'rows': [
+                        [[{'text': 'A0'}], [{'text': 'B0'}]]
+                    ]
+                }
+            }
+        ]
+    }));
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'table',
+                'elem': [
+                    {
+                        'html': 'thead',
+                        'elem': {
+                            'html': 'tr',
+                            'elem': [
+                                {'html': 'th', 'attr': {'style': 'text-align: left'}, 'elem': [{'text': 'Column A'}]},
+                                {'html': 'th', 'attr': {'style': 'text-align: left'}, 'elem': [{'text': 'Column B'}]}
+                            ]
+                        }
+                    },
+                    {
+                        'html': 'tbody',
+                        'elem': [
+                            {
+                                'html': 'tr',
+                                'elem': [
+                                    {'html': 'td', 'attr': {'style': 'text-align: left'}, 'elem': [{'text': 'A0'}]},
+                                    {'html': 'td', 'attr': {'style': 'text-align: left'}, 'elem': [{'text': 'B0'}]}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
         ]
     );
 });
