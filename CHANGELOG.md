@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.3 (2022-10-07)
+
+- [2a96fb9](https://github.com/craigahobbs/markdown-model/commit/2a96fb9) - Implement tables, block quotes, and code spans.
+
 ## 1.6.2 (2022-08-19)
 
 - [e135265](https://github.com/craigahobbs/markdown-model/commit/e135265) - schema-markdown 1.2
