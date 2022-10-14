@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.4 (2022-10-14)
+
+- [a9dd31d](https://github.com/craigahobbs/markdown-model/commit/a9dd31d) - fix pre element styling in markdown-model.css
+
 ## 1.6.3 (2022-10-07)
 
 - [2a96fb9](https://github.com/craigahobbs/markdown-model/commit/2a96fb9) - Implement tables, block quotes, and code spans.
