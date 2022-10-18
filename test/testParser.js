@@ -1383,15 +1383,10 @@ This is a [link **with *formatting***](https://foo.com)
                                 'href': 'https://foo.com',
                                 'spans': [
                                     {'text': 'link '},
-                                    {
-                                        'style': {
-                                            'style': 'bold',
-                                            'spans': [
-                                                {'text': 'with '},
-                                                {'style': {'style': 'italic', 'spans': [{'text': 'formatting'}]}}
-                                            ]
-                                        }
-                                    }
+                                    {'style': {'style': 'bold', 'spans': [
+                                        {'text': 'with '},
+                                        {'style': {'style': 'italic', 'spans': [{'text': 'formatting'}]}}
+                                    ]}}
                                 ]
                             }
                         }
@@ -1412,40 +1407,17 @@ test('parseMarkdown, spans spaces', (t) => {
         markdown,
         {
             'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {
-                            'style': {
-                                'style': 'bold',
-                                'spans': [
-                                    {
-                                        'style': {
-                                            'style': 'italic',
-                                            'spans': [
-                                                {'text': 'no '},
-                                                {'style': {'style': 'bold', 'spans': [{'text': '* *'}]}},
-                                                {'text': ' no'}
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-                        },
-                        {'text': ' '},
-                        {
-                            'style': {
-                                'style': 'bold',
-                                'spans': [
-                                    {'text': 'no '},
-                                    {'style': {'style': 'italic', 'spans': [{'text': '* *'}]}},
-                                    {'text': ' no'}
-                                ]
-                            }
-                        },
-                        {'text': ' '},
-                        {'style': {'style': 'italic', 'spans': [{'text': 'no * * no'}]}}
-                    ]
-                }}
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'style': 'bold', 'spans': [{'text': '*no *'}]}},
+                            {'text': ' *** no*** '},
+                            {'style': {'style': 'bold', 'spans': [{'text': 'no ** ** no'}]}},
+                            {'text': ' '},
+                            {'style': {'style': 'italic', 'spans': [{'text': 'no * * no'}]}}
+                        ]
+                    }
+                }
             ]
         }
     );
@@ -1462,6 +1434,24 @@ test('parseMarkdown, link multiline', (t) => {
                 {'paragraph': {
                     'spans': [
                         {'link': {'href': 'href://foo.com', 'spans': [{'text': 'text\ntext'}], 'title': 'text\ntext'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic', (t) => {
+    const markdown = parseMarkdown('*foo bar*');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'italic'}}
                     ]
                 }}
             ]
@@ -1488,6 +1478,537 @@ test('parseMarkdown, italic multiline', (t) => {
 });
 
 
+test('parseMarkdown, italic escape start', (t) => {
+    const markdown = parseMarkdown('\\*foo bar*');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '\\'},
+                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'italic'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic escape end', (t) => {
+    const markdown = parseMarkdown('*foo bar\\*');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '*foo bar*'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic mismatched', (t) => {
+    const markdown = parseMarkdown('*foo_');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '*foo_'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic internal', (t) => {
+    const markdown = parseMarkdown('foo*bar*baz');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'foo'},
+                            {'style': {'spans': [{'text': 'bar'}], 'style': 'italic'}},
+                            {'text': 'baz'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic internal start', (t) => {
+    const markdown = parseMarkdown('*foo*bar');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': 'foo'}], 'style': 'italic'}},
+                            {'text': 'bar'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic internal end', (t) => {
+    const markdown = parseMarkdown('foo*bar*');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'foo'},
+                            {'style': {'spans': [{'text': 'bar'}], 'style': 'italic'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic sentence end', (t) => {
+    const markdown = parseMarkdown('*bar*.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': 'bar'}], 'style': 'italic'}},
+                            {'text': '.'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic character', (t) => {
+    const markdown = parseMarkdown('*\\**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': '*'}], 'style': 'italic'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic whitespace', (t) => {
+    const markdown = parseMarkdown('a * foo bar*');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'a * foo bar*'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic whitespace 2', (t) => {
+    const markdown = parseMarkdown('a *foo bar *');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'a *foo bar *'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic whitespace 3', (t) => {
+    const markdown = parseMarkdown('a *foo bar\n*');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'a *foo bar\n*'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic non-breaking space', (t) => {
+    const markdown = parseMarkdown(`foo *${String.fromCharCode(160)}a${String.fromCharCode(160)}*`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': `foo *${String.fromCharCode(160)}a${String.fromCharCode(160)}*`}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic', (t) => {
+    const markdown = parseMarkdown('_foo bar_');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'italic'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic multiline', (t) => {
+    const markdown = parseMarkdown('_text\ntext_');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'spans': [{'text': 'text\ntext'}], 'style': 'italic'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic escape start', (t) => {
+    const markdown = parseMarkdown('\\_foo bar_');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '\\'},
+                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'italic'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic escape end', (t) => {
+    const markdown = parseMarkdown('_foo bar\\_');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '_foo bar_'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic mismatched', (t) => {
+    const markdown = parseMarkdown('_foo*');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '_foo*'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic internal', (t) => {
+    const markdown = parseMarkdown('foo_bar_baz');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'foo_bar_baz'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic internal start', (t) => {
+    const markdown = parseMarkdown('_foo_bar');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': '_foo_bar'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic internal end', (t) => {
+    const markdown = parseMarkdown('foo_bar_');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'fo'},
+                            {'text': 'o_bar_'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic sentence end', (t) => {
+    const markdown = parseMarkdown('_bar_.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': 'bar'}], 'style': 'italic'}},
+                            {'text': '.'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic character', (t) => {
+    const markdown = parseMarkdown('_\\__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': '_'}], 'style': 'italic'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, uderscore italic whitespace', (t) => {
+    const markdown = parseMarkdown('a _ foo bar_');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'a _ foo bar_'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, uderscore italic whitespace 2', (t) => {
+    const markdown = parseMarkdown('a _foo bar _');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'a _foo bar _'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, uderscore italic whitespace 3', (t) => {
+    const markdown = parseMarkdown('a _foo bar\n_');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'a _foo bar\n_'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore italic non-breaking space', (t) => {
+    const markdown = parseMarkdown(`foo _${String.fromCharCode(160)}a${String.fromCharCode(160)}_`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': `foo _${String.fromCharCode(160)}a${String.fromCharCode(160)}_`}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold', (t) => {
+    const markdown = parseMarkdown('**foo bar**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'bold'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, bold multiline', (t) => {
     const markdown = parseMarkdown('**text\ntext**');
     validateMarkdownModel(markdown);
@@ -1506,6 +2027,571 @@ test('parseMarkdown, bold multiline', (t) => {
 });
 
 
+test('parseMarkdown, bold escape start', (t) => {
+    const markdown = parseMarkdown('\\**foo bar**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '*'},
+                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'italic'}},
+                        {'text': '*'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold escape start 2', (t) => {
+    const markdown = parseMarkdown('\\***foo bar**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '*'},
+                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'bold'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold escape end', (t) => {
+    const markdown = parseMarkdown('**foo bar\\**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'spans': [{'text': '*foo bar*'}], 'style': 'italic'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold mismatched', (t) => {
+    const markdown = parseMarkdown('**foo bar__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '**foo bar__'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold internal', (t) => {
+    const markdown = parseMarkdown('foo**bar**baz');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'foo'},
+                            {'style': {'spans': [{'text': 'bar'}], 'style': 'bold'}},
+                            {'text': 'baz'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold internal start', (t) => {
+    const markdown = parseMarkdown('**foo**bar');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': 'foo'}], 'style': 'bold'}},
+                            {'text': 'bar'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold internal end', (t) => {
+    const markdown = parseMarkdown('foo**bar**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'foo'},
+                            {'style': {'spans': [{'text': 'bar'}], 'style': 'bold'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold sentence end', (t) => {
+    const markdown = parseMarkdown('**bar**.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': 'bar'}], 'style': 'bold'}},
+                            {'text': '.'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold character', (t) => {
+    const markdown = parseMarkdown('**\\***');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': '*'}], 'style': 'bold'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold nested', (t) => {
+    const markdown = parseMarkdown('****foo****');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {
+                                'spans': [
+                                    {'style': {'spans': [{'text': 'foo'}], 'style': 'bold'}}
+                                ],
+                                'style': 'bold'
+                            }}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold whitespace', (t) => {
+    const markdown = parseMarkdown('** foo bar**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': '** foo bar**'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold whitespace 2', (t) => {
+    const markdown = parseMarkdown('**foo bar **');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': '*foo bar *'}], 'style': 'italic'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold whitespace 3', (t) => {
+    const markdown = parseMarkdown('**foo bar\n**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': '*foo bar\n*'}], 'style': 'italic'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold', (t) => {
+    const markdown = parseMarkdown('__foo bar__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'bold'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold multiline', (t) => {
+    const markdown = parseMarkdown('__text\ntext__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'spans': [{'text': 'text\ntext'}], 'style': 'bold'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold escape start', (t) => {
+    const markdown = parseMarkdown('\\__foo bar__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '_'},
+                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'italic'}},
+                        {'text': '_'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold escape end', (t) => {
+    const markdown = parseMarkdown('__foo bar\\__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'spans': [{'text': '_foo bar_'}], 'style': 'italic'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold mismatched', (t) => {
+    const markdown = parseMarkdown('__foo bar**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '__foo bar**'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold internal', (t) => {
+    const markdown = parseMarkdown('foo__bar__baz');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'foo__bar__baz'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold internal start', (t) => {
+    const markdown = parseMarkdown('__foo__bar');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': '__foo__bar'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold internal end', (t) => {
+    const markdown = parseMarkdown('foo__bar__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': 'fo'},
+                            {'text': 'o__bar__'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold sentence end', (t) => {
+    const markdown = parseMarkdown('__bar__.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': 'bar'}], 'style': 'bold'}},
+                            {'text': '.'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold character', (t) => {
+    const markdown = parseMarkdown('__\\___');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': '_'}], 'style': 'bold'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold nested', (t) => {
+    const markdown = parseMarkdown('____foo____');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {
+                                'spans': [
+                                    {'style': {'spans': [{'text': 'foo'}], 'style': 'bold'}}
+                                ],
+                                'style': 'bold'
+                            }}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold whitespace', (t) => {
+    const markdown = parseMarkdown('__ foo bar__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'text': '__ foo bar__'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold whitespace 2', (t) => {
+    const markdown = parseMarkdown('__foo bar __');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': '_foo bar _'}], 'style': 'italic'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold whitespace 3', (t) => {
+    const markdown = parseMarkdown('__foo bar\n__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': '_foo bar\n_'}], 'style': 'italic'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold-italic', (t) => {
+    const markdown = parseMarkdown('***foo***');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [
+                    {'style': {
+                        'spans': [
+                            {'style': {'spans': [{'text': 'foo'}], 'style': 'italic'}}
+                        ],
+                        'style': 'bold'
+                    }}
+                ]}}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, bold-italic multiline', (t) => {
     const markdown = parseMarkdown('***text\ntext***');
     validateMarkdownModel(markdown);
@@ -1515,9 +2601,153 @@ test('parseMarkdown, bold-italic multiline', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'style': {'spans': [{'style': {'spans': [{'text': 'text\ntext'}], 'style': 'italic'}}], 'style': 'bold'}}
+                        {'style': {
+                            'spans': [
+                                {'style': {'spans': [{'text': 'text\ntext'}], 'style': 'italic'}}
+                            ],
+                            'style': 'bold'
+                        }}
                     ]
                 }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold-italic', (t) => {
+    const markdown = parseMarkdown('___foo___');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [
+                    {'style': {
+                        'spans': [
+                            {'style': {'spans': [{'text': 'foo'}], 'style': 'italic'}}
+                        ],
+                        'style': 'bold'
+                    }}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold-italic multiline', (t) => {
+    const markdown = parseMarkdown('___text\ntext___');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {
+                            'spans': [
+                                {'style': {'spans': [{'text': 'text\ntext'}], 'style': 'italic'}}
+                            ],
+                            'style': 'bold'
+                        }}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold in italic', (t) => {
+    const markdown = parseMarkdown('***strong** in emph*');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': '*strong'}], 'style': 'bold'}},
+                            {'text': ' in emph*'}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, bold in italic 2', (t) => {
+    const markdown = parseMarkdown('*in emph **strong***');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {'spans': [{'text': 'in emph *'}], 'style': 'italic'}},
+                            {'text': 'strong'},
+                            {'style': {'spans': [{'text': '*'}], 'style': 'italic'}}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic in bold', (t) => {
+    const markdown = parseMarkdown('***emph* in strong**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {
+                                'spans': [
+                                    {'style': {'spans': [{'text': 'emph'}], 'style': 'italic'}},
+                                    {'text': ' in strong'}
+                                ],
+                                'style': 'bold'
+                            }}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, italic in bold 2', (t) => {
+    const markdown = parseMarkdown('**in strong *emph***');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'paragraph': {
+                        'spans': [
+                            {'style': {
+                                'spans': [
+                                    {'text': 'in strong '},
+                                    {'style': {'spans': [{'text': 'emph'}], 'style': 'italic'}}
+                                ],
+                                'style': 'bold'
+                            }}
+                        ]
+                    }
+                }
             ]
         }
     );
