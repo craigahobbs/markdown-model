@@ -388,9 +388,12 @@ const rSpans = new RegExp(
         '(?&lt;linkImg>\\[!\\[)(?&lt;linkImgText>[\\s\\S]*?)\\]\\((?&lt;linkImgHrefImg>[\\s\\S]*?)\\)\\]\\((?&lt;linkImgHref>[^\\s]+?)\\)|' +
         '(?&lt;link>!?\\[)(?&lt;linkText>[\\s\\S]*?)\\]\\((?&lt;linkHref>[^\\s]+?)(?:\\s*"(?&lt;linkTitle>[\\s\\S]*?)"\\s*)?\\)|' +
         '(?&lt;linkAlt>&lt;)(?&lt;linkAltHref>[[a-z]+:[^\\s]*?)>|' +
-        '(?&lt;boldItalic>\\*{3})(?!\\s)(?&lt;boldItalicText>[\\s\\S]*?[^\\s]\\**)\\*{3}|' +
-        '(?&lt;bold>\\*{2})(?!\\s)(?&lt;boldText>[\\s\\S]*?[^\\s]\\**)\\*{2}|' +
-        '(?&lt;italic>\\*)(?!\\s)(?&lt;italicText>[\\s\\S]*?[^\\s]\\**)\\*|' +
+        '(?&lt;boldPre>\\\\\\*)?(?&lt;bold>\\*{2})(?!\\**\\s)(?&lt;boldText>(?:\\\\\\*|(?!\\\\\\*)[\\s\\S])*?(?:\\\\\\*|[^\\\\\\s])\\**)\\*{2}|' +
+        // eslint-disable-next-line max-len
+        '(?&lt;bolduPre>\\\\_|[A-Za-z0-9])?(?&lt;boldu>_{2})(?!_*\\s)(?&lt;bolduText>(?:\\\\_|(?!\\\\_)[\\s\\S])*?(?:\\\\_|[^\\\\\\s])_*)_{2}(?!_*[A-Za-z0-9])|' +
+        '(?&lt;italicPre>\\\\\\*)?(?&lt;italic>\\*)(?!\\**\\s)(?&lt;italicText>(?:\\\\\\*|(?!\\\\\\*)[\\s\\S])*?(?:\\\\\\*|[^\\\\\\s]))\\*|' +
+        // eslint-disable-next-line max-len
+        '(?&lt;italicuPre>\\\\_|[A-Za-z0-9])?(?&lt;italicu>_)(?!_*\\s)(?&lt;italicuText>(?:\\\\_|(?!\\\\_)[\\s\\S])*?(?:\\\\_|[^\\\\\\s]))_(?!_*[A-Za-z0-9])|' +
         '(?&lt;code>`+)(?!`)(?&lt;codeSp> )?(?&lt;codeText>(?:\\k&lt;code>`+|(?!\\k&lt;codeSp>\\k&lt;code>(?!`))[\\s\\S])*)\\k&lt;codeSp>\\k&lt;code>(?!`)',
     'mg'
 );
@@ -429,7 +432,7 @@ function paragraphSpans(text) {
             spans.push(span);
 
         // Link span (alternate syntax)?
-        } else if (match.groups.linkAlt === '&lt;') {
+        } else if (typeof match.groups.linkAlt !== 'undefined') {
             spans.push({'link': {'href': removeEscapes(match.groups.linkAltHref), 'spans': paragraphSpans(match.groups.linkAltHref)}});
 
         // Image span?
@@ -440,19 +443,33 @@ function paragraphSpans(text) {
             }
             spans.push(span);
 
-        // Bold-italic style-span
-        } else if (match.groups.boldItalic === '***') {
-            spans.push({'style': {'style': 'bold', 'spans': [
-                {'style': {'style': 'italic', 'spans': paragraphSpans(match.groups.boldItalicText)}}
-            ]}});
-
         // Bold style-span
-        } else if (match.groups.bold === '**') {
-            spans.push({'style': {'style': 'bold', 'spans': paragraphSpans(match.groups.boldText)}});
+        } else if (typeof match.groups.bold !== 'undefined' || typeof match.groups.boldu !== 'undefined') {
+            const boldPre = match.groups.boldPre ?? match.groups.bolduPre ?? null;
+            const bold = match.groups.bold ?? match.groups.boldu;
+            const boldText = match.groups.boldText ?? match.groups.bolduText;
+            if (bold === '__' &amp;&amp; boldPre !== null &amp;&amp; boldPre !== '\\_') {
+                spans.push({'text': `${boldPre}${bold}${boldText}${bold}`});
+            } else {
+                if (boldPre !== null) {
+                    spans.push({'text': removeEscapes(boldPre)});
+                }
+                spans.push({'style': {'style': 'bold', 'spans': paragraphSpans(boldText)}});
+            }
 
         // Italic style-span
-        } else if (match.groups.italic === '*') {
-            spans.push({'style': {'style': 'italic', 'spans': paragraphSpans(match.groups.italicText)}});
+        } else if (typeof match.groups.italic !== 'undefined' || typeof match.groups.italicu !== 'undefined') {
+            const italicPre = match.groups.italicPre ?? match.groups.italicuPre ?? null;
+            const italic = match.groups.italic ?? match.groups.italicu;
+            const italicText = match.groups.italicText ?? match.groups.italicuText;
+            if (italic === '_' &amp;&amp; italicPre !== null &amp;&amp; italicPre !== '\\_') {
+                spans.push({'text': `${italicPre}${italic}${italicText}${italic}`});
+            } else {
+                if (italicPre !== null) {
+                    spans.push({'text': removeEscapes(italicPre)});
+                }
+                spans.push({'style': {'style': 'italic', 'spans': paragraphSpans(italicText)}});
+            }
 
         // Code span
         } else if (typeof match.groups.code !== 'undefined') {
