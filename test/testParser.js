@@ -122,33 +122,19 @@ This is a tab "\t".
         {
             'parts': [
                 {'paragraph': {'spans': [{'text': 'This is a tab "    ".'}]}},
-                {
-                    'list': {
-                        'items': [
-                            {
-                                'parts': [
-                                    {'paragraph': {'spans': [{'text': 'List 1 - 1'}]}},
-                                    {
-                                        'list': {
-                                            'items': [
-                                                {
-                                                    'parts': [
-                                                        {'paragraph': {'spans': [{'text': 'List 2 - 1'}]}}
-                                                    ]
-                                                },
-                                                {
-                                                    'parts': [
-                                                        {'paragraph': {'spans': [{'text': 'List 2 - 2'}]}}
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                }
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'List 1 - 1'}]}},
+                        {'list': {'items': [
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'List 2 - 1'}]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'List 2 - 2'}]}}
+                            ]}
+                        ]}}
+                    ]}
+                ]}}
             ]
         }
     );
@@ -314,7 +300,7 @@ Some words.
 });
 
 
-test('parseMarkdown, heading alternate syntax multi-line', (t) => {
+test('parseMarkdown, heading alternate syntax multiline', (t) => {
     const markdown = parseMarkdown(`\
 Title
 and More
@@ -3046,6 +3032,157 @@ test('parseMarkdown, code span mismatched 2', (t) => {
                 {'paragraph': {
                     'spans': [
                         {'code': 'foo``bar`'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough', (t) => {
+    const markdown = parseMarkdown('~~Hi~~ Hello, ~there~ world!');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'Hi'}]}},
+                        {'text': ' Hello, '},
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'there'}]}},
+                        {'text': ' world!'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough multiline', (t) => {
+    const markdown = parseMarkdown('~~foo\nbar~~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo\nbar'}]}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough escape start', (t) => {
+    const markdown = parseMarkdown('\\~foo bar~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '\\'},
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo bar'}]}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough escape start 2', (t) => {
+    const markdown = parseMarkdown('\\~~foo bar~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~'},
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo bar'}]}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough escape end', (t) => {
+    const markdown = parseMarkdown('~foo bar\\~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~foo bar~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough not', (t) => {
+    const markdown = parseMarkdown('This will ~~~not~~~ strike.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This will ~~~not~~~ strike.'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough not 2', (t) => {
+    const markdown = parseMarkdown('This will ~~~not~~ strike.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This will ~'},
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'not'}]}},
+                        {'text': ' strike.'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough not 3', (t) => {
+    const markdown = parseMarkdown('This will ~~not~~~ strike.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This will ~~not~~~ strike.'}
                     ]
                 }}
             ]

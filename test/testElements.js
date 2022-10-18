@@ -28,7 +28,12 @@ test('markdownElements', (t) => {
                                     {'text': '.'}
                                 ]
                             }
-                        }
+                        },
+                        {'text': 'This is '},
+                        {
+                            'style': {'style': 'strikethrough', 'spans': [{'text': 'strikethrough'}]}
+                        },
+                        {'text': '.'}
                     ]
                 }
             },
@@ -118,7 +123,10 @@ test('markdownElements', (t) => {
                         {'text': 'bold and '},
                         {'html': 'em', 'elem': [{'text': 'bold-italic'}]},
                         {'text': '.'}
-                    ]}
+                    ]},
+                    {'text': 'This is '},
+                    {'html': 'del', 'elem': [{'text': 'strikethrough'}]},
+                    {'text': '.'}
                 ]
             },
             {
