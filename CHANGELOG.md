@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.6 (2022-10-18)
+
+- [96b5765](https://github.com/craigahobbs/markdown-model/commit/96b5765) - strikethrough spans
+
 ## 1.6.5 (2022-10-18)
 
 - [add5f9d](https://github.com/craigahobbs/markdown-model/commit/add5f9d) - underscore bold/italic
