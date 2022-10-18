@@ -382,7 +382,7 @@ function parseTableCells(line) {
 
 
 // Markdown span regex
-const rEscape = /\\(\\|\*|_|\{|\}|\[|\]|\(|\)|#|\+|-|\.|!)/g;
+const rEscape = /\\(\\|\*|_|\{|\}|\[|\]|\(|\)|#|\+|-|\.|!|~)/g;
 const rSpans = new RegExp(
     '(?&lt;br>\\s{2}$)|' +
         '(?&lt;linkImg>\\[!\\[)(?&lt;linkImgText>[\\s\\S]*?)\\]\\((?&lt;linkImgHrefImg>[\\s\\S]*?)\\)\\]\\((?&lt;linkImgHref>[^\\s]+?)\\)|' +
@@ -394,6 +394,7 @@ const rSpans = new RegExp(
         '(?&lt;italicPre>\\\\\\*)?(?&lt;italic>\\*)(?!\\**\\s)(?&lt;italicText>(?:\\\\\\*|(?!\\\\\\*)[\\s\\S])*?(?:\\\\\\*|[^\\\\\\s]))\\*|' +
         // eslint-disable-next-line max-len
         '(?&lt;italicuPre>\\\\_|[A-Za-z0-9])?(?&lt;italicu>_)(?!_*\\s)(?&lt;italicuText>(?:\\\\_|(?!\\\\_)[\\s\\S])*?(?:\\\\_|[^\\\\\\s]))_(?!_*[A-Za-z0-9])|' +
+        '(?&lt;strike>~{1,2})(?!~)(?&lt;strikeText>(?:\\\\~|(?!\\\\~)[\\s\\S])*?(?:\\\\~|[^\\\\~]))\\k&lt;strike>(?!~)|' +
         '(?&lt;code>`+)(?!`)(?&lt;codeSp> )?(?&lt;codeText>(?:\\k&lt;code>`+|(?!\\k&lt;codeSp>\\k&lt;code>(?!`))[\\s\\S])*)\\k&lt;codeSp>\\k&lt;code>(?!`)',
     'mg'
 );
@@ -470,6 +471,10 @@ function paragraphSpans(text) {
                 }
                 spans.push({'style': {'style': 'italic', 'spans': paragraphSpans(italicText)}});
             }
+
+        // Strikethrough style-span
+        } else if (typeof match.groups.strike !== 'undefined') {
+            spans.push({'style': {'style': 'strikethrough', 'spans': paragraphSpans(match.groups.strikeText)}});
 
         // Code span
         } else if (typeof match.groups.code !== 'undefined') {
