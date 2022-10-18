@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.5 (2022-10-18)
+
+- [add5f9d](https://github.com/craigahobbs/markdown-model/commit/add5f9d) - underscore bold/italic
+
 ## 1.6.4 (2022-10-14)
 
 - [a9dd31d](https://github.com/craigahobbs/markdown-model/commit/a9dd31d) - fix pre element styling in markdown-model.css
