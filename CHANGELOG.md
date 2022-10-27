@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.6.8 (2022-10-27)
+
+- [835b74b](https://github.com/craigahobbs/markdown-model/commit/835b74b) - add dark mode styles
+
 ## 1.6.7 (2022-10-19)
 
-- [d840ce6](https://github.com/craigahobbs/markdown-model/commit/d840ce6) - fix code block styling
+- [1b5f1be](https://github.com/craigahobbs/markdown-model/commit/1b5f1be) - fix code block styling
 
 ## 1.6.6 (2022-10-18)
 
