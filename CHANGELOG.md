@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.9 (2022-10-31)
+
+- [eaa971a](https://github.com/craigahobbs/markdown-model/commit/eaa971a) - markdown-model.css - print using light mode colors
+
 ## 1.6.8 (2022-10-27)
 
 - [835b74b](https://github.com/craigahobbs/markdown-model/commit/835b74b) - add dark mode styles
