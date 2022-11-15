@@ -332,7 +332,8 @@ and more
                 'items': [
                     {'parts': [
                         {'paragraph': {
-                            'spans': [{'text': 'Title\nand more\n====='}]
+                            'spans': [{'text': 'Title\nand more'}],
+                            'style': 'h1'
                         }}
                     ]}
                 ]
@@ -376,22 +377,16 @@ another
                 {
                     'list': {
                         'items': [
-                            {
-                                'parts': [
-                                    {'paragraph': {'spans': [{'text': 'item 1'}]}},
-                                    {'paragraph': {'spans': [{'text': 'item 1.2'}]}}
-                                ]
-                            },
-                            {
-                                'parts': [
-                                    {'paragraph': {'spans': [{'text': 'item 2\nanother'}]}}
-                                ]
-                            },
-                            {
-                                'parts': [
-                                    {'paragraph': {'spans': [{'text': 'item 3'}]}}
-                                ]
-                            }
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'item 1'}]}},
+                                {'paragraph': {'spans': [{'text': 'item 1.2'}]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'item 2\nanother'}]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'item 3'}]}}
+                            ]}
                         ]
                     }
                 }
@@ -401,7 +396,40 @@ another
 });
 
 
-test('parseMarkdown, ordered list', (t) => {
+test('parseMarkdown, list numbered', (t) => {
+    const markdown = parseMarkdown(`\
+1. foo
+2. bar
+3) baz
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {
+                    'list': {
+                        'items': [
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'foo'}]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'bar'}]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'baz'}]}}
+                            ]}
+                        ],
+                        'start': 1
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list mixed', (t) => {
     const markdown = parseMarkdown(`\
 1. item 1
 
@@ -419,22 +447,83 @@ another
                     'list': {
                         'start': 1,
                         'items': [
-                            {
-                                'parts': [
-                                    {'paragraph': {'spans': [{'text': 'item 1'}]}},
-                                    {'paragraph': {'spans': [{'text': 'item 1.2'}]}}
-                                ]
-                            },
-                            {
-                                'parts': [
-                                    {'paragraph': {'spans': [{'text': 'item 2\nanother'}]}}
-                                ]
-                            },
-                            {
-                                'parts': [
-                                    {'paragraph': {'spans': [{'text': 'item 3'}]}}
-                                ]
-                            }
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'item 1'}]}},
+                                {'paragraph': {'spans': [{'text': 'item 1.2'}]}}
+                            ]}
+                        ]
+                    }
+                },
+                {
+                    'list': {
+                        'items': [
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'item 2\nanother'}]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'item 3'}]}}
+                            ]}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list paragraph-adjascent', (t) => {
+    const markdown = parseMarkdown(`\
+Foo
+- bar
+- baz
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [{'text': 'Foo'}]}},
+                {
+                    'list': {
+                        'items': [
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'bar'}]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'baz'}]}}
+                            ]}
+                        ]
+                    }
+                }
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list numbered paragraph-adjascent', (t) => {
+    const markdown = parseMarkdown(`\
+Foo
+1. bar
+2. baz
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [{'text': 'Foo'}]}},
+                {
+                    'list': {
+                        'start': 1,
+                        'items': [
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'bar'}]}}
+                            ]},
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'baz'}]}}
+                            ]}
                         ]
                     }
                 }
@@ -469,42 +558,383 @@ asdf
                         {'paragraph': {'spans': [{'text': '1'}]}}
                     ]},
                     {'parts': [
-                        {'paragraph': {'spans': [{'text': '2'}]}},
+                        {'paragraph': {'spans': [{'text': '2'}]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': '3'}]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': '4\n    - 5'}]}},
                         {'list': {'items': [
                             {'parts': [
-                                {'paragraph': {'spans': [{'text': '3'}]}}
-                            ]},
-                            {'parts': [
-                                {'paragraph': {'spans': [{'text': '4'}]}},
-                                {'list': {'items': [
-                                    {'parts': [
-                                        {'paragraph': {'spans': [{'text': '5'}]}}
-                                    ]},
-                                    {'parts': [
-                                        {'paragraph': {'spans': [{'text': '6'}]}}
-                                    ]}
-                                ]}}
-                            ]},
-                            {'parts': [
-                                {'paragraph': {'spans': [{'text': '7'}]}},
-                                {'list': {'items': [
-                                    {'parts': [
-                                        {'paragraph': {'spans': [{'text': '8'}]}},
-                                        {'list': {'items': [
-                                            {'parts': [
-                                                {'paragraph': {'spans': [{'text': '9'}]}}
-                                            ]}
-                                        ]}}
-                                    ]}
-                                ]}}
-                            ]},
-                            {'parts': [
-                                {'paragraph': {'spans': [{'text': '10'}]}}
+                                {'paragraph': {'spans': [{'text': '6'}]}}
                             ]}
                         ]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': '7'}]}},
+                        {'list': {'items': [
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': '8'}]}},
+                                {'list': {'items': [
+                                    {'parts': [
+                                        {'paragraph': {'spans': [{'text': '9'}]}}
+                                    ]}
+                                ]}}
+                            ]}
+                        ]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': '10'}]}}
                     ]}
                 ]}},
                 {'paragraph': {'spans': [{'text': 'asdf'}]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list item paragraph', (t) => {
+    const markdown = parseMarkdown(`\
+- foo
+  - bar
+    - baz
+
+
+      bim
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {
+                    'items': [
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'foo'}]}},
+                            {'list': {
+                                'items': [
+                                    {'parts': [
+                                        {'paragraph': {'spans': [{'text': 'bar'}]}},
+                                        {'list': {
+                                            'items': [
+                                                {'parts': [
+                                                    {'paragraph': {'spans': [{'text': 'baz'}]}},
+                                                    {'paragraph': {'spans': [{'text': 'bim'}]}}
+                                                ]}
+                                            ]
+                                        }}
+                                    ]}
+                                ]
+                            }}
+                        ]}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list nudge', (t) => {
+    const markdown = parseMarkdown(`\
+- a
+ - b
+  - c
+   - d
+  - e
+ - f
+- g
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {
+                    'items': [
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'a'}]}}
+                        ]},
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'b'}]}}
+                        ]},
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'c'}]}}
+                        ]},
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'd'}]}}
+                        ]},
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'e'}]}}
+                        ]},
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'f'}]}}
+                        ]},
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'g'}]}}
+                        ]}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list numbered nudge', (t) => {
+    const markdown = parseMarkdown(`\
+1. a
+
+  2. b
+
+   3. c
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {
+                    'start': 1,
+                    'items': [
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'a'}]}}
+                        ]},
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'b'}]}}
+                        ]},
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'c'}]}}
+                        ]}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list nudge max indent', (t) => {
+    const markdown = parseMarkdown(`\
+- a
+ - b
+  - c
+   - d
+    - e
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'a'}]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'b'}]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'c'}]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'd\n    - e'}]}}
+                    ]}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list numbered nudge max indent', (t) => {
+    const markdown = parseMarkdown(`\
+1. a
+
+  2. b
+
+    3. c
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {
+                    'start': 1,
+                    'items': [
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'a'}]}}
+                        ]},
+                        {'parts': [
+                            {'paragraph': {'spans': [{'text': 'b'}]}}
+                        ]}
+                    ]
+                }},
+                {'codeBlock': {
+                    'lines': ['3. c'],
+                    'startLineNumber': 5
+                }}
+            ]
+        }
+    );
+});
+
+
+// Spec Issue: https://github.github.com/gfm/#example-295
+// Workaround: Add a single trailing space to the empty list item line
+test('parseMarkdown, list empty item', (t) => {
+    const markdown = parseMarkdown(`\
+* a
+*
+
+* c
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'a\n*'}]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'c'}]}}
+                    ]}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list empty item 2', (t) => {
+    const markdown = parseMarkdown(`\
+* a
+* 
+
+* c
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'a'}]}}
+                    ]},
+                    {'parts': []},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'c'}]}}
+                    ]}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list item code block', (t) => {
+    const markdown = parseMarkdown(`\
+- a
+- ~~~
+  b
+
+
+  ~~~
+- c
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'a'}]}}
+                    ]},
+                    {'parts': [
+                        {'codeBlock': {
+                            'startLineNumber': 2,
+                            'lines': ['b', '', '']
+                        }}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'c'}]}}
+                    ]}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list item lines', (t) => {
+    const markdown = parseMarkdown(`\
+- a
+  - b
+
+    c
+- d
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'a'}]}},
+                        {'list': {'items': [
+                            {'parts': [
+                                {'paragraph': {'spans': [{'text': 'b'}]}},
+                                {'paragraph': {'spans': [{'text': 'c'}]}}
+                            ]}
+                        ]}}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'd'}]}}
+                    ]}
+                ]}}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, list item block quote', (t) => {
+    const markdown = parseMarkdown(`\
+- a
+- > abc
+  >
+  > def
+- c
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'list': {'items': [
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'a'}]}}
+                    ]},
+                    {'parts': [
+                        {'quote': {
+                            'parts': [
+                                {'paragraph': {'spans': [{'text': 'abc'}]}},
+                                {'paragraph': {'spans': [{'text': 'def'}]}}
+                            ]
+                        }}
+                    ]},
+                    {'parts': [
+                        {'paragraph': {'spans': [{'text': 'c'}]}}
+                    ]}
+                ]}}
             ]
         }
     );
@@ -638,7 +1068,7 @@ test('parseMarkdown, block quote nested list', (t) => {
                     {'quote': {'parts': [
                         {'paragraph': {'spans': [{'text': 'A sub-quote'}]}}
                     ]}},
-                    {'paragraph': {'spans': [{'text': '  and more'}]}}
+                    {'paragraph': {'spans': [{'text': 'and more'}]}}
                 ]}}
             ]
         }
@@ -1270,6 +1700,33 @@ test('parseMarkdown, table empty', (t) => {
                 {'table': {
                     'headers': [[{'text': 'abc'}], [{'text': 'def'}]],
                     'aligns': ['left', 'left']
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, table list actually', (t) => {
+    const markdown = parseMarkdown(`\
+A | B
+- | -
+0 | 1
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {'spans': [{'text': 'A | B'}]}},
+                {'list': {
+                    'items': [
+                        {
+                            'parts': [
+                                {'paragraph': {'spans': [{'text': '| -\n0 | 1'}]}}
+                            ]
+                        }
+                    ]
                 }}
             ]
         }
@@ -2740,6 +3197,157 @@ test('parseMarkdown, italic in bold 2', (t) => {
 });
 
 
+test('parseMarkdown, strikethrough', (t) => {
+    const markdown = parseMarkdown('~~Hi~~ Hello, ~there~ world!');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'Hi'}]}},
+                        {'text': ' Hello, '},
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'there'}]}},
+                        {'text': ' world!'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough multiline', (t) => {
+    const markdown = parseMarkdown('~~foo\nbar~~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo\nbar'}]}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough escape start', (t) => {
+    const markdown = parseMarkdown('\\~foo bar~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '\\'},
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo bar'}]}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough escape start 2', (t) => {
+    const markdown = parseMarkdown('\\~~foo bar~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~'},
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo bar'}]}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough escape end', (t) => {
+    const markdown = parseMarkdown('~foo bar\\~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~foo bar~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough not', (t) => {
+    const markdown = parseMarkdown('This will ~~~not~~~ strike.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This will ~~~not~~~ strike.'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough not 2', (t) => {
+    const markdown = parseMarkdown('This will ~~~not~~ strike.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This will ~'},
+                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'not'}]}},
+                        {'text': ' strike.'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough not 3', (t) => {
+    const markdown = parseMarkdown('This will ~~not~~~ strike.');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This will ~~not~~~ strike.'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, code span', (t) => {
     const markdown = parseMarkdown('This is code: `foo`');
     validateMarkdownModel(markdown);
@@ -3032,157 +3640,6 @@ test('parseMarkdown, code span mismatched 2', (t) => {
                 {'paragraph': {
                     'spans': [
                         {'code': 'foo``bar`'}
-                    ]
-                }}
-            ]
-        }
-    );
-});
-
-
-test('parseMarkdown, strikethrough', (t) => {
-    const markdown = parseMarkdown('~~Hi~~ Hello, ~there~ world!');
-    validateMarkdownModel(markdown);
-    t.deepEqual(
-        markdown,
-        {
-            'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'Hi'}]}},
-                        {'text': ' Hello, '},
-                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'there'}]}},
-                        {'text': ' world!'}
-                    ]
-                }}
-            ]
-        }
-    );
-});
-
-
-test('parseMarkdown, strikethrough multiline', (t) => {
-    const markdown = parseMarkdown('~~foo\nbar~~');
-    validateMarkdownModel(markdown);
-    t.deepEqual(
-        markdown,
-        {
-            'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo\nbar'}]}}
-                    ]
-                }}
-            ]
-        }
-    );
-});
-
-
-test('parseMarkdown, strikethrough escape start', (t) => {
-    const markdown = parseMarkdown('\\~foo bar~');
-    validateMarkdownModel(markdown);
-    t.deepEqual(
-        markdown,
-        {
-            'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {'text': '\\'},
-                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo bar'}]}}
-                    ]
-                }}
-            ]
-        }
-    );
-});
-
-
-test('parseMarkdown, strikethrough escape start 2', (t) => {
-    const markdown = parseMarkdown('\\~~foo bar~');
-    validateMarkdownModel(markdown);
-    t.deepEqual(
-        markdown,
-        {
-            'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {'text': '~'},
-                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo bar'}]}}
-                    ]
-                }}
-            ]
-        }
-    );
-});
-
-
-test('parseMarkdown, strikethrough escape end', (t) => {
-    const markdown = parseMarkdown('~foo bar\\~');
-    validateMarkdownModel(markdown);
-    t.deepEqual(
-        markdown,
-        {
-            'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {'text': '~foo bar~'}
-                    ]
-                }}
-            ]
-        }
-    );
-});
-
-
-test('parseMarkdown, strikethrough not', (t) => {
-    const markdown = parseMarkdown('This will ~~~not~~~ strike.');
-    validateMarkdownModel(markdown);
-    t.deepEqual(
-        markdown,
-        {
-            'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {'text': 'This will ~~~not~~~ strike.'}
-                    ]
-                }}
-            ]
-        }
-    );
-});
-
-
-test('parseMarkdown, strikethrough not 2', (t) => {
-    const markdown = parseMarkdown('This will ~~~not~~ strike.');
-    validateMarkdownModel(markdown);
-    t.deepEqual(
-        markdown,
-        {
-            'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {'text': 'This will ~'},
-                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'not'}]}},
-                        {'text': ' strike.'}
-                    ]
-                }}
-            ]
-        }
-    );
-});
-
-
-test('parseMarkdown, strikethrough not 3', (t) => {
-    const markdown = parseMarkdown('This will ~~not~~~ strike.');
-    validateMarkdownModel(markdown);
-    t.deepEqual(
-        markdown,
-        {
-            'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {'text': 'This will ~~not~~~ strike.'}
                     ]
                 }}
             ]
