@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.10 (2022-11-14)
+
+- [3a09ea8](https://github.com/craigahobbs/markdown-model/commit/3a09ea8) - improve list parsing
+
 ## 1.6.9 (2022-10-31)
 
 - [eaa971a](https://github.com/craigahobbs/markdown-model/commit/eaa971a) - markdown-model.css - print using light mode colors
