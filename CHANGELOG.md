@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0 (2022-11-23)
+
+- [d8be6f9](https://github.com/craigahobbs/markdown-model/commit/d8be6f9) - implement entity and character references, GFM parity, improve hr styling
+
 ## 1.6.10 (2022-11-14)
 
 - [3a09ea8](https://github.com/craigahobbs/markdown-model/commit/3a09ea8) - improve list parsing
