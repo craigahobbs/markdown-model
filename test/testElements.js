@@ -3,9 +3,7 @@
 
 /* eslint-disable id-length */
 
-import {
-    escapeMarkdownText, escapeMarkdownURL, escapeMarkdownURLComponent, getBaseURL, isRelativeURL, markdownElements, markdownElementsAsync
-} from '../lib/elements.js';
+import {markdownElements, markdownElementsAsync} from '../lib/elements.js';
 import test from 'ava';
 import {validateElements} from 'element-model/lib/elementModel.js';
 import {validateMarkdownModel} from '../lib/model.js';
@@ -1031,8 +1029,10 @@ test('markdownElements, relative and absolute URLs', (t) => {
     t.deepEqual(elements, defaultElements);
 
     // Test with urlFn option - relative file fixup
+    const rNotRelativeURL = /^(?:[a-z]+:|\/|\?|#)/;
+    const isRelativeURL = (url) => !rNotRelativeURL.test(url);
     const elementsURL = markdownElements(markdown, {
-        'urlFn': (url) => (isRelativeURL(url) ? getBaseURL('https://foo.com/index.md') + url : url)
+        'urlFn': (url) => (isRelativeURL(url) ? `https://foo.com/${url}` : url)
     });
     validateElements(elementsURL);
     t.deepEqual(
@@ -1104,21 +1104,4 @@ test('markdownElements, relative and absolute URLs', (t) => {
             }
         ]
     );
-});
-
-
-test('escapeMarkdownText', (t) => {
-    t.is(escapeMarkdownText('Escape me: \\ [ ] ( ) *'), 'Escape me: \\\\ \\[ \\] \\( \\) \\*');
-});
-
-
-test('escapeMarkdownURL', (t) => {
-    t.is(escapeMarkdownURL('https://foo.com/a & b.html'), 'https://foo.com/a%20&%20b.html');
-    t.is(escapeMarkdownURL('https://foo.com/a (& b).html'), 'https://foo.com/a%20(&%20b%29.html');
-});
-
-
-test('escapeMarkdownURLComponent', (t) => {
-    t.is(escapeMarkdownURLComponent('https://foo.com/a & b.html'), 'https%3A%2F%2Ffoo.com%2Fa%20%26%20b.html');
-    t.is(escapeMarkdownURLComponent('https://foo.com/a (& b).html'), 'https%3A%2F%2Ffoo.com%2Fa%20(%26%20b%29.html');
 });
