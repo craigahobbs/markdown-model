@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.1 (2022-11-30)
+
+- [64386b0](https://github.com/craigahobbs/markdown-model/commit/64386b0) - implement link and image references
+
 ## 1.7.0 (2022-11-23)
 
 - [d8be6f9](https://github.com/craigahobbs/markdown-model/commit/d8be6f9) - implement entity and character references, GFM parity, improve hr styling
