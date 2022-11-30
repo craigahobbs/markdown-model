@@ -667,6 +667,37 @@ test('markdownElements, image span with no title', (t) => {
 });
 
 
+test('markdownElements, link reference', (t) => {
+    const elements = markdownElements(validateMarkdownModel({
+        'parts': [
+            {
+                'paragraph': {
+                    'spans': [
+                        {'linkRef': {
+                            'spans': [
+                                {'text': '[foo]'}
+                            ]
+                        }}
+                    ]
+                }
+            }
+        ]
+    }));
+    validateElements(elements);
+    t.deepEqual(
+        elements,
+        [
+            {
+                'html': 'p',
+                'elem': [
+                    {'text': '[foo]'}
+                ]
+            }
+        ]
+    );
+});
+
+
 test('markdownElements, code span', (t) => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [

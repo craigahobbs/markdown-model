@@ -2234,7 +2234,8 @@ test('parseMarkdown, link href space', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '[link](/my uri)'}
+                        {'linkRef': {'spans': [{'text': '[link]'}]}},
+                        {'text': '(/my uri)'}
                     ]
                 }}
             ]
@@ -2252,7 +2253,8 @@ test('parseMarkdown, link href no newlines', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '[link](foo\nbar)'}
+                        {'linkRef': {'spans': [{'text': '[link]'}]}},
+                        {'text': '(foo\nbar)'}
                     ]
                 }}
             ]
@@ -2415,7 +2417,8 @@ test('parseMarkdown, link angle href no newlines', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '[link](<foo\nbar>)'}
+                        {'linkRef': {'spans': [{'text': '[link]'}]}},
+                        {'text': '(<foo\nbar>)'}
                     ]
                 }}
             ]
@@ -2469,7 +2472,8 @@ test('parseMarkdown, link angle href escape', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '[link](<foo>)'}
+                        {'linkRef': {'spans': [{'text': '[link]'}]}},
+                        {'text': '(<foo>)'}
                     ]
                 }}
             ]
@@ -2491,7 +2495,12 @@ test('parseMarkdown, link angle href not matched', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '[a](<b)c\n[a](<b)c>\n[a](<b>c)'}
+                        {'linkRef': {'spans': [{'text': '[a]'}]}},
+                        {'text': '(<b)c\n'},
+                        {'linkRef': {'spans': [{'text': '[a]'}]}},
+                        {'text': '(<b)c>\n'},
+                        {'linkRef': {'spans': [{'text': '[a]'}]}},
+                        {'text': '(<b>c)'}
                     ]
                 }}
             ]
@@ -2593,10 +2602,12 @@ test('parseMarkdown, link title not escaped', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': `\
-[link](/url "title "and" title")
-[link](/url (title )and) title))
-[link](/url 'title 'and' title')`}
+                        {'linkRef': {'spans': [{'text': '[link]'}]}},
+                        {'text': '(/url "title "and" title")\n'},
+                        {'linkRef': {'spans': [{'text': '[link]'}]}},
+                        {'text': '(/url (title )and) title))\n'},
+                        {'linkRef': {'spans': [{'text': '[link]'}]}},
+                        {'text': "(/url 'title 'and' title')"}
                     ]
                 }}
             ]
@@ -2657,7 +2668,8 @@ test('parseMarkdown, link no text-href space', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '[link] (/uri)'}
+                        {'linkRef': {'spans': [{'text': '[link]'}]}},
+                        {'text': ' (/uri)'}
                     ]
                 }}
             ]
@@ -2680,7 +2692,10 @@ test('parseMarkdown, link text brackets', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '[link [foo [bar]]](/uri)\n[link] bar](/uri)\n'},
+                        {'linkRef': {'spans': [{'text': '[link [foo [bar]'}]}},
+                        {'text': ']](/uri)\n'},
+                        {'linkRef': {'spans': [{'text': '[link]'}]}},
+                        {'text': ' bar](/uri)\n'},
                         {'link': {'href': '/uri', 'spans': [{'text': 'link [bar'}]}},
                         {'text': '\n'},
                         {'link': {'href': '/uri', 'spans': [{'text': 'link [bar'}]}}
@@ -2831,7 +2846,7 @@ test('parseMarkdown, image alt empty', (t) => {
 
 
 test('parseMarkdown, image escapes', (t) => {
-    const markdown = parseMarkdown('![al\\]t](sr\\.c "titl\\.e")');
+    const markdown = parseMarkdown('![a\\l\\]t](s\\r\\.c "tit\\l\\.e")');
     validateMarkdownModel(markdown);
     t.deepEqual(
         markdown,
@@ -2839,7 +2854,7 @@ test('parseMarkdown, image escapes', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'image': {'alt': 'al]t', 'src': 'sr.c', 'title': 'titl.e'}}
+                        {'image': {'alt': 'a\\l]t', 'src': 's\\r.c', 'title': 'tit\\l.e'}}
                     ]
                 }}
             ]
@@ -3119,6 +3134,1394 @@ test('parseMarkdown, link alternate email no escapes', (t) => {
             {'paragraph': {
                 'spans': [
                     {'text': '<foo+@bar.example.com>'}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: /url "title"
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'foo'}], 'title': 'title'}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition multiline', (t) => {
+    const markdown = parseMarkdown(`\
+   [foo]:${' '}
+      /url${'  '}
+           'the title'${'  '}
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'foo'}], 'title': 'the title'}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition trailing non-space', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: /url "title" ok
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[foo]'}
+                        ]
+                    }},
+                    {'text': ': /url "title" ok'}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition trailing non-space 2', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: /url
+"title" ok
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'text': '\n"title" ok'}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition code block', (t) => {
+    const markdown = parseMarkdown(`\
+    [foo]: /url "title"
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'codeBlock': {
+                'lines': ['[foo]: /url "title"'],
+                'startLineNumber': 1
+            }},
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[foo]'}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition code block 2', (t) => {
+    const markdown = parseMarkdown(`\
+~~~
+[foo]: /url
+~~~
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'codeBlock': {
+                'lines': ['[foo]: /url'],
+                'startLineNumber': 1
+            }},
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[foo]'}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition case-insensitive', (t) => {
+    const markdown = parseMarkdown(`\
+[FOO]: /url
+
+[Foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'Foo'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition defined after', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]
+
+[foo]: /url "title"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'foo'}], 'title': 'title'}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition container', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]
+
+> [foo]: /url
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'foo'}]}}
+                        ]
+                    }}
+                ]
+            }},
+            {'quote': {
+                'parts': []
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition multiple', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]
+
+[foo]: first
+[foo]: second
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': 'first', 'spans': [{'text': 'foo'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition multiple 2', (t) => {
+    const markdown = parseMarkdown(`\
+[
+foo
+]: /url
+bar
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'text': '\nbar'}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition multiple 3', (t) => {
+    const markdown = parseMarkdown(`\
+Foo
+[bar]: /baz
+
+[bar]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'text': 'Foo\n'}
+                ]
+            }},
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/baz', 'spans': [{'text': 'bar'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition terminate', (t) => {
+    const markdown = parseMarkdown(`\
+# [Foo]
+[foo]: /url
+> bar
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'Foo'}]}}
+                        ]
+                    }}
+                ],
+                'style': 'h1'
+            }},
+            {'quote': {
+                'parts': [
+                    {'paragraph': {
+                        'spans': [
+                            {'text': 'bar'}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition terminate 2', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: /url
+bar
+===
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'text': '\nbar'}
+                ],
+                'style': 'h1'
+            }},
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'foo'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition terminate 3', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: /url
+===
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [],
+                'style': 'h1'
+            }},
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'foo'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition terminate 4', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: /foo-url "foo"
+[bar]: /bar-url
+  "bar"
+[baz]: /baz-url
+
+[foo],
+[bar],
+[baz]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/foo-url', 'spans': [{'text': 'foo'}], 'title': 'foo'}}
+                        ]
+                    }},
+                    {'text': ',\n'},
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/bar-url', 'spans': [{'text': 'bar'}], 'title': 'bar'}}
+                        ]
+                    }},
+                    {'text': ',\n'},
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/baz-url', 'spans': [{'text': 'baz'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition text escapes', (t) => {
+    const markdown = parseMarkdown(`\
+[Foo*bar\\]]:my_(url) 'title (with parens)'
+
+[Foo*bar\\]]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': 'my_(url)', 'spans': [{'text': 'Foo*bar]'}], 'title': 'title (with parens)'}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition href angle', (t) => {
+    const markdown = parseMarkdown(`\
+[Foo bar]:
+<my url>
+'title'
+
+[Foo bar]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': 'my url', 'spans': [{'text': 'Foo bar'}], 'title': 'title'}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition title multiline', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: /url '
+title
+line1
+line2
+'
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'foo'}], 'title': '\ntitle\nline1\nline2\n'}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition title no blanks', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: /url 'title
+
+with blank line'
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[foo]'}
+                        ]
+                    }},
+                    {'text': ": /url 'title"}
+                ]
+            }},
+            {'paragraph': {
+                'spans': [
+                    {'text': "with blank line'"}
+                ]
+            }},
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[foo]'}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition title none', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]:
+/url
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'foo'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition href none', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]:
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[foo]'}
+                        ]
+                    }},
+                    {'text': ':'}
+                ]
+            }},
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[foo]'}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition href angle none', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: <>
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '', 'spans': [{'text': 'foo'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition title no space', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: <bar>(baz)
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[foo]'}
+                        ]
+                    }},
+                    {'text': ': <bar>(baz)'}
+                ]
+            }},
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[foo]'}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link definition title escapes', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]: /url\\bar\\*baz "foo\\"bar\\baz"
+
+[foo]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url\\bar*baz', 'spans': [{'text': 'foo'}], 'title': 'foo"bar\\baz'}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference', (t) => {
+    const markdown = parseMarkdown(`\
+[foo][bar]
+
+[bar]: /url "title"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': [{'text': 'foo'}], 'title': 'title'}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference escapes', (t) => {
+    const markdown = parseMarkdown(`\
+[link \\[bar][ref]
+
+[ref]: /uri
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/uri', 'spans': [{'text': 'link [bar'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference text spans', (t) => {
+    const markdown = parseMarkdown(`\
+[link _foo **bar** \`#\`_][ref]
+
+[ref]: /uri
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'text': 'link '},
+                                    {'style': {
+                                        'spans': [
+                                            {'text': 'foo '},
+                                            {'style': {'spans': [{'text': 'bar'}], 'style': 'bold'}},
+                                            {'text': ' '},
+                                            {'code': '#'}
+                                        ],
+                                        'style': 'italic'
+                                    }}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link and image reference', (t) => {
+    const markdown = parseMarkdown(`\
+[![moon][img]](/url "moon-link")
+
+[img]: moon.jpg "moon-image"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'link': {
+                        'href': '/url',
+                        'title': 'moon-link',
+                        'spans': [
+                            {'linkRef': {
+                                'spans': [
+                                    {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link and image reference minimal', (t) => {
+    const markdown = parseMarkdown(`\
+[![img]](/url)
+
+[img]: moon.jpg
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'link': {
+                        'href': '/url',
+                        'spans': [
+                            {'linkRef': {
+                                'spans': [
+                                    {'image': {'alt': 'img', 'src': 'moon.jpg'}}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link and image reference multiline', (t) => {
+    const markdown = parseMarkdown(`\
+[
+ ![
+  moon
+  ][
+  img
+  ]
+](
+ /url
+ "moon-link"
+)
+
+[img]: moon.jpg "moon-image"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'link': {
+                        'href': '/url',
+                        'title': 'moon-link',
+                        'spans': [
+                            {'linkRef': {
+                                'spans': [
+                                    {'image': {'alt': ' moon ', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link and image reference missing image reference', (t) => {
+    const markdown = parseMarkdown(`\
+[![moon][img]](/url "moon-link")
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'link': {
+                        'href': '/url',
+                        'title': 'moon-link',
+                        'spans': [
+                            {'linkRef': {
+                                'spans': [
+                                    {'text': '![moon][img]'}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image', (t) => {
+    const markdown = parseMarkdown(`\
+[![moon](moon.jpg "moon-image")][ref]
+
+[ref]: /uri "moon-link"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                                ],
+                                'title': 'moon-link'
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image minimal', (t) => {
+    const markdown = parseMarkdown(`\
+[![moon](moon.jpg)][ref]
+
+[ref]: /uri
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'image': {'alt': 'moon', 'src': 'moon.jpg'}}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image multiline', (t) => {
+    const markdown = parseMarkdown(`\
+[
+ ![
+  moon
+  ](
+  moon.jpg
+  "moon-image")
+  ][
+  ref
+]
+
+[ref]: /uri "moon-link"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'image': {'alt': ' moon ', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                                ],
+                                'title': 'moon-link'
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image missing link reference', (t) => {
+    const markdown = parseMarkdown(`\
+[![moon](moon.jpg "moon-image")][ref]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[![moon](moon.jpg "moon-image")][ref]'}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image reference', (t) => {
+    const markdown = parseMarkdown(`\
+[![moon][img]][ref]
+
+[ref]: /uri "moon-link"
+[img]: moon.jpg "moon-image"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'linkRef': {
+                                        'spans': [
+                                            {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                                        ]
+                                    }}
+                                ],
+                                'title': 'moon-link'
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image reference minimal', (t) => {
+    const markdown = parseMarkdown(`\
+[![img]][ref]
+
+[ref]: /uri
+[img]: moon.jpg
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'linkRef': {
+                                        'spans': [
+                                            {'image': {'alt': 'img', 'src': 'moon.jpg'}}
+                                        ]
+                                    }}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image reference multiline', (t) => {
+    const markdown = parseMarkdown(`\
+[
+ ![
+  moon
+  ][
+  img
+  ]
+][
+ ref
+]
+
+[ref]: /uri "moon-link"
+[img]: moon.jpg "moon-image"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'linkRef': {
+                                        'spans': [
+                                            {'image': {'alt': ' moon ', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                                        ]
+                                    }}
+                                ],
+                                'title': 'moon-link'
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image reference missing both references', (t) => {
+    const markdown = parseMarkdown(`\
+[![img]][ref]
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[![img]][ref]'}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image reference missing link reference', (t) => {
+    const markdown = parseMarkdown(`\
+[![img]][ref]
+
+[img]: moon.jpg
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[![img]][ref]'}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image reference missing image reference', (t) => {
+    const markdown = parseMarkdown(`\
+[![img]][ref]
+
+[ref]: /uri
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'linkRef': {
+                                        'spans': [
+                                            {'text': '![img]'}
+                                        ]
+                                    }}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference cannot contain links', (t) => {
+    const markdown = parseMarkdown(`\
+[foo [bar](/uri)][ref]
+
+[ref]: /uri
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'link': {'href': '/uri', 'spans': [{'text': 'foo [bar'}]}},
+                    {'text': ']'},
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/uri', 'spans': [{'text': 'ref'}]}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference precedence', (t) => {
+    const markdown = parseMarkdown(`\
+[foo]()
+
+[foo]: /url1
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'link': {'href': '', 'spans': [{'text': 'foo'}]}}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference precedence 2', (t) => {
+    const markdown = parseMarkdown(`\
+[foo](not a link)
+
+[foo]: /url1
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url1', 'spans': [{'text': 'foo'}]}}
+                        ]
+                    }},
+                    {'text': '(not a link)'}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference consecutive', (t) => {
+    const markdown = parseMarkdown(`\
+[foo][bar][baz]
+
+[baz]: /url
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {
+                        'linkRef': {
+                            'spans': [
+                                {'linkRef': {'spans': [{'text': '[foo]'}]}},
+                                {'text': '[bar]'}
+                            ]
+                        }
+                    },
+                    {
+                        'linkRef': {
+                            'spans': [
+                                {'link': {'href': '/url', 'spans': [{'text': 'baz'}]}}
+                            ]
+                        }
+                    }
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference empty ref', (t) => {
+    const markdown = parseMarkdown(`\
+[]
+
+[]: /uri
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {
+                        'linkRef': {
+                            'spans': [
+                                {'text': '[]'}
+                            ]
+                        }
+                    }
+                ]
+            }},
+            {'paragraph': {
+                'spans': [
+                    {
+                        'linkRef': {
+                            'spans': [
+                                {'text': '[]'}
+                            ]
+                        }
+                    },
+                    {'text': ': /uri'}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, image reference', (t) => {
+    const markdown = parseMarkdown(`\
+![foo *bar*]
+
+[foo *bar*]: train.jpg "train & tracks"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {
+                        'linkRef': {
+                            'spans': [
+                                {'image': {'alt': 'foo *bar*', 'src': 'train.jpg', 'title': 'train & tracks'}}
+                            ]
+                        }
+                    }
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, image reference alt text', (t) => {
+    const markdown = parseMarkdown(`\
+![foo *bar*][foobar]
+
+[FOOBAR]: train.jpg "train & tracks"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {
+                        'linkRef': {
+                            'spans': [
+                                {'image': {'alt': 'foo *bar*', 'src': 'train.jpg', 'title': 'train & tracks'}}
+                            ]
+                        }
+                    }
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, image reference minimal', (t) => {
+    const markdown = parseMarkdown(`\
+![bar]
+
+[bar]: /url
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {
+                        'linkRef': {
+                            'spans': [
+                                {'image': {'alt': 'bar', 'src': '/url'}}
+                            ]
+                        }
+                    }
                 ]
             }}
         ]
