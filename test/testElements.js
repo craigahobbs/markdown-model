@@ -147,7 +147,8 @@ test('markdownElements', (t) => {
                         'attr': {
                             'src': 'https://craigahobbs.github.io/schema-markdown/doc/doc.svg',
                             'title': 'Schema Markdown',
-                            'alt': 'Schema Markdown Documentation Icon'
+                            'alt': 'Schema Markdown Documentation Icon',
+                            'style': 'max-width: 100%;'
                         }
                     }
                 ]
@@ -657,7 +658,8 @@ test('markdownElements, image span with no title', (t) => {
                         'html': 'img',
                         'attr': {
                             'src': 'https://craigahobbs.github.io/schema-markdown/doc/doc.svg',
-                            'alt': 'Schema Markdown Documentation Icon'
+                            'alt': 'Schema Markdown Documentation Icon',
+                            'style': 'max-width: 100%;'
                         }
                     }
                 ]
@@ -1038,14 +1040,16 @@ test('markdownElements, relative and absolute URLs', (t) => {
                 {
                     'attr': {
                         'src': 'https://craigahobbs.github.io/schema-markdown/doc/doc.svg',
-                        'alt': 'Absolute image URL'
+                        'alt': 'Absolute image URL',
+                        'style': 'max-width: 100%;'
                     },
                     'html': 'img'
                 },
                 {
                     'attr': {
                         'src': 'doc.svg',
-                        'alt': 'Relative image URL'
+                        'alt': 'Relative image URL',
+                        'style': 'max-width: 100%;'
                     },
                     'html': 'img'
                 }
@@ -1119,14 +1123,16 @@ test('markdownElements, relative and absolute URLs', (t) => {
                     {
                         'attr': {
                             'src': 'https://craigahobbs.github.io/schema-markdown/doc/doc.svg',
-                            'alt': 'Absolute image URL'
+                            'alt': 'Absolute image URL',
+                            'style': 'max-width: 100%;'
                         },
                         'html': 'img'
                     },
                     {
                         'attr': {
                             'src': 'https://foo.com/doc.svg',
-                            'alt': 'Relative image URL'
+                            'alt': 'Relative image URL',
+                            'style': 'max-width: 100%;'
                         },
                         'html': 'img'
                     }
