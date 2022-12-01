@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.2 (2022-12-01)
+
+- [a007088](https://github.com/craigahobbs/markdown-model/commit/a007088) - add max-width attribute to image elements
+
 ## 1.7.1 (2022-11-30)
 
 - [64386b0](https://github.com/craigahobbs/markdown-model/commit/64386b0) - implement link and image references
