@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.3 (2022-12-03)
+
+- [c14c99f](https://github.com/craigahobbs/markdown-model/commit/c14c99f) - fix code span size in headers
+
 ## 1.7.2 (2022-12-01)
 
 - [a007088](https://github.com/craigahobbs/markdown-model/commit/a007088) - add max-width attribute to image elements
