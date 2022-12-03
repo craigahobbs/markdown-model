@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.4 (2022-12-03)
+
+- [87d8b67](https://github.com/craigahobbs/markdown-model/commit/87d8b67) - fix code block font size
+
 ## 1.7.3 (2022-12-03)
 
 - [c14c99f](https://github.com/craigahobbs/markdown-model/commit/c14c99f) - fix code span size in headers
