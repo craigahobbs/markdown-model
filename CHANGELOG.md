@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.5 (2022-12-12)
+
+- [ec90ff7](https://github.com/craigahobbs/markdown-model/commit/ec90ff7) - improve span parsing performance
+
 ## 1.7.4 (2022-12-03)
 
 - [87d8b67](https://github.com/craigahobbs/markdown-model/commit/87d8b67) - fix code block font size
