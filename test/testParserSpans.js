@@ -116,11 +116,7 @@ test('parseMarkdown, spans spaces', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'style': {'style': 'bold', 'spans': [{'text': '*no *'}]}},
-                        {'text': ' *** no*** '},
-                        {'style': {'style': 'bold', 'spans': [{'text': 'no ** ** no'}]}},
-                        {'text': ' '},
-                        {'style': {'style': 'italic', 'spans': [{'text': 'no * * no'}]}}
+                        {'text': '***no *** *** no*** **no ** ** no** *no * * no*'}
                     ]
                 }}
             ]
@@ -775,7 +771,8 @@ test('parseMarkdown, bold escape end', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'style': {'spans': [{'text': '*foo bar*'}], 'style': 'italic'}}
+                        {'text': '*'},
+                        {'style': {'spans': [{'text': 'foo bar*'}], 'style': 'italic'}}
                     ]
                 }}
             ]
@@ -947,7 +944,7 @@ test('parseMarkdown, bold whitespace 2', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'style': {'spans': [{'text': '*foo bar *'}], 'style': 'italic'}}
+                        {'text': '**foo bar **'}
                     ]
                 }}
             ]
@@ -965,7 +962,7 @@ test('parseMarkdown, bold whitespace 3', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'style': {'spans': [{'text': '*foo bar\n*'}], 'style': 'italic'}}
+                        {'text': '**foo bar\n**'}
                     ]
                 }}
             ]
@@ -1019,7 +1016,8 @@ test('parseMarkdown, underscore bold escape end', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'style': {'spans': [{'text': '_foo bar_'}], 'style': 'italic'}}
+                        {'text': '_'},
+                        {'style': {'spans': [{'text': 'foo bar_'}], 'style': 'italic'}}
                     ]
                 }}
             ]
@@ -1056,6 +1054,24 @@ test('parseMarkdown, underscore bold internal', (t) => {
                 {'paragraph': {
                     'spans': [
                         {'text': 'foo__bar__baz'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, underscore bold internal 2', (t) => {
+    const markdown = parseMarkdown('foo__bar___baz');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'foo__bar___baz'}
                     ]
                 }}
             ]
@@ -1188,7 +1204,7 @@ test('parseMarkdown, underscore bold whitespace 2', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'style': {'spans': [{'text': '_foo bar _'}], 'style': 'italic'}}
+                        {'text': '__foo bar __'}
                     ]
                 }}
             ]
@@ -1206,7 +1222,7 @@ test('parseMarkdown, underscore bold whitespace 3', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'style': {'spans': [{'text': '_foo bar\n_'}], 'style': 'italic'}}
+                        {'text': '__foo bar\n__'}
                     ]
                 }}
             ]
@@ -1331,9 +1347,8 @@ test('parseMarkdown, bold in italic 2', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'style': {'spans': [{'text': 'in emph *'}], 'style': 'italic'}},
-                        {'text': 'strong'},
-                        {'style': {'spans': [{'text': '*'}], 'style': 'italic'}}
+                        {'text': '*in emph '},
+                        {'style': {'spans': [{'text': 'strong*'}], 'style': 'bold'}}
                     ]
                 }}
             ]
@@ -1541,6 +1556,114 @@ test('parseMarkdown, strikethrough not 3', (t) => {
 });
 
 
+test('parseMarkdown, strikethrough whitespace', (t) => {
+    const markdown = parseMarkdown('~~ foo bar~~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~~ foo bar~~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough whitespace 2', (t) => {
+    const markdown = parseMarkdown('~~foo bar ~~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~~foo bar ~~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough whitespace 3', (t) => {
+    const markdown = parseMarkdown('~~foo bar\n~~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~~foo bar\n~~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough single whitespace', (t) => {
+    const markdown = parseMarkdown('~ foo bar~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~ foo bar~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough single whitespace 2', (t) => {
+    const markdown = parseMarkdown('~foo bar ~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~foo bar ~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough single whitespace 3', (t) => {
+    const markdown = parseMarkdown('~foo bar\n~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~foo bar\n~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, code span', (t) => {
     const markdown = parseMarkdown('This is code: `foo`');
     validateMarkdownModel(markdown);
@@ -1678,7 +1801,9 @@ test('parseMarkdown, code span only spaces', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'code': '` ` '}
+                        {'code': ' '},
+                        {'text': '\n'},
+                        {'code': '  '}
                     ]
                 }}
             ]
@@ -2580,7 +2705,7 @@ test('parseMarkdown, link href-title non-breaking space', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'link': {'href': '/url', 'spans': [{'text': 'link'}], 'title': 'title'}}
+                        {'link': {'href': `/url${String.fromCharCode(160)}"title"`, 'spans': [{'text': 'link'}]}}
                     ]
                 }}
             ]
@@ -3221,7 +3346,7 @@ test('parseMarkdown, link definition trailing non-space 2', (t) => {
         'parts': [
             {'paragraph': {
                 'spans': [
-                    {'text': '\n"title" ok'}
+                    {'text': '"title" ok'}
                 ]
             }}
         ]
@@ -3393,7 +3518,7 @@ bar
         'parts': [
             {'paragraph': {
                 'spans': [
-                    {'text': '\nbar'}
+                    {'text': 'bar'}
                 ]
             }}
         ]
@@ -3413,14 +3538,20 @@ Foo
         'parts': [
             {'paragraph': {
                 'spans': [
-                    {'text': 'Foo\n'}
+                    {'text': 'Foo\n'},
+                    {'linkRef': {
+                        'spans': [
+                            {'text': '[bar]'}
+                        ]
+                    }},
+                    {'text': ': /baz'}
                 ]
             }},
             {'paragraph': {
                 'spans': [
                     {'linkRef': {
                         'spans': [
-                            {'link': {'href': '/baz', 'spans': [{'text': 'bar'}]}}
+                            {'text': '[bar]'}
                         ]
                     }}
                 ]
@@ -3475,7 +3606,7 @@ bar
         'parts': [
             {'paragraph': {
                 'spans': [
-                    {'text': '\nbar'}
+                    {'text': 'bar'}
                 ],
                 'style': 'h1'
             }},
