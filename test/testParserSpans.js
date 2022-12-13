@@ -1664,6 +1664,134 @@ test('parseMarkdown, strikethrough single whitespace 3', (t) => {
 });
 
 
+test('parseMarkdown, strikethrough internal', (t) => {
+    const markdown = parseMarkdown('~~foo~bar~~~baz~~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {
+                            'style': 'strikethrough',
+                            'spans': [
+                                {'text': 'foo~bar~~~baz'}
+                            ]
+                        }}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough internal spaces', (t) => {
+    const markdown = parseMarkdown('~~foo ~ bar ~~~ baz~~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {
+                            'style': 'strikethrough',
+                            'spans': [
+                                {'text': 'foo ~ bar ~~~ baz'}
+                            ]
+                        }}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough single internal', (t) => {
+    const markdown = parseMarkdown('~foo~~bar~~~baz~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {
+                            'style': 'strikethrough',
+                            'spans': [
+                                {'text': 'foo~~bar~~~baz'}
+                            ]
+                        }}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough single internal spaces', (t) => {
+    const markdown = parseMarkdown('~foo ~~ bar ~~~ baz~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'style': {
+                            'style': 'strikethrough',
+                            'spans': [
+                                {'text': 'foo ~~ bar ~~~ baz'}
+                            ]
+                        }}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough single triple', (t) => {
+    const markdown = parseMarkdown('~foo~~~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~foo~~~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough double quadruple', (t) => {
+    const markdown = parseMarkdown('~~foo~~~~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~~foo~~~~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, code span', (t) => {
     const markdown = parseMarkdown('This is code: `foo`');
     validateMarkdownModel(markdown);
