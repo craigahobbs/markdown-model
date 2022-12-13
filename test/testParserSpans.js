@@ -2085,7 +2085,8 @@ test('parseMarkdown, code span mismatched 2', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'code': 'foo``bar`'}
+                        {'text': '`foo'},
+                        {'code': 'bar'}
                     ]
                 }}
             ]
