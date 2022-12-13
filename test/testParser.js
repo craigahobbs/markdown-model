@@ -2191,7 +2191,7 @@ foo
         markdown,
         {
             'parts': [
-                {'paragraph': {'spans': [{'code': ' foo'}]}}
+                {'paragraph': {'spans': [{'code': 'foo'}]}}
             ]
         }
     );

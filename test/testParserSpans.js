@@ -1949,7 +1949,43 @@ test('parseMarkdown, code span multiline text', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'code': 'foo bar   baz'}
+                        {'code': 'foo bar   baz '}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span multiline text 2', (t) => {
+    const markdown = parseMarkdown('`\nfoo\n`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'foo'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span multiline text 3', (t) => {
+    const markdown = parseMarkdown('`\nfoo \n`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'foo '}
                     ]
                 }}
             ]
@@ -1967,7 +2003,7 @@ test('parseMarkdown, code span multiline text last line end space', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'code': 'foo '}
+                        {'code': 'foo  '}
                     ]
                 }}
             ]
