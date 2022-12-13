@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.7 (2022-12-13)
+
+- [926c9df](https://github.com/craigahobbs/markdown-model/commit/926c9df) - fix strikethrough span parsing case
+
 ## 1.7.6 (2022-12-13)
 
 - [a6c06bd](https://github.com/craigahobbs/markdown-model/commit/a6c06bd) - fix strikethrough span parsing cases
