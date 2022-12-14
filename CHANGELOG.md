@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.8 (2022-12-13)
+
+- [7d64a6e](https://github.com/craigahobbs/markdown-model/commit/7d64a6e) - add more vertical space around pre
+
 ## 1.7.7 (2022-12-13)
 
 - [a405da9](https://github.com/craigahobbs/markdown-model/commit/a405da9) - update readme and api documentation
