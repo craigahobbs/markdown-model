@@ -2,6 +2,10 @@
 
 ## 1.7.7 (2022-12-13)
 
+- [a405da9](https://github.com/craigahobbs/markdown-model/commit/a405da9) - update readme and api documentation
+
+- [7778157](https://github.com/craigahobbs/markdown-model/commit/7778157) - code span parsing fixes and styling improvements
+
 - [926c9df](https://github.com/craigahobbs/markdown-model/commit/926c9df) - fix strikethrough span parsing case
 
 ## 1.7.6 (2022-12-13)
