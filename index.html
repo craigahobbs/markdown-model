@@ -46,42 +46,43 @@
         <article><h1>markdown-model</h1>
 <p><a href="https://www.npmjs.com/package/markdown-model"><img src="https://img.shields.io/npm/v/markdown-model" alt="npm"></a>
 <a href="https://github.com/craigahobbs/markdown-model/blob/main/LICENSE"><img src="https://img.shields.io/github/license/craigahobbs/markdown-model" alt="GitHub"></a></p>
-<p><a href="https://craigahobbs.github.io/markdown-model/">markdown-model API Documentation</a></p>
-<p><strong>markdown-model</strong> is a JavaScript Markdown parsing and rendering library.</p>
-<p>To parse a Markdown document and produce a
-<a href="https://craigahobbs.github.io/markdown-model/model/#var.vName='Markdown'">Markdown model</a>,
-use the
+<p>The markdown-model package is a JavaScript Markdown parser and renderer.</p>
+<h2>Links</h2>
+<ul>
+<li><a href="https://craigahobbs.github.io/markdown-model/">API Documentation</a></li>
+<li><a href="https://github.com/craigahobbs/markdown-model">Source code</a></li>
+</ul>
+<h2>Parsing Markdown</h2>
+<p>To parse a Markdown document, use the
 <a href="https://craigahobbs.github.io/markdown-model/module-lib_parser.html#.parseMarkdown">parseMarkdown</a>
 function:</p>
-<pre class="prettyprint source lang-javascript"><code>import {parseMarkdown} from 'markdown-model/parser.js';
+<pre class="prettyprint source lang-javascript"><code>import {parseMarkdown} from 'markdown-model/lib/parser.js';
 
 const markdownModel = parseMarkdown(markdownText);
 </code></pre>
-<p>To render the Markdown model in a web browser, use the
+<p>Note: Markdown documents are parsed as
+<a href="https://github.github.com/gfm/">GitHub Flavored Markdown</a>
+(with the exception of HTML blocks).</p>
+<h2>Rendering Markdown</h2>
+<p>To render the parsed Markdown in a web browser, use the
 <a href="https://craigahobbs.github.io/markdown-model/module-lib_elements.html#.markdownElements">markdownElements</a>
 function with the
 <a href="https://craigahobbs.github.io/element-model/module-lib_elementModel.html#.renderElements">renderElements</a>
 function from the
-<a href="https://github.com/craigahobbs/markdown-model">element-model</a>
+<a href="https://github.com/craigahobbs/element-model">element-model</a>
 package:</p>
-<pre class="prettyprint source lang-javascript"><code>import {markdownElements} from 'markdown-model/elements.js';
-import {renderElements} from 'element-model/elementModel.js';
+<pre class="prettyprint source lang-javascript"><code>import {markdownElements} from 'markdown-model/lib/elements.js';
+import {renderElements} from 'element-model/lib/elementModel.js';
 
 renderElements(document.body, markdownElements(markdownModel));
 </code></pre>
-<p>You can compute the title of a Markdown document from the Markdown model using the
+<h2>Computing the Markdown Title</h2>
+<p>To compute the title of the parsed Markdown, use the
 <a href="https://craigahobbs.github.io/markdown-model/module-lib_parser.html#.getMarkdownTitle">getMarkdownTitle</a>
 function:</p>
-<pre class="prettyprint source lang-javascript"><code>import {getMarkdownTitle} from 'markdown-model/markdownModel.js';
+<pre class="prettyprint source lang-javascript"><code>import {getMarkdownTitle} from 'markdown-model/lib/parser.js';
 
 const markdownTitle = getMarkdownTitle(markdownModel);
-</code></pre>
-<p>The
-<a href="https://craigahobbs.github.io/markdown-model/module-lib_model.html#.validateMarkdownModel">validateMarkdownModel</a>
-function is used to validate Markdown models from untrusted sources or for testing the validity of any code that produces a Markdown model:</p>
-<pre class="prettyprint source lang-javascript"><code>import {validateMarkdownModel} from 'markdown-model/markdownModel.js';
-
-validateMarkdownModel(markdownModel);
 </code></pre>
 <h2>Development</h2>
 <p>markdown-model is developed using <a href="https://github.com/craigahobbs/javascript-build#readme">javascript-build</a>
