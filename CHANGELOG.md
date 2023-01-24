@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.9 (2023-01-24)
+
+- [5d6b2ba](https://github.com/craigahobbs/markdown-model/commit/5d6b2ba) - add markdown-model-no-print class to markdown-model.css
+
 ## 1.7.8 (2022-12-13)
 
 - [7d64a6e](https://github.com/craigahobbs/markdown-model/commit/7d64a6e) - add more vertical space around pre
