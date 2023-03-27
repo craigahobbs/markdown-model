@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.10 (2023-03-26)
+
+- [e11cbe9](https://github.com/craigahobbs/markdown-model/commit/e11cbe9) - markdown-model.css - add th vertical-align bottom
+
 ## 1.7.9 (2023-01-24)
 
 - [5d6b2ba](https://github.com/craigahobbs/markdown-model/commit/5d6b2ba) - add markdown-model-no-print class to markdown-model.css
