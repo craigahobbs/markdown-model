@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0 (2023-05-03)
+
+- [45b8e2a](https://github.com/craigahobbs/markdown-model/commit/45b8e2a) - improve markdown parsing with lookbehind regex
+
 ## 1.7.10 (2023-03-26)
 
 - [e11cbe9](https://github.com/craigahobbs/markdown-model/commit/e11cbe9) - markdown-model.css - add th vertical-align bottom
