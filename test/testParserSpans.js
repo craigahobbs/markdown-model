@@ -258,8 +258,7 @@ test('parseMarkdown, italic escape start', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '\\'},
-                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'italic'}}
+                        {'text': '*foo bar*'}
                     ]
                 }}
             ]
@@ -516,8 +515,7 @@ test('parseMarkdown, underscore italic escape start', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '\\'},
-                        {'style': {'spans': [{'text': 'foo bar'}], 'style': 'italic'}}
+                        {'text': '_foo bar_'}
                     ]
                 }}
             ]
@@ -607,8 +605,7 @@ test('parseMarkdown, underscore italic internal end', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': 'foo'},
-                        {'style': {'spans': [{'text': 'bar'}], 'style': 'italic'}}
+                        {'text': 'foo_bar_'}
                     ]
                 }}
             ]
@@ -762,6 +759,24 @@ test('parseMarkdown, bold multiline', (t) => {
 });
 
 
+test('parseMarkdown, bold escape start', (t) => {
+    const markdown = parseMarkdown('\\**foo bar**');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '**foo bar**'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, bold escape end', (t) => {
     const markdown = parseMarkdown('**foo bar\\**');
     validateMarkdownModel(markdown);
@@ -771,8 +786,7 @@ test('parseMarkdown, bold escape end', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '*'},
-                        {'style': {'spans': [{'text': 'foo bar*'}], 'style': 'italic'}}
+                        {'text': '**foo bar**'}
                     ]
                 }}
             ]
@@ -1007,6 +1021,24 @@ test('parseMarkdown, underscore bold multiline', (t) => {
 });
 
 
+test('parseMarkdown, underscore bold escape start', (t) => {
+    const markdown = parseMarkdown('\\__foo bar__');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '__foo bar__'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, underscore bold escape end', (t) => {
     const markdown = parseMarkdown('__foo bar\\__');
     validateMarkdownModel(markdown);
@@ -1016,8 +1048,7 @@ test('parseMarkdown, underscore bold escape end', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '_'},
-                        {'style': {'spans': [{'text': 'foo bar_'}], 'style': 'italic'}}
+                        {'text': '__foo bar__'}
                     ]
                 }}
             ]
@@ -1107,8 +1138,7 @@ test('parseMarkdown, underscore bold internal end', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': 'foo'},
-                        {'style': {'spans': [{'text': 'bar'}], 'style': 'bold'}}
+                        {'text': 'foo__bar__'}
                     ]
                 }}
             ]
@@ -1445,25 +1475,6 @@ test('parseMarkdown, strikethrough multiline', (t) => {
 
 
 test('parseMarkdown, strikethrough escape start', (t) => {
-    const markdown = parseMarkdown('\\~foo bar~');
-    validateMarkdownModel(markdown);
-    t.deepEqual(
-        markdown,
-        {
-            'parts': [
-                {'paragraph': {
-                    'spans': [
-                        {'text': '\\'},
-                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo bar'}]}}
-                    ]
-                }}
-            ]
-        }
-    );
-});
-
-
-test('parseMarkdown, strikethrough escape start 2', (t) => {
     const markdown = parseMarkdown('\\~~foo bar~');
     validateMarkdownModel(markdown);
     t.deepEqual(
@@ -1472,8 +1483,25 @@ test('parseMarkdown, strikethrough escape start 2', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '~'},
-                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'foo bar'}]}}
+                        {'text': '~~foo bar~'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, strikethrough single escape start', (t) => {
+    const markdown = parseMarkdown('\\~foo bar~');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '~foo bar~'}
                     ]
                 }}
             ]
@@ -1527,9 +1555,7 @@ test('parseMarkdown, strikethrough not 2', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': 'This will ~'},
-                        {'style': {'style': 'strikethrough', 'spans': [{'text': 'not'}]}},
-                        {'text': ' strike.'}
+                        {'text': 'This will ~~~not~~ strike.'}
                     ]
                 }}
             ]
@@ -1803,6 +1829,61 @@ test('parseMarkdown, code span', (t) => {
                     'spans': [
                         {'text': 'This is code: '},
                         {'code': 'foo'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span escape start', (t) => {
+    const markdown = parseMarkdown('\\``foo``');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '``foo``'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span escape end', (t) => {
+    const markdown = parseMarkdown('``foo\\``');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'code': 'foo\\'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span escape end 2', (t) => {
+    const markdown = parseMarkdown('``foo`\\`');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '``foo'},
+                        {'code': '\\'}
                     ]
                 }}
             ]
@@ -2102,8 +2183,7 @@ test('parseMarkdown, code span mismatched', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': 'This is code: `'},
-                        {'code': 'foo'}
+                        {'text': 'This is code: ```foo``'}
                     ]
                 }}
             ]
@@ -2113,6 +2193,42 @@ test('parseMarkdown, code span mismatched', (t) => {
 
 
 test('parseMarkdown, code span mismatched 2', (t) => {
+    const markdown = parseMarkdown('This is code: ``foo```');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This is code: ``foo```'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span mismatched 3', (t) => {
+    const markdown = parseMarkdown('This is code: ``foo ```');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'This is code: ``foo ```'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, code span mismatched 4', (t) => {
     const markdown = parseMarkdown('`foo``bar``');
     validateMarkdownModel(markdown);
     t.deepEqual(
@@ -2162,6 +2278,29 @@ This is another paragraph.
 });
 
 
+test('parseMarkdown, line break escape', (t) => {
+    const markdown = parseMarkdown(`\
+foo\\${'  '}
+bar
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'foo\\'},
+                        {'br': 1},
+                        {'text': 'bar'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, line break backslash', (t) => {
     const markdown = parseMarkdown(`\
 foo\\
@@ -2177,6 +2316,27 @@ baz
                         {'text': 'foo'},
                         {'br': 1},
                         {'text': 'baz'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, line break backslash escape', (t) => {
+    const markdown = parseMarkdown(`\
+foo\\\\
+baz
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'foo\\\nbaz'}
                     ]
                 }}
             ]
@@ -2471,6 +2631,25 @@ test('parseMarkdown, link', (t) => {
                 {'paragraph': {
                     'spans': [
                         {'link': {'href': '/uri', 'spans': [{'text': 'link'}], 'title': 'title'}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, link escape start', (t) => {
+    const markdown = parseMarkdown('\\[link](/uri)');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '\\'},
+                        {'link': {'href': '/uri', 'spans': [{'text': 'link'}]}}
                     ]
                 }}
             ]
@@ -3162,6 +3341,27 @@ test('parseMarkdown, link image', (t) => {
             'parts': [
                 {'paragraph': {
                     'spans': [
+                        {'link': {'href': 'url', 'spans': [
+                            {'image': {'alt': 'alt', 'src': 'src'}}
+                        ]}}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, link image escape start', (t) => {
+    const markdown = parseMarkdown('\\[![alt](src)](url)');
+    validateMarkdownModel(markdown);
+    t.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': '\\'},
                         {'link': {'href': 'url', 'spans': [
                             {'image': {'alt': 'alt', 'src': 'src'}}
                         ]}}
@@ -4130,6 +4330,25 @@ test('parseMarkdown, link reference', (t) => {
 });
 
 
+test('parseMarkdown, link reference escape start', (t) => {
+    const markdown = parseMarkdown(`\
+\\[ref]
+
+[ref]: /uri
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'text': '[ref]'}
+                ]
+            }}
+        ]
+    });
+});
+
+
 test('parseMarkdown, link reference escapes', (t) => {
     const markdown = parseMarkdown(`\
 [link \\[bar][ref]
@@ -4208,6 +4427,35 @@ test('parseMarkdown, link and image reference', (t) => {
                             {'linkRef': {
                                 'spans': [
                                     {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                                ]
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link and image reference escape start', (t) => {
+    const markdown = parseMarkdown(`\
+\\[![img]](/url)
+
+[img]: moon.jpg
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'text': '\\'},
+                    {'link': {
+                        'href': '/url',
+                        'spans': [
+                            {'linkRef': {
+                                'spans': [
+                                    {'image': {'alt': 'img', 'src': 'moon.jpg'}}
                                 ]
                             }}
                         ]
@@ -4341,6 +4589,36 @@ test('parseMarkdown, link reference and image', (t) => {
 });
 
 
+test('parseMarkdown, link reference and image escape start', (t) => {
+    const markdown = parseMarkdown(`\
+\\[![moon](moon.jpg "moon-image")][ref]
+
+[ref]: /uri "moon-link"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'text': '\\'},
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                                ],
+                                'title': 'moon-link'
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
 test('parseMarkdown, link reference and image minimal', (t) => {
     const markdown = parseMarkdown(`\
 [![moon](moon.jpg)][ref]
@@ -4439,6 +4717,41 @@ test('parseMarkdown, link reference and image reference', (t) => {
         'parts': [
             {'paragraph': {
                 'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {
+                                'href': '/uri',
+                                'spans': [
+                                    {'linkRef': {
+                                        'spans': [
+                                            {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                                        ]
+                                    }}
+                                ],
+                                'title': 'moon-link'
+                            }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference and image reference escape start', (t) => {
+    const markdown = parseMarkdown(`\
+\\[![moon][img]][ref]
+
+[ref]: /uri "moon-link"
+[img]: moon.jpg "moon-image"
+`);
+    validateMarkdownModel(markdown);
+    t.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'text': '\\'},
                     {'linkRef': {
                         'spans': [
                             {'link': {
