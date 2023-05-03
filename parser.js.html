@@ -454,7 +454,7 @@ const rLinkHref = '[ \\r\\n]*(?&lt;linkHref>' +
       '\\((?:\\\\.|[^\\\\)])*\\)' +
       '))?[ \\r\\n]*';
 const rSpans = new RegExp(
-    '(?&lt;br>(?: {2,}|\\\\)\\r?\\n)|' +
+    '(?&lt;br>(?: {2,}|(?&lt;!\\\\)\\\\)\\r?\\n)|' +
     `(?&lt;linkImg>\\[\\s*!\\[${rLinkText.replaceAll('&lt;link', '&lt;linkImg')}\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkImg')}\\)\\s*\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkImgLink')}\\))|` +
@@ -468,15 +468,16 @@ const rSpans = new RegExp(
         `\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefImgRef')}\\])\\s*\\]` +
         `\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefImgRefLink')}\\])|` +
     `(?&lt;link>!?\\[${rLinkText}\\]\\(${rLinkHref}\\))|` +
-    `(?&lt;linkRef>!?(?:\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefOther')}\\])?\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRef')}\\])|` +
+    `(?&lt;linkRef>(?&lt;!\\\\)!?(?:\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefOther')}\\])?` +
+        `\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRef')}\\])|` +
     '(?&lt;linkAlt>&lt;(?&lt;linkAltScheme>[[A-Za-z]{3,}:|[a-zA-Z0-9.!#$%&amp;\'*+/=?^_`{|}~-]+@)[^ \\r\\n]+>)|' +
-    '(?&lt;bold>\\*{2,}(?!\\**\\s)(?:[^\\s\\\\*]|\\\\.|\\s+(?!\\*{2,})|\\*(?!\\*))+\\*{2,})|' +
-    '(?&lt;italic>\\*(?!\\**\\s)(?:[^\\s\\\\*]|\\\\.|\\s+(?!\\*))+\\*)|' +
-    '(?&lt;boldu>_{2,}(?!_*\\s)(?:[^\\s\\\\_]|\\\\.|\\s+(?!_{2,})|_(?!_))+_{2,}(?!_*[A-Za-z0-9]))|' +
-    '(?&lt;italicu>_(?!_*\\s)(?:[^\\s\\\\_]|\\\\.|\\s+(?!_))+_(?!_*[A-Za-z0-9]))|' +
-    '(?&lt;strike>(?&lt;strikeT>~~?)(?!~)(?!\\s)' +
+    '(?&lt;bold>(?&lt;!\\\\)(?&lt;!\\*)\\*{2,}(?!\\**\\s)(?:[^\\s\\\\*]|\\\\.|\\s+(?!\\*{2,})|\\*(?!\\*))+\\*{2,})|' +
+    '(?&lt;italic>(?&lt;!\\\\)(?&lt;!\\*)\\*(?!\\**\\s)(?:[^\\s\\\\*]|\\\\.|\\s+(?!\\*))+\\*)|' +
+    '(?&lt;boldu>(?&lt;!\\\\)(?&lt;!_)(?&lt;![A-Za-z0-9])_{2,}(?!_*\\s)(?:[^\\s\\\\_]|\\\\.|\\s+(?!_{2,})|_(?!_))+_{2,}(?!_*[A-Za-z0-9]))|' +
+    '(?&lt;italicu>(?&lt;!\\\\)(?&lt;!_)(?&lt;![A-Za-z0-9])_(?!_*\\s)(?:[^\\s\\\\_]|\\\\.|\\s+(?!_))+_(?!_*[A-Za-z0-9]))|' +
+    '(?&lt;strike>(?&lt;!\\\\)(?&lt;!~)(?&lt;strikeT>~~?)(?!~)(?!\\s)' +
         '(?:[^\\s\\\\~]|\\\\.|\\s+(?!\\k&lt;strikeT>(?!~))|(?!\\k&lt;strikeT>(?!~))~+(?!~))+\\k&lt;strikeT>(?!~))|' +
-    '(?&lt;code>(?&lt;codeT>`+)(?!`)(?:[^`]|(?!\\k&lt;codeT>(?!`))`+(?!`))*\\k&lt;codeT>(?!`))',
+    '(?&lt;code>(?&lt;!\\\\)(?&lt;!`)(?&lt;codeT>`+)(?!`)(?:[^`]|(?!\\k&lt;codeT>(?!`))`+(?!`))*\\k&lt;codeT>(?!`))',
     'g'
 );
 const rLinkDef = new RegExp(`^ {0,3}\\[${rLinkText}\\]:[ \\r\\n]*${rLinkHref.replace(')])*)', '])+)')}(\\r?\\n|$)`);
