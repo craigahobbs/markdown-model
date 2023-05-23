@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.1 (2023-05-23)
+
+- [100171d](https://github.com/craigahobbs/markdown-model/commit/100171d) - run tests with node --test
+
 ## 1.8.0 (2023-05-03)
 
 - [45b8e2a](https://github.com/craigahobbs/markdown-model/commit/45b8e2a) - improve markdown parsing with lookbehind regex
