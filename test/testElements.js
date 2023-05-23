@@ -1,15 +1,14 @@
 // Licensed under the MIT License
 // https://github.com/craigahobbs/markdown-model/blob/main/LICENSE
 
-/* eslint-disable id-length */
-
 import {markdownElements, markdownElementsAsync} from '../lib/elements.js';
-import test from 'ava';
+import {strict as assert} from 'node:assert';
+import test from 'node:test';
 import {validateElements} from 'element-model/lib/elementModel.js';
 import {validateMarkdownModel} from '../lib/model.js';
 
 
-test('markdownElements', (t) => {
+test('markdownElements', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {'paragraph': {'style': 'h1', 'spans': [{'text': 'The Title'}]}},
@@ -109,7 +108,7 @@ test('markdownElements', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {'html': 'h1', 'attr': null, 'elem': [{'text': 'The Title'}]},
@@ -205,7 +204,7 @@ test('markdownElements', (t) => {
 });
 
 
-test('markdownElementsAsync', async (t) => {
+test('markdownElementsAsync', async () => {
     const elements = await markdownElementsAsync(
         validateMarkdownModel({
             'parts': [
@@ -247,7 +246,7 @@ test('markdownElementsAsync', async (t) => {
         }
     );
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {'html': 'h1', 'attr': null, 'elem': [{'text': 'The Title'}]},
@@ -282,7 +281,7 @@ test('markdownElementsAsync', async (t) => {
 });
 
 
-test('markdownElements, header IDs', (t) => {
+test('markdownElements, header IDs', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -296,7 +295,7 @@ test('markdownElements, header IDs', (t) => {
         ]
     }), {'headerIds': true});
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -311,7 +310,7 @@ test('markdownElements, header IDs', (t) => {
 });
 
 
-test('markdownElements, header IDs urlFn', (t) => {
+test('markdownElements, header IDs urlFn', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -325,7 +324,7 @@ test('markdownElements, header IDs urlFn', (t) => {
         ]
     }), {'headerIds': true, 'urlFn': (url) => `#url=README.md&${url.slice(1)}`});
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -340,7 +339,7 @@ test('markdownElements, header IDs urlFn', (t) => {
 });
 
 
-test('markdownElements, duplicate header IDs', (t) => {
+test('markdownElements, duplicate header IDs', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -372,7 +371,7 @@ test('markdownElements, duplicate header IDs', (t) => {
         ]
     }), {'headerIds': true});
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -405,7 +404,7 @@ test('markdownElements, duplicate header IDs', (t) => {
 });
 
 
-test('markdownElements, duplicate header IDs with usedHeaderIds option', (t) => {
+test('markdownElements, duplicate header IDs with usedHeaderIds option', () => {
     const elements = markdownElements(
         validateMarkdownModel({
             'parts': [
@@ -443,7 +442,7 @@ test('markdownElements, duplicate header IDs with usedHeaderIds option', (t) => 
         }
     );
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -476,7 +475,7 @@ test('markdownElements, duplicate header IDs with usedHeaderIds option', (t) => 
 });
 
 
-test('markdownElementsAsync, duplicate header IDs with usedHeaderIds option', async (t) => {
+test('markdownElementsAsync, duplicate header IDs with usedHeaderIds option', async () => {
     const elements = await markdownElementsAsync(
         validateMarkdownModel({
             'parts': [
@@ -514,7 +513,7 @@ test('markdownElementsAsync, duplicate header IDs with usedHeaderIds option', as
         }
     );
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -547,7 +546,7 @@ test('markdownElementsAsync, duplicate header IDs with usedHeaderIds option', as
 });
 
 
-test('markdownElements, line break', (t) => {
+test('markdownElements, line break', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -562,7 +561,7 @@ test('markdownElements, line break', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -578,7 +577,7 @@ test('markdownElements, line break', (t) => {
 });
 
 
-test('markdownElements, horizontal rule', (t) => {
+test('markdownElements, horizontal rule', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {'paragraph': {'spans': [{'text': 'Some text'}]}},
@@ -587,7 +586,7 @@ test('markdownElements, horizontal rule', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {'html': 'p', 'elem': [{'text': 'Some text'}]},
@@ -598,7 +597,7 @@ test('markdownElements, horizontal rule', (t) => {
 });
 
 
-test('markdownElements, link span with no title', (t) => {
+test('markdownElements, link span with no title', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -614,7 +613,7 @@ test('markdownElements, link span with no title', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -632,7 +631,7 @@ test('markdownElements, link span with no title', (t) => {
 });
 
 
-test('markdownElements, image span with no title', (t) => {
+test('markdownElements, image span with no title', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -648,7 +647,7 @@ test('markdownElements, image span with no title', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -669,7 +668,7 @@ test('markdownElements, image span with no title', (t) => {
 });
 
 
-test('markdownElements, link reference', (t) => {
+test('markdownElements, link reference', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -686,7 +685,7 @@ test('markdownElements, link reference', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -700,7 +699,7 @@ test('markdownElements, link reference', (t) => {
 });
 
 
-test('markdownElements, code span', (t) => {
+test('markdownElements, code span', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -714,7 +713,7 @@ test('markdownElements, code span', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -729,7 +728,7 @@ test('markdownElements, code span', (t) => {
 });
 
 
-test('markdownElements, code block with language', (t) => {
+test('markdownElements, code block with language', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -744,7 +743,7 @@ test('markdownElements, code block with language', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -762,7 +761,7 @@ test('markdownElements, code block with language', (t) => {
 });
 
 
-test('markdownElements, code block with language override', (t) => {
+test('markdownElements, code block with language override', () => {
     const codeBlocks = {
         'fooscript': (codeBlock) => ({'text': `${codeBlock.language}, ${JSON.stringify(codeBlock.lines)}`})
     };
@@ -780,7 +779,7 @@ test('markdownElements, code block with language override', (t) => {
         ]
     }), {'codeBlocks': codeBlocks});
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {'text': 'fooscript, ["foo();","bar();"]'}
@@ -789,7 +788,7 @@ test('markdownElements, code block with language override', (t) => {
 });
 
 
-test('markdownElements, table', (t) => {
+test('markdownElements, table', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -805,7 +804,7 @@ test('markdownElements, table', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -847,7 +846,7 @@ test('markdownElements, table', (t) => {
 });
 
 
-test('markdownElements, table no rows', (t) => {
+test('markdownElements, table no rows', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -859,7 +858,7 @@ test('markdownElements, table no rows', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -882,7 +881,7 @@ test('markdownElements, table no rows', (t) => {
 });
 
 
-test('markdownElements, table missing align', (t) => {
+test('markdownElements, table missing align', () => {
     const elements = markdownElements(validateMarkdownModel({
         'parts': [
             {
@@ -897,7 +896,7 @@ test('markdownElements, table missing align', (t) => {
         ]
     }));
     validateElements(elements);
-    t.deepEqual(
+    assert.deepEqual(
         elements,
         [
             {
@@ -932,7 +931,7 @@ test('markdownElements, table missing align', (t) => {
 });
 
 
-test('markdownElements, relative and absolute URLs', (t) => {
+test('markdownElements, relative and absolute URLs', () => {
     const markdown = validateMarkdownModel({
         'parts': [
             {
@@ -1061,7 +1060,7 @@ test('markdownElements, relative and absolute URLs', (t) => {
     // Test without options
     const elements = markdownElements(markdown);
     validateElements(elements);
-    t.deepEqual(elements, defaultElements);
+    assert.deepEqual(elements, defaultElements);
 
     // Test with urlFn option - relative file fixup
     const rNotRelativeURL = /^(?:[a-z]+:|\/|\?|#)/;
@@ -1070,7 +1069,7 @@ test('markdownElements, relative and absolute URLs', (t) => {
         'urlFn': (url) => (isRelativeURL(url) ? `https://foo.com/${url}` : url)
     });
     validateElements(elementsURL);
-    t.deepEqual(
+    assert.deepEqual(
         elementsURL,
         [
             {

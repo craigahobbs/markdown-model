@@ -1,22 +1,21 @@
 // Licensed under the MIT License
 // https://github.com/craigahobbs/markdown-model/blob/main/LICENSE
 
-/* eslint-disable id-length */
-
 import {escapeMarkdownText, getMarkdownParagraphText, getMarkdownTitle, parseMarkdown} from '../lib/parser.js';
-import test from 'ava';
+import {strict as assert} from 'node:assert';
+import test from 'node:test';
 import {validateMarkdownModel} from '../lib/model.js';
 
 
-test('escapeMarkdownText', (t) => {
-    t.is(
+test('escapeMarkdownText', () => {
+    assert.equal(
         escapeMarkdownText('Escape me: \\ [ ] ( ) < > " \' * _ ~ ` # | -'),
         'Escape me: \\\\ \\[ \\] \\( \\) \\< \\> \\" \\\' \\* \\_ \\~ \\` \\# \\| \\-'
     );
 });
 
 
-test('getMarkdownTitle', (t) => {
+test('getMarkdownTitle', () => {
     const markdownModel = parseMarkdown(`\
 This is some text
 
@@ -26,37 +25,37 @@ This is some text
 
 This is more text
 `);
-    t.is(getMarkdownTitle(markdownModel), 'This is the title');
+    assert.equal(getMarkdownTitle(markdownModel), 'This is the title');
 });
 
 
-test('getMarkdownTitle, link', (t) => {
+test('getMarkdownTitle, link', () => {
     const markdownModel = parseMarkdown(`\
 # This is the [title](about.html)
 `);
-    t.is(getMarkdownTitle(markdownModel), 'This is the title');
+    assert.equal(getMarkdownTitle(markdownModel), 'This is the title');
 });
 
 
-test('getMarkdownTitle, image', (t) => {
+test('getMarkdownTitle, image', () => {
     const markdownModel = parseMarkdown(`\
 # This is the ![title](title.jpg)
 `);
-    t.is(getMarkdownTitle(markdownModel), 'This is the title');
+    assert.equal(getMarkdownTitle(markdownModel), 'This is the title');
 });
 
 
-test('getMarkdownTitle, no title', (t) => {
+test('getMarkdownTitle, no title', () => {
     const markdownModel = parseMarkdown(`\
 This is some text
 
 This is more text
 `);
-    t.is(getMarkdownTitle(markdownModel), null);
+    assert.equal(getMarkdownTitle(markdownModel), null);
 });
 
 
-test('getMarkdownParagraphText', (t) => {
+test('getMarkdownParagraphText', () => {
     const markdownModel = parseMarkdown(`\
 This is a [link](link.html)
 and some more text
@@ -64,11 +63,11 @@ and some more text
 Some other text
 `);
     const [{paragraph}] = markdownModel.parts;
-    t.is(getMarkdownParagraphText(paragraph), 'This is a link\nand some more text');
+    assert.equal(getMarkdownParagraphText(paragraph), 'This is a link\nand some more text');
 });
 
 
-test('parseMarkdown', (t) => {
+test('parseMarkdown', () => {
     const markdown = parseMarkdown(`\
 # Title
 
@@ -78,7 +77,7 @@ This is another sentence.
 
 This is another paragraph.`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -91,7 +90,7 @@ This is another paragraph.`);
 });
 
 
-test('parseMarkdown, lines', (t) => {
+test('parseMarkdown, lines', () => {
     const markdown = parseMarkdown([
         '# Title',
         '',
@@ -102,7 +101,7 @@ test('parseMarkdown, lines', (t) => {
         'This is another paragraph.\n\nAnd another.'
     ]);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -116,7 +115,7 @@ test('parseMarkdown, lines', (t) => {
 });
 
 
-test('parseMarkdown, tabs', (t) => {
+test('parseMarkdown, tabs', () => {
     const markdown = parseMarkdown(`\
 This is a tab "\t".
 
@@ -125,7 +124,7 @@ This is a tab "\t".
 \t* List 2 - 2
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -149,10 +148,10 @@ This is a tab "\t".
 });
 
 
-test('parseMarkdown, empty', (t) => {
+test('parseMarkdown, empty', () => {
     const markdown = parseMarkdown('');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': []
@@ -161,7 +160,7 @@ test('parseMarkdown, empty', (t) => {
 });
 
 
-test('parseMarkdown, horizontal rule', (t) => {
+test('parseMarkdown, horizontal rule', () => {
     const markdown = parseMarkdown(`\
 Some text
 ***
@@ -169,7 +168,7 @@ Some text
 More text
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -183,14 +182,14 @@ More text
 });
 
 
-test('parseMarkdown, horizontal rule variety', (t) => {
+test('parseMarkdown, horizontal rule variety', () => {
     const markdown = parseMarkdown(`\
 ***
 ---
 ___
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -203,14 +202,14 @@ ___
 });
 
 
-test('parseMarkdown, horizontal rule not enough characters', (t) => {
+test('parseMarkdown, horizontal rule not enough characters', () => {
     const markdown = parseMarkdown(`\
 --
 **
 __
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -221,7 +220,7 @@ __
 });
 
 
-test('parseMarkdown, horizontal rule initial space', (t) => {
+test('parseMarkdown, horizontal rule initial space', () => {
     const markdown = parseMarkdown(`\
  ***
   ***
@@ -229,7 +228,7 @@ test('parseMarkdown, horizontal rule initial space', (t) => {
     ***
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -246,14 +245,14 @@ test('parseMarkdown, horizontal rule initial space', (t) => {
 });
 
 
-test('parseMarkdown, horizontal rule more than three characters', (t) => {
+test('parseMarkdown, horizontal rule more than three characters', () => {
     const markdown = parseMarkdown(`\
 -------------------------------------
 *************************************
 _____________________________________
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -266,7 +265,7 @@ _____________________________________
 });
 
 
-test('parseMarkdown, horizontal rule spaces', (t) => {
+test('parseMarkdown, horizontal rule spaces', () => {
     const markdown = parseMarkdown(`\
 Some text
  -  -    --
@@ -274,7 +273,7 @@ Some text
  _  _    __
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -288,12 +287,12 @@ Some text
 });
 
 
-test('parseMarkdown, horizontal rule beyond code block', (t) => {
+test('parseMarkdown, horizontal rule beyond code block', () => {
     const markdown = parseMarkdown(`\
     *****
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -304,7 +303,7 @@ test('parseMarkdown, horizontal rule beyond code block', (t) => {
 });
 
 
-test('parseMarkdown, horizontal rule following code block', (t) => {
+test('parseMarkdown, horizontal rule following code block', () => {
     const markdown = parseMarkdown(`\
 This is a horizontal fule immediately following a code block:
 
@@ -313,7 +312,7 @@ This is a horizontal fule immediately following a code block:
 ---
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -326,14 +325,14 @@ This is a horizontal fule immediately following a code block:
 });
 
 
-test('parseMarkdown, horizontal rule separating lists', (t) => {
+test('parseMarkdown, horizontal rule separating lists', () => {
     const markdown = parseMarkdown(`\
 - foo
 ***
 - bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -354,14 +353,14 @@ test('parseMarkdown, horizontal rule separating lists', (t) => {
 });
 
 
-test('parseMarkdown, horizontal rule separating lists 2', (t) => {
+test('parseMarkdown, horizontal rule separating lists 2', () => {
     const markdown = parseMarkdown(`\
 * foo
 * * *
 * bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -382,13 +381,13 @@ test('parseMarkdown, horizontal rule separating lists 2', (t) => {
 });
 
 
-test('parseMarkdown, horizontal rule within list', (t) => {
+test('parseMarkdown, horizontal rule within list', () => {
     const markdown = parseMarkdown(`\
 - foo
 - * * *
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -406,14 +405,14 @@ test('parseMarkdown, horizontal rule within list', (t) => {
 });
 
 
-test('parseMarkdown, horizontal rule separating paragraphs', (t) => {
+test('parseMarkdown, horizontal rule separating paragraphs', () => {
     const markdown = parseMarkdown(`\
 foo
 ***
 bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -426,14 +425,14 @@ bar
 });
 
 
-test('parseMarkdown, horizontal rule header actually', (t) => {
+test('parseMarkdown, horizontal rule header actually', () => {
     const markdown = parseMarkdown(`\
 foo
 ---
 bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -445,7 +444,7 @@ bar
 });
 
 
-test('parseMarkdown, heading', (t) => {
+test('parseMarkdown, heading', () => {
     const markdown = parseMarkdown(`\
 # foo
 ## foo
@@ -456,7 +455,7 @@ test('parseMarkdown, heading', (t) => {
 ####### foo
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -473,14 +472,14 @@ test('parseMarkdown, heading', (t) => {
 });
 
 
-test('parseMarkdown, heading not', (t) => {
+test('parseMarkdown, heading not', () => {
     const markdown = parseMarkdown(`\
 #5 bolt
 
 #hashtag
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -492,12 +491,12 @@ test('parseMarkdown, heading not', (t) => {
 });
 
 
-test('parseMarkdown, heading escape', (t) => {
+test('parseMarkdown, heading escape', () => {
     const markdown = parseMarkdown(`\
 \\## foo
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -508,12 +507,12 @@ test('parseMarkdown, heading escape', (t) => {
 });
 
 
-test('parseMarkdown, heading spans', (t) => {
+test('parseMarkdown, heading spans', () => {
     const markdown = parseMarkdown(`\
 # foo *bar* \\*baz\\*
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -528,12 +527,12 @@ test('parseMarkdown, heading spans', (t) => {
 });
 
 
-test('parseMarkdown, heading leading/trailing whitespace', (t) => {
+test('parseMarkdown, heading leading/trailing whitespace', () => {
     const markdown = parseMarkdown(`\
 #                  foo${'                     '}
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -544,7 +543,7 @@ test('parseMarkdown, heading leading/trailing whitespace', (t) => {
 });
 
 
-test('parseMarkdown, heading indent', (t) => {
+test('parseMarkdown, heading indent', () => {
     const markdown = parseMarkdown(`\
  ### foo
   ## foo
@@ -552,7 +551,7 @@ test('parseMarkdown, heading indent', (t) => {
     # foo
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -566,14 +565,14 @@ test('parseMarkdown, heading indent', (t) => {
 });
 
 
-test('parseMarkdown, heading closing characters', (t) => {
+test('parseMarkdown, heading closing characters', () => {
     const markdown = parseMarkdown(`\
 ## foo ##
   ###   bar    ###
 ### foo ###${'     '}
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -586,13 +585,13 @@ test('parseMarkdown, heading closing characters', (t) => {
 });
 
 
-test('parseMarkdown, heading closing characters length', (t) => {
+test('parseMarkdown, heading closing characters length', () => {
     const markdown = parseMarkdown(`\
 # foo ##################################
 ##### foo ##
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -604,12 +603,12 @@ test('parseMarkdown, heading closing characters length', (t) => {
 });
 
 
-test('parseMarkdown, heading closing characters not', (t) => {
+test('parseMarkdown, heading closing characters not', () => {
     const markdown = parseMarkdown(`\
 ### foo ### b
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -620,12 +619,12 @@ test('parseMarkdown, heading closing characters not', (t) => {
 });
 
 
-test('parseMarkdown, heading closing characters no leading space', (t) => {
+test('parseMarkdown, heading closing characters no leading space', () => {
     const markdown = parseMarkdown(`\
 # foo#
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -636,14 +635,14 @@ test('parseMarkdown, heading closing characters no leading space', (t) => {
 });
 
 
-test('parseMarkdown, heading closing characters escaped', (t) => {
+test('parseMarkdown, heading closing characters escaped', () => {
     const markdown = parseMarkdown(`\
 ### foo \\###
 ## foo #\\##
 # foo \\#
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -656,14 +655,14 @@ test('parseMarkdown, heading closing characters escaped', (t) => {
 });
 
 
-test('parseMarkdown, heading separates horizontal rules', (t) => {
+test('parseMarkdown, heading separates horizontal rules', () => {
     const markdown = parseMarkdown(`\
 ****
 ## foo
 ****
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -676,14 +675,14 @@ test('parseMarkdown, heading separates horizontal rules', (t) => {
 });
 
 
-test('parseMarkdown, heading separates paragraphs', (t) => {
+test('parseMarkdown, heading separates paragraphs', () => {
     const markdown = parseMarkdown(`\
 Foo bar
 # baz
 Bar foo
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -696,14 +695,14 @@ Bar foo
 });
 
 
-test('parseMarkdown, heading empty', (t) => {
+test('parseMarkdown, heading empty', () => {
     const markdown = parseMarkdown(`\
 ##${' '}
 #
 ### ###
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -716,7 +715,7 @@ test('parseMarkdown, heading empty', (t) => {
 });
 
 
-test('parseMarkdown, heading alternate', (t) => {
+test('parseMarkdown, heading alternate', () => {
     const markdown = parseMarkdown(`\
 Title *Emphasis*
 ================
@@ -729,7 +728,7 @@ Subtitle *Emphasis*
 Some words.
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -749,14 +748,14 @@ Some words.
 });
 
 
-test('parseMarkdown, heading alternate multiline', (t) => {
+test('parseMarkdown, heading alternate multiline', () => {
     const markdown = parseMarkdown(`\
 Title
 *and* More
   ===
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -771,7 +770,7 @@ Title
 });
 
 
-test('parseMarkdown, heading alternate length', (t) => {
+test('parseMarkdown, heading alternate length', () => {
     const markdown = parseMarkdown(`\
 Foo
 -------------------------
@@ -780,7 +779,7 @@ Foo
 =
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -792,7 +791,7 @@ Foo
 });
 
 
-test('parseMarkdown, heading alternate indented', (t) => {
+test('parseMarkdown, heading alternate indented', () => {
     const markdown = parseMarkdown(`\
    Foo
 ---
@@ -804,7 +803,7 @@ test('parseMarkdown, heading alternate indented', (t) => {
   ===
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -817,7 +816,7 @@ test('parseMarkdown, heading alternate indented', (t) => {
 });
 
 
-test('parseMarkdown, heading alternate indented too much', (t) => {
+test('parseMarkdown, heading alternate indented too much', () => {
     const markdown = parseMarkdown(`\
     Foo
     ---
@@ -826,7 +825,7 @@ test('parseMarkdown, heading alternate indented too much', (t) => {
 ---
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -838,13 +837,13 @@ test('parseMarkdown, heading alternate indented too much', (t) => {
 });
 
 
-test('parseMarkdown, heading alternate indented too much 2', (t) => {
+test('parseMarkdown, heading alternate indented too much 2', () => {
     const markdown = parseMarkdown(`\
 Foo
     ---
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -855,7 +854,7 @@ Foo
 });
 
 
-test('parseMarkdown, heading alternate no internal spaces', (t) => {
+test('parseMarkdown, heading alternate no internal spaces', () => {
     const markdown = parseMarkdown(`\
 Foo
 = =
@@ -864,7 +863,7 @@ Foo
 --- -
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -877,13 +876,13 @@ Foo
 });
 
 
-test('parseMarkdown, heading alternate break', (t) => {
+test('parseMarkdown, heading alternate break', () => {
     const markdown = parseMarkdown(`\
 Foo${'  '}
 -----
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -894,13 +893,13 @@ Foo${'  '}
 });
 
 
-test('parseMarkdown, heading alternate following block quote', (t) => {
+test('parseMarkdown, heading alternate following block quote', () => {
     const markdown = parseMarkdown(`\
 > Foo
 ---
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -912,14 +911,14 @@ test('parseMarkdown, heading alternate following block quote', (t) => {
 });
 
 
-test('parseMarkdown, heading alternate block quote continuation', (t) => {
+test('parseMarkdown, heading alternate block quote continuation', () => {
     const markdown = parseMarkdown(`\
 > foo
 bar
 ===
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -933,13 +932,13 @@ bar
 });
 
 
-test('parseMarkdown, heading alternate following list', (t) => {
+test('parseMarkdown, heading alternate following list', () => {
     const markdown = parseMarkdown(`\
 - Foo
 ---
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {'parts': [
             {'list': {
@@ -955,14 +954,14 @@ test('parseMarkdown, heading alternate following list', (t) => {
 });
 
 
-test('parseMarkdown, heading alternate following list multiline', (t) => {
+test('parseMarkdown, heading alternate following list multiline', () => {
     const markdown = parseMarkdown(`\
 - Title
 and more
 =====
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {'parts': [
             {'list': {
@@ -980,13 +979,13 @@ and more
 });
 
 
-test('parseMarkdown, heading alternate following code block', (t) => {
+test('parseMarkdown, heading alternate following code block', () => {
     const markdown = parseMarkdown(`\
 Title
     =====
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {'parts': [
             {'paragraph': {
@@ -997,7 +996,7 @@ Title
 });
 
 
-test('parseMarkdown, heading alternate no blanks', (t) => {
+test('parseMarkdown, heading alternate no blanks', () => {
     const markdown = parseMarkdown(`\
 ---
 Foo
@@ -1007,7 +1006,7 @@ Bar
 Baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {'parts': [
             {'hr': 1},
@@ -1019,7 +1018,7 @@ Baz
 });
 
 
-test('parseMarkdown, list', (t) => {
+test('parseMarkdown, list', () => {
     const markdown = parseMarkdown(`\
 - item 1
 
@@ -1029,7 +1028,7 @@ test('parseMarkdown, list', (t) => {
 another
 + item 3`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1055,14 +1054,14 @@ another
 });
 
 
-test('parseMarkdown, list numbered', (t) => {
+test('parseMarkdown, list numbered', () => {
     const markdown = parseMarkdown(`\
 1. foo
 2. bar
 3) baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1088,7 +1087,7 @@ test('parseMarkdown, list numbered', (t) => {
 });
 
 
-test('parseMarkdown, list mixed', (t) => {
+test('parseMarkdown, list mixed', () => {
     const markdown = parseMarkdown(`\
 1. item 1
 
@@ -1098,7 +1097,7 @@ test('parseMarkdown, list mixed', (t) => {
 another
 + item 3`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1131,14 +1130,14 @@ another
 });
 
 
-test('parseMarkdown, list paragraph-adjascent', (t) => {
+test('parseMarkdown, list paragraph-adjascent', () => {
     const markdown = parseMarkdown(`\
 Foo
 - bar
 - baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1161,14 +1160,14 @@ Foo
 });
 
 
-test('parseMarkdown, list numbered paragraph-adjascent', (t) => {
+test('parseMarkdown, list numbered paragraph-adjascent', () => {
     const markdown = parseMarkdown(`\
 Foo
 1. bar
 2. baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1192,7 +1191,7 @@ Foo
 });
 
 
-test('parseMarkdown, list nested', (t) => {
+test('parseMarkdown, list nested', () => {
     const markdown = parseMarkdown(`\
 - 1
  - 2
@@ -1208,7 +1207,7 @@ test('parseMarkdown, list nested', (t) => {
 asdf
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1254,7 +1253,7 @@ asdf
 });
 
 
-test('parseMarkdown, list item paragraph', (t) => {
+test('parseMarkdown, list item paragraph', () => {
     const markdown = parseMarkdown(`\
 - foo
   - bar
@@ -1264,7 +1263,7 @@ test('parseMarkdown, list item paragraph', (t) => {
       bim
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1296,7 +1295,7 @@ test('parseMarkdown, list item paragraph', (t) => {
 });
 
 
-test('parseMarkdown, list nudge', (t) => {
+test('parseMarkdown, list nudge', () => {
     const markdown = parseMarkdown(`\
 - a
  - b
@@ -1307,7 +1306,7 @@ test('parseMarkdown, list nudge', (t) => {
 - g
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1342,7 +1341,7 @@ test('parseMarkdown, list nudge', (t) => {
 });
 
 
-test('parseMarkdown, list numbered nudge', (t) => {
+test('parseMarkdown, list numbered nudge', () => {
     const markdown = parseMarkdown(`\
 1. a
 
@@ -1351,7 +1350,7 @@ test('parseMarkdown, list numbered nudge', (t) => {
    3. c
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1375,7 +1374,7 @@ test('parseMarkdown, list numbered nudge', (t) => {
 });
 
 
-test('parseMarkdown, list nudge max indent', (t) => {
+test('parseMarkdown, list nudge max indent', () => {
     const markdown = parseMarkdown(`\
 - a
  - b
@@ -1384,7 +1383,7 @@ test('parseMarkdown, list nudge max indent', (t) => {
     - e
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1408,7 +1407,7 @@ test('parseMarkdown, list nudge max indent', (t) => {
 });
 
 
-test('parseMarkdown, list numbered nudge max indent', (t) => {
+test('parseMarkdown, list numbered nudge max indent', () => {
     const markdown = parseMarkdown(`\
 1. a
 
@@ -1417,7 +1416,7 @@ test('parseMarkdown, list numbered nudge max indent', (t) => {
     3. c
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1442,7 +1441,7 @@ test('parseMarkdown, list numbered nudge max indent', (t) => {
 });
 
 
-test('parseMarkdown, list empty item', (t) => {
+test('parseMarkdown, list empty item', () => {
     const markdown = parseMarkdown(`\
 * a
 *
@@ -1450,7 +1449,7 @@ test('parseMarkdown, list empty item', (t) => {
 * c
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1468,7 +1467,7 @@ test('parseMarkdown, list empty item', (t) => {
 });
 
 
-test('parseMarkdown, list empty item 2', (t) => {
+test('parseMarkdown, list empty item 2', () => {
     const markdown = parseMarkdown(`\
 * a
 *${' '}
@@ -1476,7 +1475,7 @@ test('parseMarkdown, list empty item 2', (t) => {
 * c
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1495,7 +1494,7 @@ test('parseMarkdown, list empty item 2', (t) => {
 });
 
 
-test('parseMarkdown, list item code block', (t) => {
+test('parseMarkdown, list item code block', () => {
     const markdown = parseMarkdown(`\
 - a
 - ~~~
@@ -1506,7 +1505,7 @@ test('parseMarkdown, list item code block', (t) => {
 - c
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1530,7 +1529,7 @@ test('parseMarkdown, list item code block', (t) => {
 });
 
 
-test('parseMarkdown, list item lines', (t) => {
+test('parseMarkdown, list item lines', () => {
     const markdown = parseMarkdown(`\
 - a
   - b
@@ -1539,7 +1538,7 @@ test('parseMarkdown, list item lines', (t) => {
 - d
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1563,7 +1562,7 @@ test('parseMarkdown, list item lines', (t) => {
 });
 
 
-test('parseMarkdown, list item block quote', (t) => {
+test('parseMarkdown, list item block quote', () => {
     const markdown = parseMarkdown(`\
 - a
 - > abc
@@ -1572,7 +1571,7 @@ test('parseMarkdown, list item block quote', (t) => {
 - c
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1598,7 +1597,7 @@ test('parseMarkdown, list item block quote', (t) => {
 });
 
 
-test('parseMarkdown, list terminated with fenced code block', (t) => {
+test('parseMarkdown, list terminated with fenced code block', () => {
     const markdown = parseMarkdown(`\
 - Item 1
 
@@ -1607,7 +1606,7 @@ foo
 ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1623,7 +1622,7 @@ foo
 });
 
 
-test('parseMarkdown, block quote', (t) => {
+test('parseMarkdown, block quote', () => {
     const markdown = parseMarkdown(`\
 This is a quote:
 
@@ -1633,7 +1632,7 @@ This is a quote:
 
 Cool, huh?`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1648,7 +1647,7 @@ Cool, huh?`);
 });
 
 
-test('parseMarkdown, block quote nested', (t) => {
+test('parseMarkdown, block quote nested', () => {
     const markdown = parseMarkdown(`\
 > Quote text
 >
@@ -1657,7 +1656,7 @@ test('parseMarkdown, block quote nested', (t) => {
 >    > Inner text 2
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1674,7 +1673,7 @@ test('parseMarkdown, block quote nested', (t) => {
 });
 
 
-test('parseMarkdown, block quote nested complex', (t) => {
+test('parseMarkdown, block quote nested complex', () => {
     const markdown = parseMarkdown(`\
 > L1-1
 >
@@ -1683,7 +1682,7 @@ test('parseMarkdown, block quote nested complex', (t) => {
 Hello?
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1703,7 +1702,7 @@ Hello?
 });
 
 
-test('parseMarkdown, block quote nested list', (t) => {
+test('parseMarkdown, block quote nested list', () => {
     const markdown = parseMarkdown(`\
 >- List 1
 >
@@ -1712,7 +1711,7 @@ test('parseMarkdown, block quote nested list', (t) => {
    >   and more
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1733,13 +1732,13 @@ test('parseMarkdown, block quote nested list', (t) => {
 });
 
 
-test('parseMarkdown, block quote is a code block', (t) => {
+test('parseMarkdown, block quote is a code block', () => {
     const markdown = parseMarkdown(`\
     > really
     > a code block
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1750,14 +1749,14 @@ test('parseMarkdown, block quote is a code block', (t) => {
 });
 
 
-test('parseMarkdown, block quote lazy', (t) => {
+test('parseMarkdown, block quote lazy', () => {
     const markdown = parseMarkdown(`\
 > # Foo
 > bar
 baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1771,14 +1770,14 @@ baz
 });
 
 
-test('parseMarkdown, block quote lazy mixed', (t) => {
+test('parseMarkdown, block quote lazy mixed', () => {
     const markdown = parseMarkdown(`\
 > bar
 baz
 > foo
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1791,13 +1790,13 @@ baz
 });
 
 
-test('parseMarkdown, block quote terminate with hr', (t) => {
+test('parseMarkdown, block quote terminate with hr', () => {
     const markdown = parseMarkdown(`\
 > foo
 ---
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1811,13 +1810,13 @@ test('parseMarkdown, block quote terminate with hr', (t) => {
 });
 
 
-test('parseMarkdown, block quote terminate with list', (t) => {
+test('parseMarkdown, block quote terminate with list', () => {
     const markdown = parseMarkdown(`\
 > - foo
 - bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1839,13 +1838,13 @@ test('parseMarkdown, block quote terminate with list', (t) => {
 });
 
 
-test('parseMarkdown, block quote not terminated with code block', (t) => {
+test('parseMarkdown, block quote not terminated with code block', () => {
     const markdown = parseMarkdown(`\
 >     foo
     bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1858,13 +1857,13 @@ test('parseMarkdown, block quote not terminated with code block', (t) => {
 });
 
 
-test('parseMarkdown, block quote terminates code block', (t) => {
+test('parseMarkdown, block quote terminates code block', () => {
     const markdown = parseMarkdown(`\
     foo
 > bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1876,14 +1875,14 @@ test('parseMarkdown, block quote terminates code block', (t) => {
 });
 
 
-test('parseMarkdown, block quote terminates list', (t) => {
+test('parseMarkdown, block quote terminates list', () => {
     const markdown = parseMarkdown(`\
 - item 1
 
 > quote
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1901,12 +1900,12 @@ test('parseMarkdown, block quote terminates list', (t) => {
 });
 
 
-test('parseMarkdown, block quote empty', (t) => {
+test('parseMarkdown, block quote empty', () => {
     const markdown = parseMarkdown(`\
 >
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1917,7 +1916,7 @@ test('parseMarkdown, block quote empty', (t) => {
 });
 
 
-test('parseMarkdown, code block', (t) => {
+test('parseMarkdown, code block', () => {
     const markdown = parseMarkdown(`\
 This is some code:
 
@@ -1928,7 +1927,7 @@ This is some code:
 
 Cool, huh?`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1941,7 +1940,7 @@ Cool, huh?`);
 });
 
 
-test('parseMarkdown, code block with fenced code block text', (t) => {
+test('parseMarkdown, code block with fenced code block text', () => {
     const markdown = parseMarkdown(`\
 This is a fenced code block:
 
@@ -1954,7 +1953,7 @@ This is a fenced code block:
 
 Cool, huh?`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1977,14 +1976,14 @@ Cool, huh?`);
 });
 
 
-test('parseMarkdown, code block actually list item text', (t) => {
+test('parseMarkdown, code block actually list item text', () => {
     const markdown = parseMarkdown(`\
   - foo
 
     bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2000,14 +1999,14 @@ test('parseMarkdown, code block actually list item text', (t) => {
 });
 
 
-test('parseMarkdown, code block actually list item text 2', (t) => {
+test('parseMarkdown, code block actually list item text 2', () => {
     const markdown = parseMarkdown(`\
 1.  foo
 
     - bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2030,7 +2029,7 @@ test('parseMarkdown, code block actually list item text 2', (t) => {
 });
 
 
-test('parseMarkdown, code block blanks', (t) => {
+test('parseMarkdown, code block blanks', () => {
     const markdown = parseMarkdown(`\
     chunk1
 
@@ -2041,7 +2040,7 @@ ${' '}
     chunk3
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2063,13 +2062,13 @@ ${' '}
 });
 
 
-test('parseMarkdown, code block no paragraph interrupt', (t) => {
+test('parseMarkdown, code block no paragraph interrupt', () => {
     const markdown = parseMarkdown(`\
 Foo
     bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2080,13 +2079,13 @@ Foo
 });
 
 
-test('parseMarkdown, code block paragraph terminates', (t) => {
+test('parseMarkdown, code block paragraph terminates', () => {
     const markdown = parseMarkdown(`\
     foo
 bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2098,7 +2097,7 @@ bar
 });
 
 
-test('parseMarkdown, code block follows header', (t) => {
+test('parseMarkdown, code block follows header', () => {
     const markdown = parseMarkdown(`\
 # Heading
     foo
@@ -2108,7 +2107,7 @@ Heading
 ----
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2123,12 +2122,12 @@ Heading
 });
 
 
-test('parseMarkdown, code block trailing spaces', (t) => {
+test('parseMarkdown, code block trailing spaces', () => {
     const markdown = parseMarkdown(`\
     foo${'  '}
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2139,7 +2138,7 @@ test('parseMarkdown, code block trailing spaces', (t) => {
 });
 
 
-test('parseMarkdown, fenced code block', (t) => {
+test('parseMarkdown, fenced code block', () => {
     const markdown = parseMarkdown(`\
 This is some code:
 
@@ -2149,7 +2148,7 @@ bar();
 ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2161,7 +2160,7 @@ bar();
 });
 
 
-test('parseMarkdown, fenced code block length', (t) => {
+test('parseMarkdown, fenced code block length', () => {
     const markdown = parseMarkdown(`\
 ~~~~
 aaa
@@ -2169,7 +2168,7 @@ aaa
 ~~~~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2180,14 +2179,14 @@ aaa
 });
 
 
-test('parseMarkdown, fenced code block not', (t) => {
+test('parseMarkdown, fenced code block not', () => {
     const markdown = parseMarkdown(`\
 \`\`
 foo
 \`\`
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2198,7 +2197,7 @@ foo
 });
 
 
-test('parseMarkdown, fenced code block with fenced code block text', (t) => {
+test('parseMarkdown, fenced code block with fenced code block text', () => {
     const markdown = parseMarkdown(`\
 This is some code:
 
@@ -2210,7 +2209,7 @@ bar();
 \`\`\`
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2222,7 +2221,7 @@ bar();
 });
 
 
-test('parseMarkdown, fenced code block empty', (t) => {
+test('parseMarkdown, fenced code block empty', () => {
     const markdown = parseMarkdown(`\
 This is some code:
 
@@ -2230,7 +2229,7 @@ This is some code:
 ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2242,13 +2241,13 @@ This is some code:
 });
 
 
-test('parseMarkdown, empty, fenced code block end-of-file', (t) => {
+test('parseMarkdown, empty, fenced code block end-of-file', () => {
     const markdown = parseMarkdown(`\
 This is some code:
 
 ~~~`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2260,7 +2259,7 @@ This is some code:
 });
 
 
-test('parseMarkdown, fenced code block language', (t) => {
+test('parseMarkdown, fenced code block language', () => {
     const markdown = parseMarkdown(`\
 This is some code:
 
@@ -2270,7 +2269,7 @@ bar();
 ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2282,14 +2281,14 @@ bar();
 });
 
 
-test('parseMarkdown, fenced code block language no space', (t) => {
+test('parseMarkdown, fenced code block language no space', () => {
     const markdown = parseMarkdown(`\
 ~~~javascript
 foo();
 ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2300,7 +2299,7 @@ foo();
 });
 
 
-test('parseMarkdown, fenced code block nested', (t) => {
+test('parseMarkdown, fenced code block nested', () => {
     const markdown = parseMarkdown(`\
 - This is some code:
 
@@ -2310,7 +2309,7 @@ test('parseMarkdown, fenced code block nested', (t) => {
   ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2332,7 +2331,7 @@ test('parseMarkdown, fenced code block nested', (t) => {
 });
 
 
-test('parseMarkdown, fenced code block indented first line', (t) => {
+test('parseMarkdown, fenced code block indented first line', () => {
     const markdown = parseMarkdown(`\
 This is some code:
 
@@ -2342,7 +2341,7 @@ This is some code:
 ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2354,7 +2353,7 @@ This is some code:
 });
 
 
-test('parseMarkdown, fenced code block indented fence', (t) => {
+test('parseMarkdown, fenced code block indented fence', () => {
     const markdown = parseMarkdown(`\
  ~~~
  aaa
@@ -2362,7 +2361,7 @@ aaa
 ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2373,7 +2372,7 @@ aaa
 });
 
 
-test('parseMarkdown, fenced code block indented fence 2', (t) => {
+test('parseMarkdown, fenced code block indented fence 2', () => {
     const markdown = parseMarkdown(`\
   ~~~
 aaa
@@ -2382,7 +2381,7 @@ aaa
   ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2393,7 +2392,7 @@ aaa
 });
 
 
-test('parseMarkdown, fenced code block indented fence 3', (t) => {
+test('parseMarkdown, fenced code block indented fence 3', () => {
     const markdown = parseMarkdown(`\
    ~~~
    aaa
@@ -2402,7 +2401,7 @@ test('parseMarkdown, fenced code block indented fence 3', (t) => {
    ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2413,14 +2412,14 @@ test('parseMarkdown, fenced code block indented fence 3', (t) => {
 });
 
 
-test('parseMarkdown, fenced code block indented fence too much', (t) => {
+test('parseMarkdown, fenced code block indented fence too much', () => {
     const markdown = parseMarkdown(`\
     ~~~
     aaa
     ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2431,14 +2430,14 @@ test('parseMarkdown, fenced code block indented fence too much', (t) => {
 });
 
 
-test('parseMarkdown, fenced code block indented fence too much 2', (t) => {
+test('parseMarkdown, fenced code block indented fence too much 2', () => {
     const markdown = parseMarkdown(`\
 ~~~
 aaa
     ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2449,7 +2448,7 @@ aaa
 });
 
 
-test('parseMarkdown, fenced code block separates paragraphs', (t) => {
+test('parseMarkdown, fenced code block separates paragraphs', () => {
     const markdown = parseMarkdown(`\
 foo
 ~~~
@@ -2458,7 +2457,7 @@ bar
 baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2471,7 +2470,7 @@ baz
 });
 
 
-test('parseMarkdown, fenced code block separates headers', (t) => {
+test('parseMarkdown, fenced code block separates headers', () => {
     const markdown = parseMarkdown(`\
 foo
 ---
@@ -2481,7 +2480,7 @@ bar
 # baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2494,14 +2493,14 @@ bar
 });
 
 
-test('parseMarkdown, fenced code block close no language', (t) => {
+test('parseMarkdown, fenced code block close no language', () => {
     const markdown = parseMarkdown(`\
 ~~~
 ~~~ aaa
 ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2512,7 +2511,7 @@ test('parseMarkdown, fenced code block close no language', (t) => {
 });
 
 
-test('parseMarkdown, table', (t) => {
+test('parseMarkdown, table', () => {
     const markdown = parseMarkdown(`\
 This is a table:
 
@@ -2524,7 +2523,7 @@ This is a table:
 Neat!
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2564,7 +2563,7 @@ Neat!
 });
 
 
-test('parseMarkdown, table crowded', (t) => {
+test('parseMarkdown, table crowded', () => {
     const markdown = parseMarkdown(`\
 This is a table:
 |Column A|
@@ -2573,7 +2572,7 @@ This is a table:
 Neat!
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2592,7 +2591,7 @@ Neat!
 });
 
 
-test('parseMarkdown, table indented row', (t) => {
+test('parseMarkdown, table indented row', () => {
     const markdown = parseMarkdown(`\
 | Column A |
 | -------- |
@@ -2600,7 +2599,7 @@ test('parseMarkdown, table indented row', (t) => {
     | A1       |
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2618,14 +2617,14 @@ test('parseMarkdown, table indented row', (t) => {
 });
 
 
-test('parseMarkdown, table naked', (t) => {
+test('parseMarkdown, table naked', () => {
     const markdown = parseMarkdown(`\
 | abc | defghi |
 :-: | -----------:
 bar | baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2642,7 +2641,7 @@ bar | baz
 });
 
 
-test('parseMarkdown, table escapes', (t) => {
+test('parseMarkdown, table escapes', () => {
     const markdown = parseMarkdown(`\
 | f\\|oo  |
 | ------ |
@@ -2650,7 +2649,7 @@ test('parseMarkdown, table escapes', (t) => {
 | b **\\|** im |
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2668,14 +2667,14 @@ test('parseMarkdown, table escapes', (t) => {
 });
 
 
-test('parseMarkdown, table mismatched delimiter', (t) => {
+test('parseMarkdown, table mismatched delimiter', () => {
     const markdown = parseMarkdown(`\
 | abc | def |
 | --- |
 | bar |
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2693,7 +2692,7 @@ test('parseMarkdown, table mismatched delimiter', (t) => {
 });
 
 
-test('parseMarkdown, table short and long', (t) => {
+test('parseMarkdown, table short and long', () => {
     const markdown = parseMarkdown(`\
 | abc | def |
 | --- | --- |
@@ -2701,7 +2700,7 @@ test('parseMarkdown, table short and long', (t) => {
 | bar | baz | boo |
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2719,13 +2718,13 @@ test('parseMarkdown, table short and long', (t) => {
 });
 
 
-test('parseMarkdown, table empty', (t) => {
+test('parseMarkdown, table empty', () => {
     const markdown = parseMarkdown(`\
 | abc | def |
 | --- | --- |
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2739,14 +2738,14 @@ test('parseMarkdown, table empty', (t) => {
 });
 
 
-test('parseMarkdown, table list actually', (t) => {
+test('parseMarkdown, table list actually', () => {
     const markdown = parseMarkdown(`\
 A | B
 - | -
 0 | 1
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [

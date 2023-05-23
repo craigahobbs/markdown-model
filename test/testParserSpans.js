@@ -1,14 +1,13 @@
 // Licensed under the MIT License
 // https://github.com/craigahobbs/markdown-model/blob/main/LICENSE
 
-/* eslint-disable id-length */
-
+import {strict as assert} from 'node:assert';
 import {parseMarkdown} from '../lib/parser.js';
-import test from 'ava';
+import test from 'node:test';
 import {validateMarkdownModel} from '../lib/model.js';
 
 
-test('parseMarkdown, spans', (t) => {
+test('parseMarkdown, spans', () => {
     const markdown = parseMarkdown(`\
 These are some basic styles: **bold**, *italic*, ***bold-italic***.
 
@@ -21,7 +20,7 @@ This is an ![image](https://foo.com/foo.jpg) and so is ![this](https://bar.com/b
 This is code \`foo = 2 * bar\`.
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -73,12 +72,12 @@ This is code \`foo = 2 * bar\`.
 });
 
 
-test('parseMarkdown, nested spans', (t) => {
+test('parseMarkdown, nested spans', () => {
     const markdown = parseMarkdown(`\
 This is a [link **with *formatting***](https://foo.com)
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -105,12 +104,12 @@ This is a [link **with *formatting***](https://foo.com)
 });
 
 
-test('parseMarkdown, spans spaces', (t) => {
+test('parseMarkdown, spans spaces', () => {
     const markdown = parseMarkdown(`\
 ***no *** *** no*** **no ** ** no** *no * * no*
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -125,14 +124,14 @@ test('parseMarkdown, spans spaces', (t) => {
 });
 
 
-test('parseMarkdown, entity references', (t) => {
+test('parseMarkdown, entity references', () => {
     const markdown = parseMarkdown(`\
 &nbsp; &amp; &copy; &AElig; &Dcaron;
 &frac34; &HilbertSpace; &DifferentialD;
 &ClockwiseContourIntegral; &ngE;
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -150,10 +149,10 @@ test('parseMarkdown, entity references', (t) => {
 });
 
 
-test('parseMarkdown, entity decimal numeric character references', (t) => {
+test('parseMarkdown, entity decimal numeric character references', () => {
     const markdown = parseMarkdown('&#35; &#1234; &#992; &#0;');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -168,10 +167,10 @@ test('parseMarkdown, entity decimal numeric character references', (t) => {
 });
 
 
-test('parseMarkdown, entity hex numeric character references', (t) => {
+test('parseMarkdown, entity hex numeric character references', () => {
     const markdown = parseMarkdown('&#X22; &#XD06; &#xcab;');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -186,7 +185,7 @@ test('parseMarkdown, entity hex numeric character references', (t) => {
 });
 
 
-test('parseMarkdown, entity non-entities', (t) => {
+test('parseMarkdown, entity non-entities', () => {
     const markdown = parseMarkdown(`\
 &nbsp &x; &#; &#x;
 &#87654321;
@@ -194,7 +193,7 @@ test('parseMarkdown, entity non-entities', (t) => {
 &ThisIsNotDefined; &hi?;
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -213,10 +212,10 @@ test('parseMarkdown, entity non-entities', (t) => {
 });
 
 
-test('parseMarkdown, italic', (t) => {
+test('parseMarkdown, italic', () => {
     const markdown = parseMarkdown('*foo bar*');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -231,10 +230,10 @@ test('parseMarkdown, italic', (t) => {
 });
 
 
-test('parseMarkdown, italic multiline', (t) => {
+test('parseMarkdown, italic multiline', () => {
     const markdown = parseMarkdown('*text\ntext*');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -249,10 +248,10 @@ test('parseMarkdown, italic multiline', (t) => {
 });
 
 
-test('parseMarkdown, italic escape start', (t) => {
+test('parseMarkdown, italic escape start', () => {
     const markdown = parseMarkdown('\\*foo bar*');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -267,10 +266,10 @@ test('parseMarkdown, italic escape start', (t) => {
 });
 
 
-test('parseMarkdown, italic escape end', (t) => {
+test('parseMarkdown, italic escape end', () => {
     const markdown = parseMarkdown('*foo bar\\*');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -285,10 +284,10 @@ test('parseMarkdown, italic escape end', (t) => {
 });
 
 
-test('parseMarkdown, italic mismatched', (t) => {
+test('parseMarkdown, italic mismatched', () => {
     const markdown = parseMarkdown('*foo_');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -303,10 +302,10 @@ test('parseMarkdown, italic mismatched', (t) => {
 });
 
 
-test('parseMarkdown, italic internal', (t) => {
+test('parseMarkdown, italic internal', () => {
     const markdown = parseMarkdown('foo*bar*baz');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -323,10 +322,10 @@ test('parseMarkdown, italic internal', (t) => {
 });
 
 
-test('parseMarkdown, italic internal start', (t) => {
+test('parseMarkdown, italic internal start', () => {
     const markdown = parseMarkdown('*foo*bar');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -342,10 +341,10 @@ test('parseMarkdown, italic internal start', (t) => {
 });
 
 
-test('parseMarkdown, italic internal end', (t) => {
+test('parseMarkdown, italic internal end', () => {
     const markdown = parseMarkdown('foo*bar*');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -361,10 +360,10 @@ test('parseMarkdown, italic internal end', (t) => {
 });
 
 
-test('parseMarkdown, italic sentence end', (t) => {
+test('parseMarkdown, italic sentence end', () => {
     const markdown = parseMarkdown('*bar*.');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -380,10 +379,10 @@ test('parseMarkdown, italic sentence end', (t) => {
 });
 
 
-test('parseMarkdown, italic character', (t) => {
+test('parseMarkdown, italic character', () => {
     const markdown = parseMarkdown('*\\**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -398,10 +397,10 @@ test('parseMarkdown, italic character', (t) => {
 });
 
 
-test('parseMarkdown, italic whitespace', (t) => {
+test('parseMarkdown, italic whitespace', () => {
     const markdown = parseMarkdown('a * foo bar*');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -416,10 +415,10 @@ test('parseMarkdown, italic whitespace', (t) => {
 });
 
 
-test('parseMarkdown, italic whitespace 2', (t) => {
+test('parseMarkdown, italic whitespace 2', () => {
     const markdown = parseMarkdown('a *foo bar *');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -434,10 +433,10 @@ test('parseMarkdown, italic whitespace 2', (t) => {
 });
 
 
-test('parseMarkdown, italic whitespace 3', (t) => {
+test('parseMarkdown, italic whitespace 3', () => {
     const markdown = parseMarkdown('a *foo bar\n*');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -452,10 +451,10 @@ test('parseMarkdown, italic whitespace 3', (t) => {
 });
 
 
-test('parseMarkdown, italic non-breaking space', (t) => {
+test('parseMarkdown, italic non-breaking space', () => {
     const markdown = parseMarkdown(`foo *${String.fromCharCode(160)}a${String.fromCharCode(160)}*`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -470,10 +469,10 @@ test('parseMarkdown, italic non-breaking space', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic', (t) => {
+test('parseMarkdown, underscore italic', () => {
     const markdown = parseMarkdown('_foo bar_');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -488,10 +487,10 @@ test('parseMarkdown, underscore italic', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic multiline', (t) => {
+test('parseMarkdown, underscore italic multiline', () => {
     const markdown = parseMarkdown('_text\ntext_');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -506,10 +505,10 @@ test('parseMarkdown, underscore italic multiline', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic escape start', (t) => {
+test('parseMarkdown, underscore italic escape start', () => {
     const markdown = parseMarkdown('\\_foo bar_');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -524,10 +523,10 @@ test('parseMarkdown, underscore italic escape start', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic escape end', (t) => {
+test('parseMarkdown, underscore italic escape end', () => {
     const markdown = parseMarkdown('_foo bar\\_');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -542,10 +541,10 @@ test('parseMarkdown, underscore italic escape end', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic mismatched', (t) => {
+test('parseMarkdown, underscore italic mismatched', () => {
     const markdown = parseMarkdown('_foo*');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -560,10 +559,10 @@ test('parseMarkdown, underscore italic mismatched', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic internal', (t) => {
+test('parseMarkdown, underscore italic internal', () => {
     const markdown = parseMarkdown('foo_bar_baz');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -578,10 +577,10 @@ test('parseMarkdown, underscore italic internal', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic internal start', (t) => {
+test('parseMarkdown, underscore italic internal start', () => {
     const markdown = parseMarkdown('_foo_bar');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -596,10 +595,10 @@ test('parseMarkdown, underscore italic internal start', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic internal end', (t) => {
+test('parseMarkdown, underscore italic internal end', () => {
     const markdown = parseMarkdown('foo_bar_');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -614,10 +613,10 @@ test('parseMarkdown, underscore italic internal end', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic sentence end', (t) => {
+test('parseMarkdown, underscore italic sentence end', () => {
     const markdown = parseMarkdown('_bar_.');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -633,10 +632,10 @@ test('parseMarkdown, underscore italic sentence end', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic character', (t) => {
+test('parseMarkdown, underscore italic character', () => {
     const markdown = parseMarkdown('_\\__');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -651,10 +650,10 @@ test('parseMarkdown, underscore italic character', (t) => {
 });
 
 
-test('parseMarkdown, uderscore italic whitespace', (t) => {
+test('parseMarkdown, uderscore italic whitespace', () => {
     const markdown = parseMarkdown('a _ foo bar_');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -669,10 +668,10 @@ test('parseMarkdown, uderscore italic whitespace', (t) => {
 });
 
 
-test('parseMarkdown, uderscore italic whitespace 2', (t) => {
+test('parseMarkdown, uderscore italic whitespace 2', () => {
     const markdown = parseMarkdown('a _foo bar _');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -687,10 +686,10 @@ test('parseMarkdown, uderscore italic whitespace 2', (t) => {
 });
 
 
-test('parseMarkdown, uderscore italic whitespace 3', (t) => {
+test('parseMarkdown, uderscore italic whitespace 3', () => {
     const markdown = parseMarkdown('a _foo bar\n_');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -705,10 +704,10 @@ test('parseMarkdown, uderscore italic whitespace 3', (t) => {
 });
 
 
-test('parseMarkdown, underscore italic non-breaking space', (t) => {
+test('parseMarkdown, underscore italic non-breaking space', () => {
     const markdown = parseMarkdown(`foo _${String.fromCharCode(160)}a${String.fromCharCode(160)}_`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -723,10 +722,10 @@ test('parseMarkdown, underscore italic non-breaking space', (t) => {
 });
 
 
-test('parseMarkdown, bold', (t) => {
+test('parseMarkdown, bold', () => {
     const markdown = parseMarkdown('**foo bar**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -741,10 +740,10 @@ test('parseMarkdown, bold', (t) => {
 });
 
 
-test('parseMarkdown, bold multiline', (t) => {
+test('parseMarkdown, bold multiline', () => {
     const markdown = parseMarkdown('**text\ntext**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -759,10 +758,10 @@ test('parseMarkdown, bold multiline', (t) => {
 });
 
 
-test('parseMarkdown, bold escape start', (t) => {
+test('parseMarkdown, bold escape start', () => {
     const markdown = parseMarkdown('\\**foo bar**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -777,10 +776,10 @@ test('parseMarkdown, bold escape start', (t) => {
 });
 
 
-test('parseMarkdown, bold escape end', (t) => {
+test('parseMarkdown, bold escape end', () => {
     const markdown = parseMarkdown('**foo bar\\**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -795,10 +794,10 @@ test('parseMarkdown, bold escape end', (t) => {
 });
 
 
-test('parseMarkdown, bold mismatched', (t) => {
+test('parseMarkdown, bold mismatched', () => {
     const markdown = parseMarkdown('**foo bar__');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -813,10 +812,10 @@ test('parseMarkdown, bold mismatched', (t) => {
 });
 
 
-test('parseMarkdown, bold internal', (t) => {
+test('parseMarkdown, bold internal', () => {
     const markdown = parseMarkdown('foo**bar**baz');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -833,10 +832,10 @@ test('parseMarkdown, bold internal', (t) => {
 });
 
 
-test('parseMarkdown, bold internal start', (t) => {
+test('parseMarkdown, bold internal start', () => {
     const markdown = parseMarkdown('**foo**bar');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -852,10 +851,10 @@ test('parseMarkdown, bold internal start', (t) => {
 });
 
 
-test('parseMarkdown, bold internal end', (t) => {
+test('parseMarkdown, bold internal end', () => {
     const markdown = parseMarkdown('foo**bar**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -871,10 +870,10 @@ test('parseMarkdown, bold internal end', (t) => {
 });
 
 
-test('parseMarkdown, bold sentence end', (t) => {
+test('parseMarkdown, bold sentence end', () => {
     const markdown = parseMarkdown('**bar**.');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -890,10 +889,10 @@ test('parseMarkdown, bold sentence end', (t) => {
 });
 
 
-test('parseMarkdown, bold character', (t) => {
+test('parseMarkdown, bold character', () => {
     const markdown = parseMarkdown('**\\***');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -908,10 +907,10 @@ test('parseMarkdown, bold character', (t) => {
 });
 
 
-test('parseMarkdown, bold nested', (t) => {
+test('parseMarkdown, bold nested', () => {
     const markdown = parseMarkdown('****foo****');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -931,10 +930,10 @@ test('parseMarkdown, bold nested', (t) => {
 });
 
 
-test('parseMarkdown, bold whitespace', (t) => {
+test('parseMarkdown, bold whitespace', () => {
     const markdown = parseMarkdown('** foo bar**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -949,10 +948,10 @@ test('parseMarkdown, bold whitespace', (t) => {
 });
 
 
-test('parseMarkdown, bold whitespace 2', (t) => {
+test('parseMarkdown, bold whitespace 2', () => {
     const markdown = parseMarkdown('**foo bar **');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -967,10 +966,10 @@ test('parseMarkdown, bold whitespace 2', (t) => {
 });
 
 
-test('parseMarkdown, bold whitespace 3', (t) => {
+test('parseMarkdown, bold whitespace 3', () => {
     const markdown = parseMarkdown('**foo bar\n**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -985,10 +984,10 @@ test('parseMarkdown, bold whitespace 3', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold', (t) => {
+test('parseMarkdown, underscore bold', () => {
     const markdown = parseMarkdown('__foo bar__');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1003,10 +1002,10 @@ test('parseMarkdown, underscore bold', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold multiline', (t) => {
+test('parseMarkdown, underscore bold multiline', () => {
     const markdown = parseMarkdown('__text\ntext__');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1021,10 +1020,10 @@ test('parseMarkdown, underscore bold multiline', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold escape start', (t) => {
+test('parseMarkdown, underscore bold escape start', () => {
     const markdown = parseMarkdown('\\__foo bar__');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1039,10 +1038,10 @@ test('parseMarkdown, underscore bold escape start', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold escape end', (t) => {
+test('parseMarkdown, underscore bold escape end', () => {
     const markdown = parseMarkdown('__foo bar\\__');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1057,10 +1056,10 @@ test('parseMarkdown, underscore bold escape end', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold mismatched', (t) => {
+test('parseMarkdown, underscore bold mismatched', () => {
     const markdown = parseMarkdown('__foo bar**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1075,10 +1074,10 @@ test('parseMarkdown, underscore bold mismatched', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold internal', (t) => {
+test('parseMarkdown, underscore bold internal', () => {
     const markdown = parseMarkdown('foo__bar__baz');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1093,10 +1092,10 @@ test('parseMarkdown, underscore bold internal', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold internal 2', (t) => {
+test('parseMarkdown, underscore bold internal 2', () => {
     const markdown = parseMarkdown('foo__bar___baz');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1111,10 +1110,10 @@ test('parseMarkdown, underscore bold internal 2', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold internal start', (t) => {
+test('parseMarkdown, underscore bold internal start', () => {
     const markdown = parseMarkdown('__foo__bar');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1129,10 +1128,10 @@ test('parseMarkdown, underscore bold internal start', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold internal end', (t) => {
+test('parseMarkdown, underscore bold internal end', () => {
     const markdown = parseMarkdown('foo__bar__');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1147,10 +1146,10 @@ test('parseMarkdown, underscore bold internal end', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold sentence end', (t) => {
+test('parseMarkdown, underscore bold sentence end', () => {
     const markdown = parseMarkdown('__bar__.');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1166,10 +1165,10 @@ test('parseMarkdown, underscore bold sentence end', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold character', (t) => {
+test('parseMarkdown, underscore bold character', () => {
     const markdown = parseMarkdown('__\\___');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1184,10 +1183,10 @@ test('parseMarkdown, underscore bold character', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold nested', (t) => {
+test('parseMarkdown, underscore bold nested', () => {
     const markdown = parseMarkdown('____foo____');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1207,10 +1206,10 @@ test('parseMarkdown, underscore bold nested', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold whitespace', (t) => {
+test('parseMarkdown, underscore bold whitespace', () => {
     const markdown = parseMarkdown('__ foo bar__');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1225,10 +1224,10 @@ test('parseMarkdown, underscore bold whitespace', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold whitespace 2', (t) => {
+test('parseMarkdown, underscore bold whitespace 2', () => {
     const markdown = parseMarkdown('__foo bar __');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1243,10 +1242,10 @@ test('parseMarkdown, underscore bold whitespace 2', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold whitespace 3', (t) => {
+test('parseMarkdown, underscore bold whitespace 3', () => {
     const markdown = parseMarkdown('__foo bar\n__');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1261,10 +1260,10 @@ test('parseMarkdown, underscore bold whitespace 3', (t) => {
 });
 
 
-test('parseMarkdown, bold-italic', (t) => {
+test('parseMarkdown, bold-italic', () => {
     const markdown = parseMarkdown('***foo***');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1282,10 +1281,10 @@ test('parseMarkdown, bold-italic', (t) => {
 });
 
 
-test('parseMarkdown, bold-italic multiline', (t) => {
+test('parseMarkdown, bold-italic multiline', () => {
     const markdown = parseMarkdown('***text\ntext***');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1305,10 +1304,10 @@ test('parseMarkdown, bold-italic multiline', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold-italic', (t) => {
+test('parseMarkdown, underscore bold-italic', () => {
     const markdown = parseMarkdown('___foo___');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1326,10 +1325,10 @@ test('parseMarkdown, underscore bold-italic', (t) => {
 });
 
 
-test('parseMarkdown, underscore bold-italic multiline', (t) => {
+test('parseMarkdown, underscore bold-italic multiline', () => {
     const markdown = parseMarkdown('___text\ntext___');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1349,10 +1348,10 @@ test('parseMarkdown, underscore bold-italic multiline', (t) => {
 });
 
 
-test('parseMarkdown, bold in italic', (t) => {
+test('parseMarkdown, bold in italic', () => {
     const markdown = parseMarkdown('***strong** in emph*');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1368,10 +1367,10 @@ test('parseMarkdown, bold in italic', (t) => {
 });
 
 
-test('parseMarkdown, bold in italic 2', (t) => {
+test('parseMarkdown, bold in italic 2', () => {
     const markdown = parseMarkdown('*in emph **strong***');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1387,10 +1386,10 @@ test('parseMarkdown, bold in italic 2', (t) => {
 });
 
 
-test('parseMarkdown, italic in bold', (t) => {
+test('parseMarkdown, italic in bold', () => {
     const markdown = parseMarkdown('***emph* in strong**');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1411,10 +1410,10 @@ test('parseMarkdown, italic in bold', (t) => {
 });
 
 
-test('parseMarkdown, italic in bold 2', (t) => {
+test('parseMarkdown, italic in bold 2', () => {
     const markdown = parseMarkdown('**in strong *emph***');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1435,10 +1434,10 @@ test('parseMarkdown, italic in bold 2', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough', (t) => {
+test('parseMarkdown, strikethrough', () => {
     const markdown = parseMarkdown('~~Hi~~ Hello, ~there~ world!');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1456,10 +1455,10 @@ test('parseMarkdown, strikethrough', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough multiline', (t) => {
+test('parseMarkdown, strikethrough multiline', () => {
     const markdown = parseMarkdown('~~foo\nbar~~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1474,10 +1473,10 @@ test('parseMarkdown, strikethrough multiline', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough escape start', (t) => {
+test('parseMarkdown, strikethrough escape start', () => {
     const markdown = parseMarkdown('\\~~foo bar~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1492,10 +1491,10 @@ test('parseMarkdown, strikethrough escape start', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough single escape start', (t) => {
+test('parseMarkdown, strikethrough single escape start', () => {
     const markdown = parseMarkdown('\\~foo bar~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1510,10 +1509,10 @@ test('parseMarkdown, strikethrough single escape start', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough escape end', (t) => {
+test('parseMarkdown, strikethrough escape end', () => {
     const markdown = parseMarkdown('~foo bar\\~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1528,10 +1527,10 @@ test('parseMarkdown, strikethrough escape end', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough not', (t) => {
+test('parseMarkdown, strikethrough not', () => {
     const markdown = parseMarkdown('This will ~~~not~~~ strike.');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1546,10 +1545,10 @@ test('parseMarkdown, strikethrough not', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough not 2', (t) => {
+test('parseMarkdown, strikethrough not 2', () => {
     const markdown = parseMarkdown('This will ~~~not~~ strike.');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1564,10 +1563,10 @@ test('parseMarkdown, strikethrough not 2', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough not 3', (t) => {
+test('parseMarkdown, strikethrough not 3', () => {
     const markdown = parseMarkdown('This will ~~not~~~ strike.');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1582,10 +1581,10 @@ test('parseMarkdown, strikethrough not 3', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough whitespace', (t) => {
+test('parseMarkdown, strikethrough whitespace', () => {
     const markdown = parseMarkdown('~~ foo bar~~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1600,10 +1599,10 @@ test('parseMarkdown, strikethrough whitespace', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough whitespace 2', (t) => {
+test('parseMarkdown, strikethrough whitespace 2', () => {
     const markdown = parseMarkdown('~~foo bar ~~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1618,10 +1617,10 @@ test('parseMarkdown, strikethrough whitespace 2', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough whitespace 3', (t) => {
+test('parseMarkdown, strikethrough whitespace 3', () => {
     const markdown = parseMarkdown('~~foo bar\n~~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1636,10 +1635,10 @@ test('parseMarkdown, strikethrough whitespace 3', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough single whitespace', (t) => {
+test('parseMarkdown, strikethrough single whitespace', () => {
     const markdown = parseMarkdown('~ foo bar~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1654,10 +1653,10 @@ test('parseMarkdown, strikethrough single whitespace', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough single whitespace 2', (t) => {
+test('parseMarkdown, strikethrough single whitespace 2', () => {
     const markdown = parseMarkdown('~foo bar ~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1672,10 +1671,10 @@ test('parseMarkdown, strikethrough single whitespace 2', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough single whitespace 3', (t) => {
+test('parseMarkdown, strikethrough single whitespace 3', () => {
     const markdown = parseMarkdown('~foo bar\n~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1690,10 +1689,10 @@ test('parseMarkdown, strikethrough single whitespace 3', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough internal', (t) => {
+test('parseMarkdown, strikethrough internal', () => {
     const markdown = parseMarkdown('~~foo~bar~~~baz~~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1713,10 +1712,10 @@ test('parseMarkdown, strikethrough internal', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough internal spaces', (t) => {
+test('parseMarkdown, strikethrough internal spaces', () => {
     const markdown = parseMarkdown('~~foo ~ bar ~~~ baz~~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1736,10 +1735,10 @@ test('parseMarkdown, strikethrough internal spaces', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough single internal', (t) => {
+test('parseMarkdown, strikethrough single internal', () => {
     const markdown = parseMarkdown('~foo~~bar~~~baz~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1759,10 +1758,10 @@ test('parseMarkdown, strikethrough single internal', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough single internal spaces', (t) => {
+test('parseMarkdown, strikethrough single internal spaces', () => {
     const markdown = parseMarkdown('~foo ~~ bar ~~~ baz~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1782,10 +1781,10 @@ test('parseMarkdown, strikethrough single internal spaces', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough single triple', (t) => {
+test('parseMarkdown, strikethrough single triple', () => {
     const markdown = parseMarkdown('~foo~~~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1800,10 +1799,10 @@ test('parseMarkdown, strikethrough single triple', (t) => {
 });
 
 
-test('parseMarkdown, strikethrough double quadruple', (t) => {
+test('parseMarkdown, strikethrough double quadruple', () => {
     const markdown = parseMarkdown('~~foo~~~~');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1818,10 +1817,10 @@ test('parseMarkdown, strikethrough double quadruple', (t) => {
 });
 
 
-test('parseMarkdown, code span', (t) => {
+test('parseMarkdown, code span', () => {
     const markdown = parseMarkdown('This is code: `foo`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1837,10 +1836,10 @@ test('parseMarkdown, code span', (t) => {
 });
 
 
-test('parseMarkdown, code span escape start', (t) => {
+test('parseMarkdown, code span escape start', () => {
     const markdown = parseMarkdown('\\``foo``');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1855,10 +1854,10 @@ test('parseMarkdown, code span escape start', (t) => {
 });
 
 
-test('parseMarkdown, code span escape end', (t) => {
+test('parseMarkdown, code span escape end', () => {
     const markdown = parseMarkdown('``foo\\``');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1873,10 +1872,10 @@ test('parseMarkdown, code span escape end', (t) => {
 });
 
 
-test('parseMarkdown, code span escape end 2', (t) => {
+test('parseMarkdown, code span escape end 2', () => {
     const markdown = parseMarkdown('``foo`\\`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1892,10 +1891,10 @@ test('parseMarkdown, code span escape end 2', (t) => {
 });
 
 
-test('parseMarkdown, code span multiple', (t) => {
+test('parseMarkdown, code span multiple', () => {
     const markdown = parseMarkdown('This is code: ``foo ` bar``');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1911,10 +1910,10 @@ test('parseMarkdown, code span multiple', (t) => {
 });
 
 
-test('parseMarkdown, code span strip space pad', (t) => {
+test('parseMarkdown, code span strip space pad', () => {
     const markdown = parseMarkdown('` `` `');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1929,10 +1928,10 @@ test('parseMarkdown, code span strip space pad', (t) => {
 });
 
 
-test('parseMarkdown, code span strip space pad with extra spaces', (t) => {
+test('parseMarkdown, code span strip space pad with extra spaces', () => {
     const markdown = parseMarkdown('`  ``  `');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1947,10 +1946,10 @@ test('parseMarkdown, code span strip space pad with extra spaces', (t) => {
 });
 
 
-test('parseMarkdown, code span begin space', (t) => {
+test('parseMarkdown, code span begin space', () => {
     const markdown = parseMarkdown('` a`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1965,10 +1964,10 @@ test('parseMarkdown, code span begin space', (t) => {
 });
 
 
-test('parseMarkdown, code span end space', (t) => {
+test('parseMarkdown, code span end space', () => {
     const markdown = parseMarkdown('`a `');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -1983,10 +1982,10 @@ test('parseMarkdown, code span end space', (t) => {
 });
 
 
-test('parseMarkdown, code span tab padding', (t) => {
+test('parseMarkdown, code span tab padding', () => {
     const markdown = parseMarkdown('`\ta\t`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2001,10 +2000,10 @@ test('parseMarkdown, code span tab padding', (t) => {
 });
 
 
-test('parseMarkdown, code span only spaces', (t) => {
+test('parseMarkdown, code span only spaces', () => {
     const markdown = parseMarkdown('` `\n`  `');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2021,10 +2020,10 @@ test('parseMarkdown, code span only spaces', (t) => {
 });
 
 
-test('parseMarkdown, code span multiline text', (t) => {
+test('parseMarkdown, code span multiline text', () => {
     const markdown = parseMarkdown('`foo\nbar  \nbaz\n`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2039,10 +2038,10 @@ test('parseMarkdown, code span multiline text', (t) => {
 });
 
 
-test('parseMarkdown, code span multiline text 2', (t) => {
+test('parseMarkdown, code span multiline text 2', () => {
     const markdown = parseMarkdown('`\nfoo\n`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2057,10 +2056,10 @@ test('parseMarkdown, code span multiline text 2', (t) => {
 });
 
 
-test('parseMarkdown, code span multiline text 3', (t) => {
+test('parseMarkdown, code span multiline text 3', () => {
     const markdown = parseMarkdown('`\nfoo \n`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2075,10 +2074,10 @@ test('parseMarkdown, code span multiline text 3', (t) => {
 });
 
 
-test('parseMarkdown, code span multiline text last line end space', (t) => {
+test('parseMarkdown, code span multiline text last line end space', () => {
     const markdown = parseMarkdown('`foo \n`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2093,10 +2092,10 @@ test('parseMarkdown, code span multiline text last line end space', (t) => {
 });
 
 
-test('parseMarkdown, code span backslash', (t) => {
+test('parseMarkdown, code span backslash', () => {
     const markdown = parseMarkdown('`foo\\`bar`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2112,10 +2111,10 @@ test('parseMarkdown, code span backslash', (t) => {
 });
 
 
-test('parseMarkdown, code span large delimeter', (t) => {
+test('parseMarkdown, code span large delimeter', () => {
     const markdown = parseMarkdown('``foo`bar``');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2130,10 +2129,10 @@ test('parseMarkdown, code span large delimeter', (t) => {
 });
 
 
-test('parseMarkdown, code span small delimeter', (t) => {
+test('parseMarkdown, code span small delimeter', () => {
     const markdown = parseMarkdown('`foo``bar`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2148,10 +2147,10 @@ test('parseMarkdown, code span small delimeter', (t) => {
 });
 
 
-test('parseMarkdown, code span order', (t) => {
+test('parseMarkdown, code span order', () => {
     const markdown = parseMarkdown('*foo`*`');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2174,10 +2173,10 @@ test('parseMarkdown, code span order', (t) => {
 });
 
 
-test('parseMarkdown, code span mismatched', (t) => {
+test('parseMarkdown, code span mismatched', () => {
     const markdown = parseMarkdown('This is code: ```foo``');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2192,10 +2191,10 @@ test('parseMarkdown, code span mismatched', (t) => {
 });
 
 
-test('parseMarkdown, code span mismatched 2', (t) => {
+test('parseMarkdown, code span mismatched 2', () => {
     const markdown = parseMarkdown('This is code: ``foo```');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2210,10 +2209,10 @@ test('parseMarkdown, code span mismatched 2', (t) => {
 });
 
 
-test('parseMarkdown, code span mismatched 3', (t) => {
+test('parseMarkdown, code span mismatched 3', () => {
     const markdown = parseMarkdown('This is code: ``foo ```');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2228,10 +2227,10 @@ test('parseMarkdown, code span mismatched 3', (t) => {
 });
 
 
-test('parseMarkdown, code span mismatched 4', (t) => {
+test('parseMarkdown, code span mismatched 4', () => {
     const markdown = parseMarkdown('`foo``bar``');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2247,7 +2246,7 @@ test('parseMarkdown, code span mismatched 4', (t) => {
 });
 
 
-test('parseMarkdown, line break', (t) => {
+test('parseMarkdown, line break', () => {
     const markdown = parseMarkdown(`\
 This is a line break${'  '}
   this is not
@@ -2256,7 +2255,7 @@ and this is not${'  '}
 This is another paragraph.
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2278,13 +2277,13 @@ This is another paragraph.
 });
 
 
-test('parseMarkdown, line break escape', (t) => {
+test('parseMarkdown, line break escape', () => {
     const markdown = parseMarkdown(`\
 foo\\${'  '}
 bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2301,13 +2300,13 @@ bar
 });
 
 
-test('parseMarkdown, line break backslash', (t) => {
+test('parseMarkdown, line break backslash', () => {
     const markdown = parseMarkdown(`\
 foo\\
 baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2324,13 +2323,13 @@ baz
 });
 
 
-test('parseMarkdown, line break backslash escape', (t) => {
+test('parseMarkdown, line break backslash escape', () => {
     const markdown = parseMarkdown(`\
 foo\\\\
 baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2345,13 +2344,13 @@ baz
 });
 
 
-test('parseMarkdown, line break several spaces', (t) => {
+test('parseMarkdown, line break several spaces', () => {
     const markdown = parseMarkdown(`\
 foo${'       '}
 baz
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2368,13 +2367,13 @@ baz
 });
 
 
-test('parseMarkdown, line break next line space', (t) => {
+test('parseMarkdown, line break next line space', () => {
     const markdown = parseMarkdown(`\
 foo${'  '}
      bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2391,13 +2390,13 @@ foo${'  '}
 });
 
 
-test('parseMarkdown, line break backslash next line space', (t) => {
+test('parseMarkdown, line break backslash next line space', () => {
     const markdown = parseMarkdown(`\
 foo\\
      bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2414,13 +2413,13 @@ foo\\
 });
 
 
-test('parseMarkdown, line break inline', (t) => {
+test('parseMarkdown, line break inline', () => {
     const markdown = parseMarkdown(`\
 *foo${'  '}
 bar*
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2442,13 +2441,13 @@ bar*
 });
 
 
-test('parseMarkdown, line break not inline code', (t) => {
+test('parseMarkdown, line break not inline code', () => {
     const markdown = parseMarkdown(`\
 \`code${'  '}
 span\`
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2463,7 +2462,7 @@ span\`
 });
 
 
-test('parseMarkdown, line break not paragraph end', (t) => {
+test('parseMarkdown, line break not paragraph end', () => {
     const markdown = parseMarkdown(`\
 foo\\
 
@@ -2474,7 +2473,7 @@ foo${'  '}
 ### foo${'  '}
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2506,12 +2505,12 @@ foo${'  '}
 });
 
 
-test('parseMarkdown, escapes', (t) => {
+test('parseMarkdown, escapes', () => {
     const markdown = parseMarkdown(`\
 \\!\\"\\#\\$\\%\\&\\'\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\=\\>\\?\\@\\[\\\\\\]\\^\\_\\\`\\{\\|\\}\\~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2526,10 +2525,10 @@ test('parseMarkdown, escapes', (t) => {
 });
 
 
-test('parseMarkdown, escapes 2', (t) => {
+test('parseMarkdown, escapes 2', () => {
     const markdown = parseMarkdown('\\\\ \\* \\_ \\{ \\} \\[ \\] **bol\\.d** \\( \\) \\# \\+ \\- \\. \\! \\a');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2546,10 +2545,10 @@ test('parseMarkdown, escapes 2', (t) => {
 });
 
 
-test('parseMarkdown, escapes not in code spans', (t) => {
+test('parseMarkdown, escapes not in code spans', () => {
     const markdown = parseMarkdown('`` \\[\\` ``');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2564,10 +2563,10 @@ test('parseMarkdown, escapes not in code spans', (t) => {
 });
 
 
-test('parseMarkdown, escapes not in code blocks', (t) => {
+test('parseMarkdown, escapes not in code blocks', () => {
     const markdown = parseMarkdown('    \\[\\]');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2581,14 +2580,14 @@ test('parseMarkdown, escapes not in code blocks', (t) => {
 });
 
 
-test('parseMarkdown, escapes not in fenced code blocks', (t) => {
+test('parseMarkdown, escapes not in fenced code blocks', () => {
     const markdown = parseMarkdown(`\
 ~~~
 \\[\\]
 ~~~
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2602,10 +2601,10 @@ test('parseMarkdown, escapes not in fenced code blocks', (t) => {
 });
 
 
-test('parseMarkdown, escapes not in autolinks', (t) => {
+test('parseMarkdown, escapes not in autolinks', () => {
     const markdown = parseMarkdown('<http://example.com?find=\\*>');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2621,10 +2620,10 @@ test('parseMarkdown, escapes not in autolinks', (t) => {
 });
 
 
-test('parseMarkdown, link', (t) => {
+test('parseMarkdown, link', () => {
     const markdown = parseMarkdown('[link](/uri "title")');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2639,10 +2638,10 @@ test('parseMarkdown, link', (t) => {
 });
 
 
-test('parseMarkdown, link escape start', (t) => {
+test('parseMarkdown, link escape start', () => {
     const markdown = parseMarkdown('\\[link](/uri)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2658,10 +2657,10 @@ test('parseMarkdown, link escape start', (t) => {
 });
 
 
-test('parseMarkdown, link no title', (t) => {
+test('parseMarkdown, link no title', () => {
     const markdown = parseMarkdown('[link](/uri)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2676,10 +2675,10 @@ test('parseMarkdown, link no title', (t) => {
 });
 
 
-test('parseMarkdown, link empty', (t) => {
+test('parseMarkdown, link empty', () => {
     const markdown = parseMarkdown('[link]()');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2694,10 +2693,10 @@ test('parseMarkdown, link empty', (t) => {
 });
 
 
-test('parseMarkdown, link href space', (t) => {
+test('parseMarkdown, link href space', () => {
     const markdown = parseMarkdown('[link](/my uri)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2713,10 +2712,10 @@ test('parseMarkdown, link href space', (t) => {
 });
 
 
-test('parseMarkdown, link href no newlines', (t) => {
+test('parseMarkdown, link href no newlines', () => {
     const markdown = parseMarkdown('[link](foo\nbar)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2732,10 +2731,10 @@ test('parseMarkdown, link href no newlines', (t) => {
 });
 
 
-test('parseMarkdown, link href escape', (t) => {
+test('parseMarkdown, link href escape', () => {
     const markdown = parseMarkdown('[link](\\(foo\\))');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2750,10 +2749,10 @@ test('parseMarkdown, link href escape', (t) => {
 });
 
 
-test('parseMarkdown, link href parentheses', (t) => {
+test('parseMarkdown, link href parentheses', () => {
     const markdown = parseMarkdown('[link](foo(and(bar)))');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2769,10 +2768,10 @@ test('parseMarkdown, link href parentheses', (t) => {
 });
 
 
-test('parseMarkdown, link href parentheses escaped', (t) => {
+test('parseMarkdown, link href parentheses escaped', () => {
     const markdown = parseMarkdown('[link](foo\\(and\\(bar\\))');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2787,10 +2786,10 @@ test('parseMarkdown, link href parentheses escaped', (t) => {
 });
 
 
-test('parseMarkdown, link href parentheses escaped 2', (t) => {
+test('parseMarkdown, link href parentheses escaped 2', () => {
     const markdown = parseMarkdown('[link](foo\\)\\:)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2805,10 +2804,10 @@ test('parseMarkdown, link href parentheses escaped 2', (t) => {
 });
 
 
-test('parseMarkdown, link href parentheses not escaped', (t) => {
+test('parseMarkdown, link href parentheses not escaped', () => {
     const markdown = parseMarkdown('[link](foo\\bar)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2823,10 +2822,10 @@ test('parseMarkdown, link href parentheses not escaped', (t) => {
 });
 
 
-test('parseMarkdown, link href entity', (t) => {
+test('parseMarkdown, link href entity', () => {
     const markdown = parseMarkdown('[link](foo%20b&#228;)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2841,10 +2840,10 @@ test('parseMarkdown, link href entity', (t) => {
 });
 
 
-test('parseMarkdown, link angle href empty', (t) => {
+test('parseMarkdown, link angle href empty', () => {
     const markdown = parseMarkdown('[link](<>)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2859,10 +2858,10 @@ test('parseMarkdown, link angle href empty', (t) => {
 });
 
 
-test('parseMarkdown, link angle href space', (t) => {
+test('parseMarkdown, link angle href space', () => {
     const markdown = parseMarkdown('[link](</my uri>)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2877,10 +2876,10 @@ test('parseMarkdown, link angle href space', (t) => {
 });
 
 
-test('parseMarkdown, link angle href no newlines', (t) => {
+test('parseMarkdown, link angle href no newlines', () => {
     const markdown = parseMarkdown('[link](<foo\nbar>)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2896,10 +2895,10 @@ test('parseMarkdown, link angle href no newlines', (t) => {
 });
 
 
-test('parseMarkdown, link angle href parenthesis', (t) => {
+test('parseMarkdown, link angle href parenthesis', () => {
     const markdown = parseMarkdown('[a](<b)c>)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2914,10 +2913,10 @@ test('parseMarkdown, link angle href parenthesis', (t) => {
 });
 
 
-test('parseMarkdown, link angle href parentheses 2', (t) => {
+test('parseMarkdown, link angle href parentheses 2', () => {
     const markdown = parseMarkdown('[link](<foo(and(bar)>)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2932,10 +2931,10 @@ test('parseMarkdown, link angle href parentheses 2', (t) => {
 });
 
 
-test('parseMarkdown, link angle href escape', (t) => {
+test('parseMarkdown, link angle href escape', () => {
     const markdown = parseMarkdown('[link](<foo\\>)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2951,14 +2950,14 @@ test('parseMarkdown, link angle href escape', (t) => {
 });
 
 
-test('parseMarkdown, link angle href not matched', (t) => {
+test('parseMarkdown, link angle href not matched', () => {
     const markdown = parseMarkdown(`\
 [a](<b)c
 [a](<b)c>
 [a](<b>c)
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2978,10 +2977,10 @@ test('parseMarkdown, link angle href not matched', (t) => {
 });
 
 
-test('parseMarkdown, link title with no href', (t) => {
+test('parseMarkdown, link title with no href', () => {
     const markdown = parseMarkdown('[link]("title")');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -2996,14 +2995,14 @@ test('parseMarkdown, link title with no href', (t) => {
 });
 
 
-test('parseMarkdown, link title variations', (t) => {
+test('parseMarkdown, link title variations', () => {
     const markdown = parseMarkdown(`\
 [link](/url "title")
 [link](/url 'title')
 [link](/url (title))
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3022,10 +3021,10 @@ test('parseMarkdown, link title variations', (t) => {
 });
 
 
-test('parseMarkdown, link title escape', (t) => {
+test('parseMarkdown, link title escape', () => {
     const markdown = parseMarkdown('[link](/url "title \\"&quot;")');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3040,10 +3039,10 @@ test('parseMarkdown, link title escape', (t) => {
 });
 
 
-test('parseMarkdown, link href-title non-breaking space', (t) => {
+test('parseMarkdown, link href-title non-breaking space', () => {
     const markdown = parseMarkdown(`[link](/url${String.fromCharCode(160)}"title")`);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3058,14 +3057,14 @@ test('parseMarkdown, link href-title non-breaking space', (t) => {
 });
 
 
-test('parseMarkdown, link title not escaped', (t) => {
+test('parseMarkdown, link title not escaped', () => {
     const markdown = parseMarkdown(`\
 [link](/url "title "and" title")
 [link](/url (title )and) title))
 [link](/url 'title 'and' title')
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3085,10 +3084,10 @@ test('parseMarkdown, link title not escaped', (t) => {
 });
 
 
-test('parseMarkdown, link title not escaped work around', (t) => {
+test('parseMarkdown, link title not escaped work around', () => {
     const markdown = parseMarkdown('[link](/url \'title "and" title\')');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3103,7 +3102,7 @@ test('parseMarkdown, link title not escaped work around', (t) => {
 });
 
 
-test('parseMarkdown, link href-title space padding', (t) => {
+test('parseMarkdown, link href-title space padding', () => {
     const markdown = parseMarkdown(`\
 [
   link
@@ -3113,7 +3112,7 @@ test('parseMarkdown, link href-title space padding', (t) => {
   )
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3128,10 +3127,10 @@ test('parseMarkdown, link href-title space padding', (t) => {
 });
 
 
-test('parseMarkdown, link no text-href space', (t) => {
+test('parseMarkdown, link no text-href space', () => {
     const markdown = parseMarkdown('[link] (/uri)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3147,7 +3146,7 @@ test('parseMarkdown, link no text-href space', (t) => {
 });
 
 
-test('parseMarkdown, link text brackets', (t) => {
+test('parseMarkdown, link text brackets', () => {
     const markdown = parseMarkdown(`\
 [link [foo [bar]]](/uri)
 [link] bar](/uri)
@@ -3155,7 +3154,7 @@ test('parseMarkdown, link text brackets', (t) => {
 [link \\[bar](/uri)
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3176,10 +3175,10 @@ test('parseMarkdown, link text brackets', (t) => {
 });
 
 
-test('parseMarkdown, link text spans', (t) => {
+test('parseMarkdown, link text spans', () => {
     const markdown = parseMarkdown('[link _foo **bar** `#`_](/uri)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3205,10 +3204,10 @@ test('parseMarkdown, link text spans', (t) => {
 });
 
 
-test('parseMarkdown, link text spans empty', (t) => {
+test('parseMarkdown, link text spans empty', () => {
     const markdown = parseMarkdown('[](/uri)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3223,10 +3222,10 @@ test('parseMarkdown, link text spans empty', (t) => {
 });
 
 
-test('parseMarkdown, image', (t) => {
+test('parseMarkdown, image', () => {
     const markdown = parseMarkdown('![foo](/url "title")');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3241,10 +3240,10 @@ test('parseMarkdown, image', (t) => {
 });
 
 
-test('parseMarkdown, image no title', (t) => {
+test('parseMarkdown, image no title', () => {
     const markdown = parseMarkdown('![foo](/url)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3259,10 +3258,10 @@ test('parseMarkdown, image no title', (t) => {
 });
 
 
-test('parseMarkdown, image spaces', (t) => {
+test('parseMarkdown, image spaces', () => {
     const markdown = parseMarkdown('My ![foo bar](/path/to/train.jpg  "title"   )');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3278,10 +3277,10 @@ test('parseMarkdown, image spaces', (t) => {
 });
 
 
-test('parseMarkdown, image angle src', (t) => {
+test('parseMarkdown, image angle src', () => {
     const markdown = parseMarkdown('![foo](<url>)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3296,10 +3295,10 @@ test('parseMarkdown, image angle src', (t) => {
 });
 
 
-test('parseMarkdown, image alt empty', (t) => {
+test('parseMarkdown, image alt empty', () => {
     const markdown = parseMarkdown('![](/url)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3314,10 +3313,10 @@ test('parseMarkdown, image alt empty', (t) => {
 });
 
 
-test('parseMarkdown, image escapes', (t) => {
+test('parseMarkdown, image escapes', () => {
     const markdown = parseMarkdown('![a\\l\\]t](s\\r\\.c "tit\\l\\.e")');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3332,10 +3331,10 @@ test('parseMarkdown, image escapes', (t) => {
 });
 
 
-test('parseMarkdown, link image', (t) => {
+test('parseMarkdown, link image', () => {
     const markdown = parseMarkdown('[![alt](src)](url)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3352,10 +3351,10 @@ test('parseMarkdown, link image', (t) => {
 });
 
 
-test('parseMarkdown, link image escape start', (t) => {
+test('parseMarkdown, link image escape start', () => {
     const markdown = parseMarkdown('\\[![alt](src)](url)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3373,10 +3372,10 @@ test('parseMarkdown, link image escape start', (t) => {
 });
 
 
-test('parseMarkdown, link image titles', (t) => {
+test('parseMarkdown, link image titles', () => {
     const markdown = parseMarkdown('[![alt](src "imageTitle")](url "linkTitle")');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3393,10 +3392,10 @@ test('parseMarkdown, link image titles', (t) => {
 });
 
 
-test('parseMarkdown, link image spaces', (t) => {
+test('parseMarkdown, link image spaces', () => {
     const markdown = parseMarkdown('[  ![alt](src)  ](url)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3413,10 +3412,10 @@ test('parseMarkdown, link image spaces', (t) => {
 });
 
 
-test('parseMarkdown, link image spaces multiline', (t) => {
+test('parseMarkdown, link image spaces multiline', () => {
     const markdown = parseMarkdown('[  ![alt](src)  ](url)');
     validateMarkdownModel(markdown);
-    t.deepEqual(
+    assert.deepEqual(
         markdown,
         {
             'parts': [
@@ -3433,10 +3432,10 @@ test('parseMarkdown, link image spaces multiline', (t) => {
 });
 
 
-test('parseMarkdown, link alternate', (t) => {
+test('parseMarkdown, link alternate', () => {
     const markdown = parseMarkdown('<http://foo.bar.baz>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3448,10 +3447,10 @@ test('parseMarkdown, link alternate', (t) => {
 });
 
 
-test('parseMarkdown, link alternate query', (t) => {
+test('parseMarkdown, link alternate query', () => {
     const markdown = parseMarkdown('<http://foo.bar.baz/test?q=hello&id=22&boolean>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3466,10 +3465,10 @@ test('parseMarkdown, link alternate query', (t) => {
 });
 
 
-test('parseMarkdown, link alternate non-http', (t) => {
+test('parseMarkdown, link alternate non-http', () => {
     const markdown = parseMarkdown('<irc://foo.bar:2233/baz>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3481,10 +3480,10 @@ test('parseMarkdown, link alternate non-http', (t) => {
 });
 
 
-test('parseMarkdown, link alternate uppercase', (t) => {
+test('parseMarkdown, link alternate uppercase', () => {
     const markdown = parseMarkdown('<MAILTO:FOO@BAR.BAZ>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3496,10 +3495,10 @@ test('parseMarkdown, link alternate uppercase', (t) => {
 });
 
 
-test('parseMarkdown, link alternate relative', (t) => {
+test('parseMarkdown, link alternate relative', () => {
     const markdown = parseMarkdown('<http://../>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3511,10 +3510,10 @@ test('parseMarkdown, link alternate relative', (t) => {
 });
 
 
-test('parseMarkdown, link alternate port', (t) => {
+test('parseMarkdown, link alternate port', () => {
     const markdown = parseMarkdown('<localhost:5001/foo>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3526,10 +3525,10 @@ test('parseMarkdown, link alternate port', (t) => {
 });
 
 
-test('parseMarkdown, link alternate space', (t) => {
+test('parseMarkdown, link alternate space', () => {
     const markdown = parseMarkdown('<http://foo.bar/baz bim>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3541,10 +3540,10 @@ test('parseMarkdown, link alternate space', (t) => {
 });
 
 
-test('parseMarkdown, link alternate space 2', (t) => {
+test('parseMarkdown, link alternate space 2', () => {
     const markdown = parseMarkdown('< http://foo.bar >');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3556,10 +3555,10 @@ test('parseMarkdown, link alternate space 2', (t) => {
 });
 
 
-test('parseMarkdown, link alternate no escapes', (t) => {
+test('parseMarkdown, link alternate no escapes', () => {
     const markdown = parseMarkdown('<http://example.com/\\[\\>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3571,10 +3570,10 @@ test('parseMarkdown, link alternate no escapes', (t) => {
 });
 
 
-test('parseMarkdown, link alternate invalid scheme', (t) => {
+test('parseMarkdown, link alternate invalid scheme', () => {
     const markdown = parseMarkdown('<m:abc>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3586,10 +3585,10 @@ test('parseMarkdown, link alternate invalid scheme', (t) => {
 });
 
 
-test('parseMarkdown, link alternate email', (t) => {
+test('parseMarkdown, link alternate email', () => {
     const markdown = parseMarkdown('<foo@bar.example.com>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3601,10 +3600,10 @@ test('parseMarkdown, link alternate email', (t) => {
 });
 
 
-test('parseMarkdown, link alternate email 2', (t) => {
+test('parseMarkdown, link alternate email 2', () => {
     const markdown = parseMarkdown('<foo+special@Bar.baz-bar0.com>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3616,10 +3615,10 @@ test('parseMarkdown, link alternate email 2', (t) => {
 });
 
 
-test('parseMarkdown, link alternate email no escapes', (t) => {
+test('parseMarkdown, link alternate email no escapes', () => {
     const markdown = parseMarkdown('<foo\\+@bar.example.com>');
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3631,14 +3630,14 @@ test('parseMarkdown, link alternate email no escapes', (t) => {
 });
 
 
-test('parseMarkdown, link definition', (t) => {
+test('parseMarkdown, link definition', () => {
     const markdown = parseMarkdown(`\
 [foo]: /url "title"
 
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3654,7 +3653,7 @@ test('parseMarkdown, link definition', (t) => {
 });
 
 
-test('parseMarkdown, link definition multiline', (t) => {
+test('parseMarkdown, link definition multiline', () => {
     const markdown = parseMarkdown(`\
    [foo]:${' '}
       /url${'  '}
@@ -3663,7 +3662,7 @@ test('parseMarkdown, link definition multiline', (t) => {
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3679,12 +3678,12 @@ test('parseMarkdown, link definition multiline', (t) => {
 });
 
 
-test('parseMarkdown, link definition trailing non-space', (t) => {
+test('parseMarkdown, link definition trailing non-space', () => {
     const markdown = parseMarkdown(`\
 [foo]: /url "title" ok
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3701,13 +3700,13 @@ test('parseMarkdown, link definition trailing non-space', (t) => {
 });
 
 
-test('parseMarkdown, link definition trailing non-space 2', (t) => {
+test('parseMarkdown, link definition trailing non-space 2', () => {
     const markdown = parseMarkdown(`\
 [foo]: /url
 "title" ok
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3719,14 +3718,14 @@ test('parseMarkdown, link definition trailing non-space 2', (t) => {
 });
 
 
-test('parseMarkdown, link definition code block', (t) => {
+test('parseMarkdown, link definition code block', () => {
     const markdown = parseMarkdown(`\
     [foo]: /url "title"
 
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'codeBlock': {
                 'lines': ['[foo]: /url "title"'],
@@ -3746,7 +3745,7 @@ test('parseMarkdown, link definition code block', (t) => {
 });
 
 
-test('parseMarkdown, link definition code block 2', (t) => {
+test('parseMarkdown, link definition code block 2', () => {
     const markdown = parseMarkdown(`\
 ~~~
 [foo]: /url
@@ -3755,7 +3754,7 @@ test('parseMarkdown, link definition code block 2', (t) => {
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'codeBlock': {
                 'lines': ['[foo]: /url'],
@@ -3775,14 +3774,14 @@ test('parseMarkdown, link definition code block 2', (t) => {
 });
 
 
-test('parseMarkdown, link definition case-insensitive', (t) => {
+test('parseMarkdown, link definition case-insensitive', () => {
     const markdown = parseMarkdown(`\
 [FOO]: /url
 
 [Foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3798,14 +3797,14 @@ test('parseMarkdown, link definition case-insensitive', (t) => {
 });
 
 
-test('parseMarkdown, link definition defined after', (t) => {
+test('parseMarkdown, link definition defined after', () => {
     const markdown = parseMarkdown(`\
 [foo]
 
 [foo]: /url "title"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3821,14 +3820,14 @@ test('parseMarkdown, link definition defined after', (t) => {
 });
 
 
-test('parseMarkdown, link definition container', (t) => {
+test('parseMarkdown, link definition container', () => {
     const markdown = parseMarkdown(`\
 [foo]
 
 > [foo]: /url
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3847,7 +3846,7 @@ test('parseMarkdown, link definition container', (t) => {
 });
 
 
-test('parseMarkdown, link definition multiple', (t) => {
+test('parseMarkdown, link definition multiple', () => {
     const markdown = parseMarkdown(`\
 [foo]
 
@@ -3855,7 +3854,7 @@ test('parseMarkdown, link definition multiple', (t) => {
 [foo]: second
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3871,7 +3870,7 @@ test('parseMarkdown, link definition multiple', (t) => {
 });
 
 
-test('parseMarkdown, link definition multiple 2', (t) => {
+test('parseMarkdown, link definition multiple 2', () => {
     const markdown = parseMarkdown(`\
 [
 foo
@@ -3879,7 +3878,7 @@ foo
 bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3891,7 +3890,7 @@ bar
 });
 
 
-test('parseMarkdown, link definition multiple 3', (t) => {
+test('parseMarkdown, link definition multiple 3', () => {
     const markdown = parseMarkdown(`\
 Foo
 [bar]: /baz
@@ -3899,7 +3898,7 @@ Foo
 [bar]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3926,14 +3925,14 @@ Foo
 });
 
 
-test('parseMarkdown, link definition terminate', (t) => {
+test('parseMarkdown, link definition terminate', () => {
     const markdown = parseMarkdown(`\
 # [Foo]
 [foo]: /url
 > bar
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3959,7 +3958,7 @@ test('parseMarkdown, link definition terminate', (t) => {
 });
 
 
-test('parseMarkdown, link definition terminate 2', (t) => {
+test('parseMarkdown, link definition terminate 2', () => {
     const markdown = parseMarkdown(`\
 [foo]: /url
 bar
@@ -3967,7 +3966,7 @@ bar
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -3989,14 +3988,14 @@ bar
 });
 
 
-test('parseMarkdown, link definition terminate 3', (t) => {
+test('parseMarkdown, link definition terminate 3', () => {
     const markdown = parseMarkdown(`\
 [foo]: /url
 ===
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [],
@@ -4016,7 +4015,7 @@ test('parseMarkdown, link definition terminate 3', (t) => {
 });
 
 
-test('parseMarkdown, link definition terminate 4', (t) => {
+test('parseMarkdown, link definition terminate 4', () => {
     const markdown = parseMarkdown(`\
 [foo]: /foo-url "foo"
 [bar]: /bar-url
@@ -4028,7 +4027,7 @@ test('parseMarkdown, link definition terminate 4', (t) => {
 [baz]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4056,14 +4055,14 @@ test('parseMarkdown, link definition terminate 4', (t) => {
 });
 
 
-test('parseMarkdown, link definition text escapes', (t) => {
+test('parseMarkdown, link definition text escapes', () => {
     const markdown = parseMarkdown(`\
 [Foo*bar\\]]:my_(url) 'title (with parens)'
 
 [Foo*bar\\]]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4079,7 +4078,7 @@ test('parseMarkdown, link definition text escapes', (t) => {
 });
 
 
-test('parseMarkdown, link definition href angle', (t) => {
+test('parseMarkdown, link definition href angle', () => {
     const markdown = parseMarkdown(`\
 [Foo bar]:
 <my url>
@@ -4088,7 +4087,7 @@ test('parseMarkdown, link definition href angle', (t) => {
 [Foo bar]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4104,7 +4103,7 @@ test('parseMarkdown, link definition href angle', (t) => {
 });
 
 
-test('parseMarkdown, link definition title multiline', (t) => {
+test('parseMarkdown, link definition title multiline', () => {
     const markdown = parseMarkdown(`\
 [foo]: /url '
 title
@@ -4115,7 +4114,7 @@ line2
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4131,7 +4130,7 @@ line2
 });
 
 
-test('parseMarkdown, link definition title no blanks', (t) => {
+test('parseMarkdown, link definition title no blanks', () => {
     const markdown = parseMarkdown(`\
 [foo]: /url 'title
 
@@ -4140,7 +4139,7 @@ with blank line'
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4171,7 +4170,7 @@ with blank line'
 });
 
 
-test('parseMarkdown, link definition title none', (t) => {
+test('parseMarkdown, link definition title none', () => {
     const markdown = parseMarkdown(`\
 [foo]:
 /url
@@ -4179,7 +4178,7 @@ test('parseMarkdown, link definition title none', (t) => {
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4195,14 +4194,14 @@ test('parseMarkdown, link definition title none', (t) => {
 });
 
 
-test('parseMarkdown, link definition href none', (t) => {
+test('parseMarkdown, link definition href none', () => {
     const markdown = parseMarkdown(`\
 [foo]:
 
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4228,14 +4227,14 @@ test('parseMarkdown, link definition href none', (t) => {
 });
 
 
-test('parseMarkdown, link definition href angle none', (t) => {
+test('parseMarkdown, link definition href angle none', () => {
     const markdown = parseMarkdown(`\
 [foo]: <>
 
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4251,14 +4250,14 @@ test('parseMarkdown, link definition href angle none', (t) => {
 });
 
 
-test('parseMarkdown, link definition title no space', (t) => {
+test('parseMarkdown, link definition title no space', () => {
     const markdown = parseMarkdown(`\
 [foo]: <bar>(baz)
 
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4284,14 +4283,14 @@ test('parseMarkdown, link definition title no space', (t) => {
 });
 
 
-test('parseMarkdown, link definition title escapes', (t) => {
+test('parseMarkdown, link definition title escapes', () => {
     const markdown = parseMarkdown(`\
 [foo]: /url\\bar\\*baz "foo\\"bar\\baz"
 
 [foo]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4307,14 +4306,14 @@ test('parseMarkdown, link definition title escapes', (t) => {
 });
 
 
-test('parseMarkdown, link reference', (t) => {
+test('parseMarkdown, link reference', () => {
     const markdown = parseMarkdown(`\
 [foo][bar]
 
 [bar]: /url "title"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4330,14 +4329,14 @@ test('parseMarkdown, link reference', (t) => {
 });
 
 
-test('parseMarkdown, link reference escape start', (t) => {
+test('parseMarkdown, link reference escape start', () => {
     const markdown = parseMarkdown(`\
 \\[ref]
 
 [ref]: /uri
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4349,14 +4348,14 @@ test('parseMarkdown, link reference escape start', (t) => {
 });
 
 
-test('parseMarkdown, link reference escapes', (t) => {
+test('parseMarkdown, link reference escapes', () => {
     const markdown = parseMarkdown(`\
 [link \\[bar][ref]
 
 [ref]: /uri
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4372,14 +4371,14 @@ test('parseMarkdown, link reference escapes', (t) => {
 });
 
 
-test('parseMarkdown, link reference text spans', (t) => {
+test('parseMarkdown, link reference text spans', () => {
     const markdown = parseMarkdown(`\
 [link _foo **bar** \`#\`_][ref]
 
 [ref]: /uri
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4409,14 +4408,14 @@ test('parseMarkdown, link reference text spans', (t) => {
 });
 
 
-test('parseMarkdown, link and image reference', (t) => {
+test('parseMarkdown, link and image reference', () => {
     const markdown = parseMarkdown(`\
 [![moon][img]](/url "moon-link")
 
 [img]: moon.jpg "moon-image"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4438,14 +4437,14 @@ test('parseMarkdown, link and image reference', (t) => {
 });
 
 
-test('parseMarkdown, link and image reference escape start', (t) => {
+test('parseMarkdown, link and image reference escape start', () => {
     const markdown = parseMarkdown(`\
 \\[![img]](/url)
 
 [img]: moon.jpg
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4467,14 +4466,14 @@ test('parseMarkdown, link and image reference escape start', (t) => {
 });
 
 
-test('parseMarkdown, link and image reference minimal', (t) => {
+test('parseMarkdown, link and image reference minimal', () => {
     const markdown = parseMarkdown(`\
 [![img]](/url)
 
 [img]: moon.jpg
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4495,7 +4494,7 @@ test('parseMarkdown, link and image reference minimal', (t) => {
 });
 
 
-test('parseMarkdown, link and image reference multiline', (t) => {
+test('parseMarkdown, link and image reference multiline', () => {
     const markdown = parseMarkdown(`\
 [
  ![
@@ -4511,7 +4510,7 @@ test('parseMarkdown, link and image reference multiline', (t) => {
 [img]: moon.jpg "moon-image"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4533,12 +4532,12 @@ test('parseMarkdown, link and image reference multiline', (t) => {
 });
 
 
-test('parseMarkdown, link and image reference missing image reference', (t) => {
+test('parseMarkdown, link and image reference missing image reference', () => {
     const markdown = parseMarkdown(`\
 [![moon][img]](/url "moon-link")
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4560,14 +4559,14 @@ test('parseMarkdown, link and image reference missing image reference', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image', (t) => {
+test('parseMarkdown, link reference and image', () => {
     const markdown = parseMarkdown(`\
 [![moon](moon.jpg "moon-image")][ref]
 
 [ref]: /uri "moon-link"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4589,14 +4588,14 @@ test('parseMarkdown, link reference and image', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image escape start', (t) => {
+test('parseMarkdown, link reference and image escape start', () => {
     const markdown = parseMarkdown(`\
 \\[![moon](moon.jpg "moon-image")][ref]
 
 [ref]: /uri "moon-link"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4619,14 +4618,14 @@ test('parseMarkdown, link reference and image escape start', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image minimal', (t) => {
+test('parseMarkdown, link reference and image minimal', () => {
     const markdown = parseMarkdown(`\
 [![moon](moon.jpg)][ref]
 
 [ref]: /uri
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4647,7 +4646,7 @@ test('parseMarkdown, link reference and image minimal', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image multiline', (t) => {
+test('parseMarkdown, link reference and image multiline', () => {
     const markdown = parseMarkdown(`\
 [
  ![
@@ -4662,7 +4661,7 @@ test('parseMarkdown, link reference and image multiline', (t) => {
 [ref]: /uri "moon-link"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4684,12 +4683,12 @@ test('parseMarkdown, link reference and image multiline', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image missing link reference', (t) => {
+test('parseMarkdown, link reference and image missing link reference', () => {
     const markdown = parseMarkdown(`\
 [![moon](moon.jpg "moon-image")][ref]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4705,7 +4704,7 @@ test('parseMarkdown, link reference and image missing link reference', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image reference', (t) => {
+test('parseMarkdown, link reference and image reference', () => {
     const markdown = parseMarkdown(`\
 [![moon][img]][ref]
 
@@ -4713,7 +4712,7 @@ test('parseMarkdown, link reference and image reference', (t) => {
 [img]: moon.jpg "moon-image"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4739,7 +4738,7 @@ test('parseMarkdown, link reference and image reference', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image reference escape start', (t) => {
+test('parseMarkdown, link reference and image reference escape start', () => {
     const markdown = parseMarkdown(`\
 \\[![moon][img]][ref]
 
@@ -4747,7 +4746,7 @@ test('parseMarkdown, link reference and image reference escape start', (t) => {
 [img]: moon.jpg "moon-image"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4774,7 +4773,7 @@ test('parseMarkdown, link reference and image reference escape start', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image reference minimal', (t) => {
+test('parseMarkdown, link reference and image reference minimal', () => {
     const markdown = parseMarkdown(`\
 [![img]][ref]
 
@@ -4782,7 +4781,7 @@ test('parseMarkdown, link reference and image reference minimal', (t) => {
 [img]: moon.jpg
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4807,7 +4806,7 @@ test('parseMarkdown, link reference and image reference minimal', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image reference multiline', (t) => {
+test('parseMarkdown, link reference and image reference multiline', () => {
     const markdown = parseMarkdown(`\
 [
  ![
@@ -4823,7 +4822,7 @@ test('parseMarkdown, link reference and image reference multiline', (t) => {
 [img]: moon.jpg "moon-image"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4849,12 +4848,12 @@ test('parseMarkdown, link reference and image reference multiline', (t) => {
 });
 
 
-test('parseMarkdown, link reference and image reference missing both references', (t) => {
+test('parseMarkdown, link reference and image reference missing both references', () => {
     const markdown = parseMarkdown(`\
 [![img]][ref]
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4870,14 +4869,14 @@ test('parseMarkdown, link reference and image reference missing both references'
 });
 
 
-test('parseMarkdown, link reference and image reference missing link reference', (t) => {
+test('parseMarkdown, link reference and image reference missing link reference', () => {
     const markdown = parseMarkdown(`\
 [![img]][ref]
 
 [img]: moon.jpg
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4893,14 +4892,14 @@ test('parseMarkdown, link reference and image reference missing link reference',
 });
 
 
-test('parseMarkdown, link reference and image reference missing image reference', (t) => {
+test('parseMarkdown, link reference and image reference missing image reference', () => {
     const markdown = parseMarkdown(`\
 [![img]][ref]
 
 [ref]: /uri
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4925,14 +4924,14 @@ test('parseMarkdown, link reference and image reference missing image reference'
 });
 
 
-test('parseMarkdown, link reference cannot contain links', (t) => {
+test('parseMarkdown, link reference cannot contain links', () => {
     const markdown = parseMarkdown(`\
 [foo [bar](/uri)][ref]
 
 [ref]: /uri
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4950,14 +4949,14 @@ test('parseMarkdown, link reference cannot contain links', (t) => {
 });
 
 
-test('parseMarkdown, link reference precedence', (t) => {
+test('parseMarkdown, link reference precedence', () => {
     const markdown = parseMarkdown(`\
 [foo]()
 
 [foo]: /url1
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4969,14 +4968,14 @@ test('parseMarkdown, link reference precedence', (t) => {
 });
 
 
-test('parseMarkdown, link reference precedence 2', (t) => {
+test('parseMarkdown, link reference precedence 2', () => {
     const markdown = parseMarkdown(`\
 [foo](not a link)
 
 [foo]: /url1
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -4993,14 +4992,14 @@ test('parseMarkdown, link reference precedence 2', (t) => {
 });
 
 
-test('parseMarkdown, link reference consecutive', (t) => {
+test('parseMarkdown, link reference consecutive', () => {
     const markdown = parseMarkdown(`\
 [foo][bar][baz]
 
 [baz]: /url
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -5026,14 +5025,14 @@ test('parseMarkdown, link reference consecutive', (t) => {
 });
 
 
-test('parseMarkdown, link reference empty ref', (t) => {
+test('parseMarkdown, link reference empty ref', () => {
     const markdown = parseMarkdown(`\
 []
 
 []: /uri
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -5063,14 +5062,14 @@ test('parseMarkdown, link reference empty ref', (t) => {
 });
 
 
-test('parseMarkdown, image reference', (t) => {
+test('parseMarkdown, image reference', () => {
     const markdown = parseMarkdown(`\
 ![foo *bar*]
 
 [foo *bar*]: train.jpg "train & tracks"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -5088,14 +5087,14 @@ test('parseMarkdown, image reference', (t) => {
 });
 
 
-test('parseMarkdown, image reference alt text', (t) => {
+test('parseMarkdown, image reference alt text', () => {
     const markdown = parseMarkdown(`\
 ![foo *bar*][foobar]
 
 [FOOBAR]: train.jpg "train & tracks"
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
@@ -5113,14 +5112,14 @@ test('parseMarkdown, image reference alt text', (t) => {
 });
 
 
-test('parseMarkdown, image reference minimal', (t) => {
+test('parseMarkdown, image reference minimal', () => {
     const markdown = parseMarkdown(`\
 ![bar]
 
 [bar]: /url
 `);
     validateMarkdownModel(markdown);
-    t.deepEqual(markdown, {
+    assert.deepEqual(markdown, {
         'parts': [
             {'paragraph': {
                 'spans': [
