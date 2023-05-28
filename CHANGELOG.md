@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.2 (2023-05-28)
+
+- [45f1dea](https://github.com/craigahobbs/markdown-model/commit/45f1dea) - remove jsdom dev dependency
+
 ## 1.8.1 (2023-05-23)
 
 - [100171d](https://github.com/craigahobbs/markdown-model/commit/100171d) - run tests with node --test
