@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.3 (2023-09-27)
+
+- [3d7414b](https://github.com/craigahobbs/markdown-model/commit/3d7414b) - parseMarkdown now ignores null lines
+
 ## 1.8.2 (2023-05-28)
 
 - [45f1dea](https://github.com/craigahobbs/markdown-model/commit/45f1dea) - remove jsdom dev dependency
