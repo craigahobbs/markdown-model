@@ -96,7 +96,7 @@ test('parseMarkdown, lines', () => {
         '',
         'This is a sentence.',
         'This is another sentence.',
-        '',
+        null,
         '',
         'This is another paragraph.\n\nAnd another.'
     ]);
