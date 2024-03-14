@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.4 (2024-03-14)
+
+- [65b0683](https://github.com/craigahobbs/markdown-model/commit/65b0683) - update function docs
+
 ## 1.8.3 (2023-09-27)
 
 - [3d7414b](https://github.com/craigahobbs/markdown-model/commit/3d7414b) - parseMarkdown now ignores null lines
