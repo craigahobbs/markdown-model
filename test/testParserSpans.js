@@ -124,6 +124,37 @@ test('parseMarkdown, spans spaces', () => {
 });
 
 
+test('parseMarkdown, spans spaces hang fix', () => {
+    const markdown = parseMarkdown(`\
+**a                               b
+*a                                b
+__a                               b
+_a                                b
+~a                                b
+`);
+    validateMarkdownModel(markdown);
+    assert.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {
+                            'text': `\
+**a                               b
+*a                                b
+__a                               b
+_a                                b
+~a                                b`
+                        }
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, entity references', () => {
     const markdown = parseMarkdown(`\
 &nbsp; &amp; &copy; &AElig; &Dcaron;
