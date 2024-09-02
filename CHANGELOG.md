@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.6 (2024-09-01)
+
+- [dbbb807](https://github.com/craigahobbs/markdown-model/commit/dbbb807) - markdown-model.css - use disc for all li
+
 ## 1.8.5 (2024-03-20)
 
 - [fb8d01e](https://github.com/craigahobbs/markdown-model/commit/fb8d01e) - fix regex hang with certain span and space text
