@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.7 (2024-09-11)
+
+- [0c8e757](https://github.com/craigahobbs/markdown-model/commit/0c8e757) - markdown-model.css - use disc for all \*ul\*
+
 ## 1.8.6 (2024-09-01)
 
 - [dbbb807](https://github.com/craigahobbs/markdown-model/commit/dbbb807) - markdown-model.css - use disc for all li
