@@ -193,10 +193,7 @@ test('markdownElements', () => {
                 'html': 'pre',
                 'elem': {
                     'html': 'code',
-                    'elem': [
-                        {'text': 'Line 1\n'},
-                        {'text': 'Line 2\n'}
-                    ]
+                    'elem': {'text': 'Line 1\nLine 2\n'}
                 }
             }
         ]
@@ -259,7 +256,7 @@ test('markdownElementsAsync', async () => {
                         'elem': [
                             {
                                 'html': 'pre',
-                                'elem': {'html': 'code', 'elem': [{'text': 'Line 1\n'}, {'text': 'Line 2\n'}]}
+                                'elem': {'html': 'code', 'elem': {'text': 'Line 1\nLine 2\n'}}
                             },
                             {'html': 'p', 'elem': {'text': 'Line 1, Line 2'}}
                         ]
@@ -271,7 +268,7 @@ test('markdownElementsAsync', async () => {
                 'elem': [
                     {
                         'html': 'pre',
-                        'elem': {'html': 'code', 'elem': [{'text': 'Line 1\n'}, {'text': 'Line 2\n'}]}
+                        'elem': {'html': 'code', 'elem': {'text': 'Line 1\nLine 2\n'}}
                     },
                     {'html': 'p', 'elem': {'text': 'Line 1, Line 2'}}
                 ]
@@ -751,8 +748,7 @@ test('markdownElements, code block with language', () => {
                 'elem': {
                     'html': 'code',
                     'elem': [
-                        {'text': 'foo();\n'},
-                        {'text': 'bar();\n'}
+                        {'text': 'foo();\nbar();\n'}
                     ]
                 }
             }
