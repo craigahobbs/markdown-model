@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1 (2024-09-25)
+
+- [b5c0422](https://github.com/craigahobbs/markdown-model/commit/b5c0422) - add json syntax highlighting
+
+- [fd5e4a4](https://github.com/craigahobbs/markdown-model/commit/fd5e4a4) - fix highlight module declaration
+
 ## 2.0.0 (2024-09-25)
 
 - [9d4a1fe](https://github.com/craigahobbs/markdown-model/commit/9d4a1fe) - add fenced code block syntax highlighting
