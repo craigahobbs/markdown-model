@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0 (2024-09-25)
+
+- [9d4a1fe](https://github.com/craigahobbs/markdown-model/commit/9d4a1fe) - add fenced code block syntax highlighting
+
 ## 1.8.7 (2024-09-11)
 
 - [0c8e757](https://github.com/craigahobbs/markdown-model/commit/0c8e757) - markdown-model.css - use disc for all \*ul\*
