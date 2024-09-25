@@ -218,6 +218,67 @@ const str = 'single' + "double";
 });
 
 
+test('highlightElements, json', () => {
+    const elements = highlightElements('json', [
+        `\
+{
+    "a": 123,
+    "b": true,
+    "c": null
+}
+`
+    ]);
+    assert.deepEqual(
+        elements,
+        {
+            'html': 'pre',
+            'elem': {
+                'html': 'code',
+                'elem': [
+                    {'text': '{\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                        'elem': {'text': '"a"'}
+                    },
+                    {'text': ': '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                        'elem': {'text': '123'}
+                    },
+                    {'text': ',\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                        'elem': {'text': '"b"'}
+                    },
+                    {'text': ': '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                        'elem': {'text': 'true'}
+                    },
+                    {'text': ',\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                        'elem': {'text': '"c"'}
+                    },
+                    {'text': ': '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                        'elem': {'text': 'null'}
+                    },
+                    {'text': '\n}\n'}
+                ]
+            }
+        }
+    );
+});
+
+
 test('highlightElements, markdown (alias)', () => {
     const elements = highlightElements('md', ['# Title\n\nSome text']);
     assert.deepEqual(
