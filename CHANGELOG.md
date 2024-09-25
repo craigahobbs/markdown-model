@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2 (2024-09-25)
+
+- [5e63449](https://github.com/craigahobbs/markdown-model/commit/5e63449) - simplify shell syntax highlighting
+
 ## 2.0.1 (2024-09-25)
 
 - [b5c0422](https://github.com/craigahobbs/markdown-model/commit/b5c0422) - add json syntax highlighting
