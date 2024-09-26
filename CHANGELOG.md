@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.3 (2024-09-25)
+
+- [8cfbed8](https://github.com/craigahobbs/markdown-model/commit/8cfbed8) - markdown-model.css - use monospace font for pre and code
+
 ## 2.0.2 (2024-09-25)
 
 - [5e63449](https://github.com/craigahobbs/markdown-model/commit/5e63449) - simplify shell syntax highlighting
