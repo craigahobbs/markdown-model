@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.5 (2024-09-26)
+
+- [88bc35d](https://github.com/craigahobbs/markdown-model/commit/88bc35d) - Revert "markdown-model.css - use font-family sans-serif"
+
 ## 2.0.4 (2024-09-26)
 
 - [8d5f840](https://github.com/craigahobbs/markdown-model/commit/8d5f840) - markdown-model.css - use font-family sans-serif
