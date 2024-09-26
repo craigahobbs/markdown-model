@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.6 (2024-09-26)
+
+- [79bfc86](https://github.com/craigahobbs/markdown-model/commit/79bfc86) - markdown-model.css - pre overflow-x auto
+
 ## 2.0.5 (2024-09-26)
 
 - [88bc35d](https://github.com/craigahobbs/markdown-model/commit/88bc35d) - Revert "markdown-model.css - use font-family sans-serif"
