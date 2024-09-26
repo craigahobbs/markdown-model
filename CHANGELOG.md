@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.7 (2024-09-26)
+
+- [4f9a84e](https://github.com/craigahobbs/markdown-model/commit/4f9a84e) - markdown-model.css - use system-ui as primary font-family
+
 ## 2.0.6 (2024-09-26)
 
 - [79bfc86](https://github.com/craigahobbs/markdown-model/commit/79bfc86) - markdown-model.css - pre overflow-x auto
