@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.4 (2024-09-26)
+
+- [8d5f840](https://github.com/craigahobbs/markdown-model/commit/8d5f840) - markdown-model.css - use font-family sans-serif
+
 ## 2.0.3 (2024-09-25)
 
 - [8cfbed8](https://github.com/craigahobbs/markdown-model/commit/8cfbed8) - markdown-model.css - use monospace font for pre and code
