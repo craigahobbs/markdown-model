@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.8 (2024-10-03)
+
+- [4967e95](https://github.com/craigahobbs/markdown-model/commit/4967e95) - add syntax highlighting for C and Makefile
+
 ## 2.0.7 (2024-09-26)
 
 - [4f9a84e](https://github.com/craigahobbs/markdown-model/commit/4f9a84e) - markdown-model.css - use system-ui as primary font-family
