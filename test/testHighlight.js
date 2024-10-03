@@ -111,6 +111,122 @@ endfor
 });
 
 
+test('highlightElements, c', () => {
+    const elements = highlightElements('c', [
+        `\
+#include <stdio.h>
+
+int main() {
+    // Variable declarations
+    int number = 42;
+    char letter = 'A';
+    float pi = 3.14159;
+
+    // Function call
+    printf("Hello, World! The result is %d\n", number);
+
+    return 0;
+}
+`
+    ]);
+    assert.deepEqual(
+        elements,
+        {
+            'html': 'pre',
+            'elem': {
+                'html': 'code',
+                'elem': [
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                        'elem': {'text': '#include'}
+                    },
+                    {'text': ' <stdio.h>\n\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                        'elem': {'text': 'int'}
+                    },
+                    {'text': ' main() {\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                        'elem': {'text': '// Variable declarations'}
+                    },
+                    {'text': '\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                        'elem': {'text': 'int'}
+                    },
+                    {'text': ' number = '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                        'elem': {'text': '42'}
+                    },
+                    {'text': ';\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                        'elem': {'text': 'char'}
+                    },
+                    {'text': ' letter = '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                        'elem': {'text': "'A'"}
+                    },
+                    {'text': ';\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                        'elem': {'text': 'float'}
+                    },
+                    {'text': ' pi = '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                        'elem': {'text': '3.14159'}
+                    },
+                    {'text': ';\n\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                        'elem': {'text': '// Function call'}
+                    },
+                    {'text': '\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                        'elem': {'text': 'printf'}
+                    },
+                    {'text': '('},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                        'elem': {'text': '"Hello, World! The result is %d\n"'}
+                    },
+                    {'text': ', number);\n\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                        'elem': {'text': 'return'}
+                    },
+                    {'text': ' '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                        'elem': {'text': '0'}
+                    },
+                    {'text': ';\n}\n'}
+                ]
+            }
+        }
+    );
+});
+
+
 test('highlightElements, javascript', () => {
     const elements = highlightElements('javascript', [
         `\
@@ -272,6 +388,122 @@ test('highlightElements, json', () => {
                         'elem': {'text': 'null'}
                     },
                     {'text': '\n}\n'}
+                ]
+            }
+        }
+    );
+});
+
+
+test('highlightElements, makefile', () => {
+    const elements = highlightElements('makefile', [
+        `\
+# Variables
+TARGET := myapp
+SRCS := main.c utils.c
+
+# Conditional debug flags
+ifdef DEBUG
+  CFLAGS += -g
+  @echo "Debug mode enabled."
+endif
+
+# Use strip to remove whitespace from the source files
+STRIPPED_SRCS := $(strip $(SRCS))
+
+# Default target
+.PHONY: all
+all: $(TARGET)
+
+# ...
+
+# Clean target to remove build artifacts
+.PHONY: clean
+clean:
+	rm -f $(OBJS) $(TARGET)
+`
+    ]);
+    assert.deepEqual(
+        elements,
+        {
+            'html': 'pre',
+            'elem': {
+                'html': 'code',
+                'elem': [
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                        'elem': {'text': '# Variables'}
+                    },
+                    {'text': '\nTARGET := myapp\nSRCS := main.c utils.c\n\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                        'elem': {'text': '# Conditional debug flags'}
+                    },
+                    {'text': '\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                        'elem': {'text': 'ifdef'}
+                    },
+                    {'text': ' DEBUG\n  CFLAGS += -g\n  @echo '},
+                    {
+                        html: 'span',
+                        attr: {style: 'color: var(--markdown-model-color-highlight-string);'},
+                        elem: {text: '"Debug mode enabled."'},
+                    },
+                    {
+                        text: '\n'
+                    },
+                     {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                        'elem': {'text': 'endif'}
+                    },
+                    {'text': '\n\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                        'elem': {'text': '# Use strip to remove whitespace from the source files'}
+                    },
+                    {'text': '\nSTRIPPED_SRCS := $('},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                        'elem': {'text': 'strip'}
+                    },
+                    {'text': ' $(SRCS))\n\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                        'elem': {'text': '# Default target'}
+                    },
+                    {'text': '\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                        'elem': {'text': '.PHONY'}
+                    },
+                    {'text': ': all\nall: $(TARGET)\n\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                        'elem': {'text': '# ...'}
+                    },
+                    {'text': '\n\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                        'elem': {'text': '# Clean target to remove build artifacts'}
+                    },
+                    {'text': '\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                        'elem': {'text': '.PHONY'}
+                    },
+                    {'text': ': clean\nclean:\n\trm -f $(OBJS) $(TARGET)\n'}
                 ]
             }
         }
