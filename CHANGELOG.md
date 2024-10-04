@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.10 (2024-10-04)
+
+- [6a0c034](https://github.com/craigahobbs/markdown-model/commit/6a0c034) - improved syntax highlighting for makefile, markdown, and xml
+
 ## 2.0.9 (2024-10-04)
 
 - [3a877af](https://github.com/craigahobbs/markdown-model/commit/3a877af) - add syntax highlighting for C++, C#, Java, SQL, and XML
