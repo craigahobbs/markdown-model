@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.9 (2024-10-04)
+
+- [3a877af](https://github.com/craigahobbs/markdown-model/commit/3a877af) - add syntax highlighting for C++, C#, Java, SQL, and XML
+
+- [349b10c](https://github.com/craigahobbs/markdown-model/commit/349b10c) - use createWordListRegex
+
 ## 2.0.8 (2024-10-03)
 
 - [4967e95](https://github.com/craigahobbs/markdown-model/commit/4967e95) - add syntax highlighting for C and Makefile
