@@ -973,12 +973,13 @@ STRIPPED_SRCS := $(strip $(SRCS))
 .PHONY: all
 all: $(TARGET)
 
-# ...
-
 # Clean target to remove build artifacts
 .PHONY: clean
 clean:
-	rm -f $(OBJS) $(TARGET)
+\trm -f $(OBJS) $(TARGET)
+
+$(TARGET):
+\techo "foo" > $@
 `
     ]);
     assert.deepEqual(
@@ -1007,14 +1008,12 @@ clean:
                     },
                     {'text': ' DEBUG\n  CFLAGS += -g\n  @echo '},
                     {
-                        html: 'span',
-                        attr: {style: 'color: var(--markdown-model-color-highlight-string);'},
-                        elem: {text: '"Debug mode enabled."'},
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                        'elem': {'text': '"Debug mode enabled."'}
                     },
+                    {'text': '\n'},
                     {
-                        text: '\n'
-                    },
-                     {
                         'html': 'span',
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                         'elem': {'text': 'endif'}
@@ -1041,15 +1040,15 @@ clean:
                     {
                         'html': 'span',
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
-                        'elem': {'text': '.PHONY'}
+                        'elem': {'text': '.PHONY:'}
                     },
-                    {'text': ': all\nall: $(TARGET)\n\n'},
+                    {'text': ' all\n'},
                     {
                         'html': 'span',
-                        'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
-                        'elem': {'text': '# ...'}
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': 'all:'}
                     },
-                    {'text': '\n\n'},
+                    {'text': ' $(TARGET)\n\n'},
                     {
                         'html': 'span',
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
@@ -1059,9 +1058,27 @@ clean:
                     {
                         'html': 'span',
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
-                        'elem': {'text': '.PHONY'}
+                        'elem': {'text': '.PHONY:'}
                     },
-                    {'text': ': clean\nclean:\n\trm -f $(OBJS) $(TARGET)\n'}
+                    {'text': ' clean\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': 'clean:'}
+                    },
+                    {'text': '\n\trm -f $(OBJS) $(TARGET)\n\n$(TARGET):\n\techo '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                        'elem': {'text': '"foo"'}
+                    },
+                    {'text': ' > '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                        'elem': {'text': '$@'}
+                    },
+                    {'text': '\n'}
                 ]
             }
         }
@@ -1070,7 +1087,23 @@ clean:
 
 
 test('highlightElements, markdown (alias)', () => {
-    const elements = highlightElements('md', ['# Title\n\nSome text']);
+    const elements = highlightElements('md', [
+        `\
+# Title
+
+Some text
+
+- item 1
+  - item 2
+
+1. item 1
+2. item 2
+
+A link [Home Page](http://wherever.com)!
+
+Link with title [GitHub](https://github.com "GitHub").
+`
+    ]);
     assert.deepEqual(
         elements,
         {
@@ -1080,10 +1113,46 @@ test('highlightElements, markdown (alias)', () => {
                 'elem': [
                     {
                         'html': 'span',
-                        'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
                         'elem': {'text': '# Title'}
                     },
-                    {'text': '\n\nSome text\n'}
+                    {'text': '\n\nSome text\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                        'elem': {'text': '\n- '}
+                    },
+                    {'text': 'item 1\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                        'elem': {'text': '  - '}
+                    },
+                    {'text': 'item 2\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                        'elem': {'text': '\n1. '}
+                    },
+                    {'text': 'item 1\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                        'elem': {'text': '2. '}
+                    },
+                    {'text': 'item 2\n\nA link '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                        'elem': {'text': '[Home Page](http://wherever.com)'}
+                    },
+                    {'text': '!\n\nLink with title '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                        'elem': {'text': '[GitHub](https://github.com "GitHub")'}
+                    },
+                    {'text': '.\n'}
                 ]
             }
         }
@@ -1505,7 +1574,13 @@ test('highlightElements, xml', () => {
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
                         'elem': {'text': '<!DOCTYPE note SYSTEM "Note.dtd">'}
                     },
-                    {'text': '\n<note importance='},
+                    {'text': '\n'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': '<note'}
+                    },
+                    {'text': ' importance='},
                     {
                         'html': 'span',
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
@@ -1517,31 +1592,84 @@ test('highlightElements, xml', () => {
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
                         'elem': {'text': "'stuff'"}
                     },
-                    {'text': '>\n    <to>Tove</to>\n    <from>Jani</from>\n    <heading>Reminder '},
+                    {'text': '>\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': '<to'}
+                    },
+                    {'text': '>Tove'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': '</to'}
+                    },
+                    {'text': '>\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': '<from'}
+                    },
+                    {'text': '>Jani'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': '</from'}
+                    },
+                    {'text': '>\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': '<heading'}
+                    },
+                    {'text': '>Reminder '},
                     {
                         'html': 'span',
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
                         'elem': {'text': '&amp;'}
                     },
-                    {'text': " Notes</heading>\n    <body>Don't forget me this weekend! "},
+                    {'text': ' Notes'},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': '</heading'}
+                    },
+                    {'text': '>\n    '},
+                    {
+                        'html': 'span',
+                        'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                        'elem': {'text': '<body'}
+                    },
+                    {'text': ">Don't forget me this weekend! "},
                     {
                         'html': 'span',
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
                         'elem': {'text': '&#169;'}
                     },
-                    {'text': '</body>\n    '},
-                    {
-                        'html': 'span',
-                        'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                    {'html': 'span','attr': {
+                            'style': 'color: var(--markdown-model-color-highlight-tag);'
+                        },
+                        'elem': {'text': '</body'}
+                    },{'text': '>\n    '
+                    },
+                    {'html': 'span','attr': {
+                            'style': 'color: var(--markdown-model-color-highlight-preprocessor);'
+                        },
                         'elem': {'text': '<?processing instruction?>'}
+                    },{'text': '\n    '
                     },
-                    {'text': '\n    '},
-                    {
-                        'html': 'span',
-                        'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                    {'html': 'span','attr': {
+                            'style': 'color: var(--markdown-model-color-highlight-preprocessor);'
+                        },
                         'elem': {'text': '<![CDATA[\n        Some <unparsed> data & content.\n    ]]>'}
+                    },{'text': '\n'
                     },
-                    {'text': '\n</note>\n'}
+                    {'html': 'span','attr': {
+                            'style': 'color: var(--markdown-model-color-highlight-tag);'
+                        },
+                        'elem': {'text': '</note'}
+                    },
+                    {'text': '>\n'}
                 ]
             }
         }
