@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.11 (2024-10-04)
+
+- [996f4b3](https://github.com/craigahobbs/markdown-model/commit/996f4b3) - fix syntax highlighting of markdown titles
+
 ## 2.0.10 (2024-10-04)
 
 - [6a0c034](https://github.com/craigahobbs/markdown-model/commit/6a0c034) - improved syntax highlighting for makefile, markdown, and xml
