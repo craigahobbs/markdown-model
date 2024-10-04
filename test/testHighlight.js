@@ -1096,10 +1096,10 @@ Some text
 - item 1
   - item 2
 
-1. item 1
-2. item 2
+1. item # 1
+2. item # 2
 
-A link [Home Page](http://wherever.com)!
+A link [Home Page](http://wherever.com#top)!
 
 Link with title [GitHub](https://github.com "GitHub").
 `
@@ -1134,17 +1134,17 @@ Link with title [GitHub](https://github.com "GitHub").
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
                         'elem': {'text': '\n1. '}
                     },
-                    {'text': 'item 1\n'},
+                    {'text': 'item # 1\n'},
                     {
                         'html': 'span',
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
                         'elem': {'text': '2. '}
                     },
-                    {'text': 'item 2\n\nA link '},
+                    {'text': 'item # 2\n\nA link '},
                     {
                         'html': 'span',
                         'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                        'elem': {'text': '[Home Page](http://wherever.com)'}
+                        'elem': {'text': '[Home Page](http://wherever.com#top)'}
                     },
                     {'text': '!\n\nLink with title '},
                     {
