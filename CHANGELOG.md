@@ -2,9 +2,9 @@
 
 ## 2.1.0 (2024-10-09)
 
-- [3598671](https://github.com/craigahobbs/markdown-model/commit/3598671) - add fenced code block copy link
-
-- [682bcd9](https://github.com/craigahobbs/markdown-model/commit/682bcd9) - move highlight language name/aliases into highlight model
+- [4d4e48d](https://github.com/craigahobbs/markdown-model/commit/4d4e48d)
+  - markdown-model 2.1.0
+  - add fenced code block copy link
 
 ## 2.0.11 (2024-10-04)
 
