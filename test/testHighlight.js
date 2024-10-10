@@ -143,6 +143,7 @@ test('highlightElements, barescript', () => {
     const elements = highlightElements('barescript', [
         '# Iterate over an array\n',
         `\
+number5 = 'alive'
 for number in arrayNew(1, 2, 3):
     markfownPrint('Number ' + number);
 endfor
@@ -162,6 +163,12 @@ endfor
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
                             'elem': {'text': '# Iterate over an array'}
+                        },
+                        {'text': '\nnumber5 = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'alive'"}
                         },
                         {'text': '\n'},
                         {
