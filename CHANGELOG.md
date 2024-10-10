@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1 (2024-10-10)
+
+- [b5f154f](https://github.com/craigahobbs/markdown-model/commit/b5f154f) - fix number syntax highlight issue
+
 ## 2.1.0 (2024-10-09)
 
 - [4d4e48d](https://github.com/craigahobbs/markdown-model/commit/4d4e48d)
