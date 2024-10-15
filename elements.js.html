@@ -31,8 +31,8 @@
 
 /** @module lib/elements */
 
+import {codeBlockElements} from './highlight.js';
 import {getMarkdownParagraphText} from './parser.js';
-import {highlightElements} from './highlight.js';
 
 
 /**
@@ -52,12 +52,13 @@ import {highlightElements} from './highlight.js';
  *
  * @callback CodeBlockFn
  * @param {Object} codeBlock - The [code block model]{@link module:lib/elements~CodeBlock}
+ * @param {?Object} options - The [options object]{@link module:lib/elements~MarkdownElementsOptions}
  * @returns {*} The code block's element model
  */
 
 /**
  * @typedef {Object} CodeBlock
- * @property {string} language - The code block language
+ * @property {?string} language - The code block language
  * @property {string[]} lines - The code blocks lines
  * @property {number} [startLineNumber] - The code blocks lines
  */
@@ -114,11 +115,7 @@ function markdownPartElements(part, options, usedHeaderIds) {
 
     // Code block?
     } else if (partKey === 'codeBlock') {
-        const {codeBlock} = part;
-        if (options !== null &amp;&amp; 'codeBlocks' in options &amp;&amp; 'language' in codeBlock &amp;&amp; codeBlock.language in options.codeBlocks) {
-            return options.codeBlocks[codeBlock.language](codeBlock);
-        }
-        return highlightElements(part.codeBlock.language ?? null, part.codeBlock.lines, options);
+        return codeBlockElements(part.codeBlock, options);
     }
 
     return markdownPartElementsBase(part, options, usedHeaderIds);
@@ -171,11 +168,7 @@ async function markdownPartElementsAsync(part, options, usedHeaderIds) {
 
     // Code block?
     } else if (partKey === 'codeBlock') {
-        const {codeBlock} = part;
-        if (options !== null &amp;&amp; 'codeBlocks' in options &amp;&amp; 'language' in codeBlock &amp;&amp; codeBlock.language in options.codeBlocks) {
-            return options.codeBlocks[codeBlock.language](codeBlock);
-        }
-        return highlightElements(part.codeBlock.language ?? null, part.codeBlock.lines, options);
+        return codeBlockElements(part.codeBlock, options);
     }
 
     return markdownPartElementsBase(part, options, usedHeaderIds);

@@ -64,7 +64,7 @@
     
 
     
-    <h4 class="name" id=".highlightElements"><span class="type-signature">(static) </span>highlightElements<span class="signature">(options<span class="signature-attributes">opt, nullable</span>)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    <h4 class="name" id=".codeBlockElements"><span class="type-signature">(static) </span>codeBlockElements<span class="signature">(codeBlock, options<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {*}</span></h4>
     
 
     
@@ -72,7 +72,7 @@
 
 
 <div class="description">
-    <p>Generate a syntax-highlighed code block element model</p>
+    <p>Render a code block</p>
 </div>
 
 
@@ -110,13 +110,13 @@
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>codeBlock</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">Object</span>
 
 
             
@@ -125,7 +125,36 @@
             
                 <td class="attributes">
                 
-                    &lt;optional><br>
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The <a href="module-lib_elements.html#~CodeBlock">code block model</a></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
                 
 
                 
@@ -146,97 +175,6 @@
 </table>
 
 
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>language</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                    &lt;nullable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The code block language</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lines</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The code block lines</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -270,7 +208,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="highlight.js.html">highlight.js</a>, <a href="highlight.js.html#line19">line 19</a>
+        <a href="highlight.js.html">highlight.js</a>, <a href="highlight.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -299,7 +237,7 @@
 
         
 <div class="param-desc">
-    <p>The syntax-highlighted code <a href="https://github.com/craigahobbs/element-model#readme">element model</a></p>
+    <p>The code block's <a href="https://github.com/craigahobbs/element-model#readme">element model</a></p>
 </div>
 
 
@@ -311,6 +249,166 @@
     <dd>
         
 <span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".compileHighlightModels"><span class="type-signature">(static) </span>compileHighlightModels<span class="signature">(markdown)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Compile an array of highlight models</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>markdown</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The array of
+<a href="https://craigahobbs.github.io/markdown-model/model/#var.vName='Highlight'">Highlight models</a></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="highlight.js.html">highlight.js</a>, <a href="highlight.js.html#line45">line 45</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The map of language name/alias to <a href="module-lib_elements.html#~CodeBlockFn">code block render function</a></p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
 
 
     </dd>
