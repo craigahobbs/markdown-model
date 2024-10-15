@@ -28,6 +28,14 @@ doc:
 	cp -R static/* build/doc/
 
     # Generate the Markdown model documentation
-	$(NODE_DOCKER) node --input-type=module \
-		-e 'import {markdownModelTypes} from "./lib/model.js"; console.log(JSON.stringify(markdownModelTypes))' \
-		> build/doc/model/model.json
+	$(NODE_DOCKER) node --input-type=module -e "$$MODEL_JS" > build/doc/model/model.json
+
+
+# JavaScript to generate the model documentation
+define MODEL_JS
+import {highlightTypes} from "./lib/highlight.js";
+import {markdownModelTypes} from "./lib/model.js";
+
+console.log(JSON.stringify({...highlightTypes, ...markdownModelTypes}));
+endef
+export MODEL_JS

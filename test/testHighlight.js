@@ -2,13 +2,13 @@
 // https://github.com/craigahobbs/markdown-model/blob/main/LICENSE
 
 import {strict as assert} from 'node:assert';
-import {highlightElements} from '../lib/highlight.js';
+import {codeBlockElements} from '../lib/highlight.js';
 import test from 'node:test';
 
 
-test('highlightElements, null language', () => {
+test('codeBlockElements, null language', () => {
     assert.deepEqual(
-        highlightElements(null, ['foo\nbar']),
+        codeBlockElements({'lines': ['foo\nbar']}, null),
         [
             null,
             {
@@ -24,9 +24,9 @@ test('highlightElements, null language', () => {
 });
 
 
-test('highlightElements, unknown language', () => {
+test('codeBlockElements, unknown language', () => {
     assert.deepEqual(
-        highlightElements('unknown', ['foo\nbar']),
+        codeBlockElements({'language': 'unknown', 'lines': ['foo\nbar']}, null),
         [
             null,
             {
@@ -42,14 +42,14 @@ test('highlightElements, unknown language', () => {
 });
 
 
-test('highlightElements, copy unknown language', () => {
+test('codeBlockElements, copy unknown language', () => {
     const copyCalls = [];
     const options = {
         'copyFn': (text) => {
             copyCalls.push(text);
         }
     };
-    const elements = highlightElements('unknown', ['foo', 'bar'], options);
+    const elements = codeBlockElements({'language': 'unknown', 'lines': ['foo', 'bar']}, options);
     const elementCallback = elements[0].elem.callback;
     assert.equal(typeof(elementCallback), 'function');
     delete elements[0].elem.callback;
@@ -84,14 +84,14 @@ test('highlightElements, copy unknown language', () => {
 });
 
 
-test('highlightElements, copy known language', () => {
+test('codeBlockElements, copy known language', () => {
     const copyCalls = [];
     const options = {
         'copyFn': (text) => {
             copyCalls.push(text);
         }
     };
-    const elements = highlightElements('barescript', ["markdownPrint('Hello!')"], options);
+    const elements = codeBlockElements({'language': 'barescript', 'lines': ["markdownPrint('Hello!')"]}, options);
     const elementCallback = elements[0].elem.callback;
     assert.equal(typeof(elementCallback), 'function');
     delete elements[0].elem.callback;
@@ -139,16 +139,22 @@ test('highlightElements, copy known language', () => {
 });
 
 
-test('highlightElements, barescript', () => {
-    const elements = highlightElements('barescript', [
-        '# Iterate over an array\n',
-        `\
+test('codeBlockElements, barescript', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'barescript',
+            'lines': [
+                '# Iterate over an array\n',
+                `\
 number5 = 'alive'
 for number in arrayNew(1, 2, 3):
     markfownPrint('Number ' + number);
 endfor
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -227,8 +233,11 @@ endfor
 });
 
 
-test('highlightElements, c', () => {
-    const elements = highlightElements('c', [
+test('codeBlockElements, c', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'c',
+            'lines': [
         `\
 #include <stdio.h>
 
@@ -244,7 +253,10 @@ int main() {
     return 0;
 }
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -347,9 +359,12 @@ int main() {
 });
 
 
-test('highlightElements, cpp', () => {
-    const elements = highlightElements('cpp', [
-        `\
+test('codeBlockElements, cpp', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'cpp',
+            'lines': [
+                `\
 #include <vector>
 #include <string>
 
@@ -372,7 +387,10 @@ Line3)";
     return 0;
 }
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -577,8 +595,11 @@ Line3)";
 });
 
 
-test('highlightElements, csharp', () => {
-    const elements = highlightElements('csharp', [
+test('codeBlockElements, csharp', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'csharp',
+            'lines': [
         `\
 using System;
 
@@ -606,7 +627,10 @@ Line3";
     }
 }
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -763,8 +787,11 @@ Line3";
 });
 
 
-test('highlightElements, java', () => {
-    const elements = highlightElements('java', [
+test('codeBlockElements, java', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'java',
+            'lines': [
         `\
 /**
  * This is a JavaDoc comment
@@ -784,7 +811,10 @@ public class HelloWorld {
     }
 }
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -919,8 +949,11 @@ public class HelloWorld {
 });
 
 
-test('highlightElements, javascript', () => {
-    const elements = highlightElements('javascript', [
+test('codeBlockElements, javascript', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'javascript',
+            'lines': [
         `\
 // Iterate over an array
 for (const number in [1, 2, 3]) {
@@ -933,7 +966,10 @@ for (const number in [1, 2, 3]) {
 
 const str = 'single' + "double";
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -1030,8 +1066,11 @@ const str = 'single' + "double";
 });
 
 
-test('highlightElements, json', () => {
-    const elements = highlightElements('json', [
+test('codeBlockElements, json', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'json',
+            'lines': [
         `\
 {
     "a": 123,
@@ -1039,7 +1078,10 @@ test('highlightElements, json', () => {
     "c": null
 }
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -1095,8 +1137,11 @@ test('highlightElements, json', () => {
 });
 
 
-test('highlightElements, makefile', () => {
-    const elements = highlightElements('makefile', [
+test('codeBlockElements, makefile', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'makefile',
+            'lines': [
         `\
 # Variables
 TARGET := myapp
@@ -1123,7 +1168,10 @@ clean:
 $(TARGET):
 \techo "foo" > $@
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -1232,8 +1280,11 @@ $(TARGET):
 });
 
 
-test('highlightElements, markdown (alias)', () => {
-    const elements = highlightElements('md', [
+test('codeBlockElements, markdown (alias)', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'md',
+            'lines': [
         `\
 # Title
 
@@ -1257,7 +1308,10 @@ A link [Home Page](http://wherever.com#top)!
 
 Link with title [GitHub](https://github.com "GitHub").
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -1330,8 +1384,11 @@ Link with title [GitHub](https://github.com "GitHub").
 });
 
 
-test('highlightElements, python', () => {
-    const elements = highlightElements('python', [
+test('codeBlockElements, python', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'python',
+            'lines': [
         `\
 # Iterate over an array
 for number in [1, 2, 3]:
@@ -1345,7 +1402,10 @@ multiDouble = """\
 Goodbye
 """
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -1432,8 +1492,11 @@ Goodbye
 });
 
 
-test('highlightElements, schema-markdown', () => {
-    const elements = highlightElements('schema-markdown', [
+test('codeBlockElements, schema-markdown', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'schema-markdown',
+            'lines': [
         `\
 # A number pair structure
 struct NumberPair
@@ -1455,7 +1518,10 @@ enum Colors
     Blue
     "Green"
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -1540,8 +1606,11 @@ enum Colors
 });
 
 
-test('highlightElements, shell', () => {
-    const elements = highlightElements('shell', [
+test('codeBlockElements, shell', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'shell',
+            'lines': [
         `\
 # For loop to count to 5
 for i in $(seq 1 $COUNT); do
@@ -1549,7 +1618,10 @@ for i in $(seq 1 $COUNT); do
     echo "iteration $i"
 done
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -1622,8 +1694,11 @@ done
 });
 
 
-test('highlightElements, sql', () => {
-    const elements = highlightElements('sql', [
+test('codeBlockElements, sql', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'sql',
+            'lines': [
         `\
 -- Single-line comment
 SELECT 'string', TRUE, ABS(-1);
@@ -1633,7 +1708,10 @@ SELECT 'string', TRUE, ABS(-1);
  */
 select 'string', true, abs(-1);
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
@@ -1718,8 +1796,11 @@ select 'string', true, abs(-1);
 });
 
 
-test('highlightElements, xml', () => {
-    const elements = highlightElements('xml', [
+test('codeBlockElements, xml', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'xml',
+            'lines': [
         `\
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This is a comment -->
@@ -1735,7 +1816,10 @@ test('highlightElements, xml', () => {
     ]]>
 </note>
 `
-    ]);
+            ]
+        },
+        null
+    );
     assert.deepEqual(
         elements,
         [
