@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 (2024-10-15)
+
+- [d596d62](https://github.com/craigahobbs/markdown-model/commit/d596d62)
+  - add compileHighlightModels function
+  - modify CodeBlockFn to take second options argument
+
 ## 2.1.2 (2024-10-11)
 
 - [0c46c3b](https://github.com/craigahobbs/markdown-model/commit/0c46c3b) - fix syntax highlighting issues
