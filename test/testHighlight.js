@@ -1330,49 +1330,49 @@ Link with title [GitHub](https://github.com "GitHub").
                         {'text': '\n\nSome text\n\n'},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
                             'elem': {'text': '- '}
                         },
                         {'text': 'item 1\n'},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
                             'elem': {'text': '  - '}
                         },
                         {'text': 'item 2\n\n'},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
                             'elem': {'text': "~~~barescript\nmarkdownPrint('Hello')\n~~~"}
                         },
                         {'text': '\n\n'},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
                             'elem': {'text': '1. '}
                         },
                         {'text': 'item # 1\n'},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
                             'elem': {'text': '2. '}
                         },
                         {'text': 'item # 2\n\n'},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
                             'elem': {'text': '  ```\n  Stuff\n  ```'},
                         },
                         {'text': '\n\nA link '},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
                             'elem': {'text': '[Home Page](http://wherever.com#top)'}
                         },
                         {'text': '!\n\nLink with title '},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
                             'elem': {'text': '[GitHub](https://github.com "GitHub")'}
                         },
                         {'text': '.\n'}
