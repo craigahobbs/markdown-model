@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.1 (2024-10-16)
+
+- [b7194fc](https://github.com/craigahobbs/markdown-model/commit/b7194fc) - highlight regex improvements
+
 ## 2.2.0 (2024-10-15)
 
 - [d596d62](https://github.com/craigahobbs/markdown-model/commit/d596d62)
