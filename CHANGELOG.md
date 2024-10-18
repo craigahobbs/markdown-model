@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.2 (2024-10-18)
+
+- [b1c292c](https://github.com/craigahobbs/markdown-model/commit/b1c292c) - add go, html, and typescript syntax highlighting
+
 ## 2.2.1 (2024-10-16)
 
 - [b7194fc](https://github.com/craigahobbs/markdown-model/commit/b7194fc) - highlight regex improvements
