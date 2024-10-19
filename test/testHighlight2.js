@@ -711,6 +711,160 @@ Goodbye
 });
 
 
+test('codeBlockElements, rust', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'rust',
+            'lines': [
+        `\
+// This is a single-line comment
+
+/*
+This is a multi-line comment
+*/
+
+fn main() {
+    let mut count: u32 = 0;
+    let raw_str = r#"Raw string"#;
+    let byte_str = b"Byte string";
+
+    println!("Hello, world!");
+    while count < 5 {
+        println!("Count: {}", count);
+        count += 1;
+    }
+}
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// This is a single-line comment'}
+                        },
+                        {'text': '\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/*\nThis is a multi-line comment\n*/'}
+                        },
+                        {'text': '\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'fn'}
+                        },
+                        {'text': ' main() {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'let'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'mut'}
+                        },
+                        {'text': ' count: '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'u32'}
+                        },
+                        {'text': ' = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '0'}
+                        },
+                        {'text': ';\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'let'}
+                        },
+                        {'text': ' raw_str = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': 'r#"Raw string"#'}
+                        },
+                        {'text': ';\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'let'}
+                        },
+                        {'text': ' byte_str = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': 'b"Byte string"'}
+                        },
+                        {'text': ';\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'println'}
+                        },
+                        {'text': '!('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Hello, world!"'}
+                        },
+                        {'text': ');\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'while'}
+                        },
+                        {'text': ' count < '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '5'}
+                        },
+                        {'text': ' {\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'println'}
+                        },
+                        {'text': '!('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Count: {}"'}
+                        },
+                        {'text': ', count);\n        count += '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '1'}
+                        },
+                        {'text': ';\n    }\n}\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
 test('codeBlockElements, schema-markdown', () => {
     const elements = codeBlockElements(
         {
@@ -1007,6 +1161,238 @@ select 'string', true, abs(-1);
                             'elem': {'text': '-1'}
                         },
                         {'text': ');\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
+test('codeBlockElements, swift', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'swift',
+            'lines': [
+        `\
+// Simple Swift Example
+
+/*
+This is a multi-line comment
+*/
+
+let fileIdentifier = #fileID
+print("Current file identifier: \\(fileIdentifier)")
+
+let multiLineMessage = """
+This is a multi-line string.
+It spans multiple lines.
+"""
+print(multiLineMessage)
+
+func factorial(_ n: Int) -> Int {
+    if n <= 1 {
+        return 1
+    } else {
+        return n * factorial(n - 1)
+    }
+}
+
+let result = factorial(5)
+#if swift(>=5.5)
+    print("Swift version is 5.5 or newer - \\(result)")
+#else
+    print("Swift version is older than 5.5 - \\(result)")
+#endif
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Simple Swift Example'}
+                        },
+                        {'text': '\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/*\nThis is a multi-line comment\n*/'}
+                        },
+                        {'text': '\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'let'}
+                        },
+                        {'text': ' fileIdentifier = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '#fileID'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'print'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Current file identifier: \\(fileIdentifier)"'}
+                        },
+                        {'text': ')\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'let'}
+                        },
+                        {'text': ' multiLineMessage = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"""\nThis is a multi-line string.\nIt spans multiple lines.\n"""'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'print'}
+                        },
+                        {'text': '(multiLineMessage)\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'func'}
+                        },
+                        {'text': ' factorial(_ n: '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'Int'}
+                        },
+                        {'text': ') -> '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'Int'}
+                        },
+                        {'text': ' {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'if'}
+                        },
+                        {'text': ' n <= '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '1'}
+                        },
+                        {'text': ' {\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'return'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '1'}
+                        },
+                        {'text': '\n    } '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'else'}
+                        },
+                        {'text': ' {\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'return'}
+                        },
+                        {'text': ' n * factorial(n - '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '1'}
+                        },
+                        {'text': ')\n    }\n}\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'let'}
+                        },
+                        {'text': ' result = factorial('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '5'}
+                        },
+                        {'text': ')\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '#if'}
+                        },
+                        {'text': ' swift(>='},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '5.5'}
+                        },
+                        {'text': ')\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'print'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Swift version is 5.5 or newer - \\(result)"'}
+                        },
+                        {'text': ')\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '#else'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'print'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Swift version is older than 5.5 - \\(result)"'}
+                        },
+                        {'text': ')\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '#endif'}
+                        },
+                        {'text': '\n'}
                     ]
                 }
             }
