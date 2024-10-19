@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.3 (2024-10-19)
+
+- [03c2712](https://github.com/craigahobbs/markdown-model/commit/03c2712) - add rust and swift syntax highlighting
+
 ## 2.2.2 (2024-10-18)
 
 - [b1c292c](https://github.com/craigahobbs/markdown-model/commit/b1c292c) - add go, html, and typescript syntax highlighting
