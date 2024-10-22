@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.4 (2024-10-21)
+
+- [c835949](https://github.com/craigahobbs/markdown-model/commit/c835949) - add css, lua, r syntax highlighting
+
 ## 2.2.3 (2024-10-19)
 
 - [03c2712](https://github.com/craigahobbs/markdown-model/commit/03c2712) - add rust and swift syntax highlighting
