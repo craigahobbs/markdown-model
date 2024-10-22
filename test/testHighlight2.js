@@ -6,29 +6,47 @@ import {codeBlockElements} from '../lib/highlight.js';
 import test from 'node:test';
 
 
-test('codeBlockElements, java', () => {
+test('codeBlockElements, lua', () => {
     const elements = codeBlockElements(
         {
-            'language': 'java',
+            'language': 'lua',
             'lines': [
         `\
-/**
- * This is a JavaDoc comment
- */
-public class HelloWorld {
+-- This is a single-line comment
 
-    // Single-line comment
-    public static void main(String[] args) {
-        System.out.println("Hello, World!"); // Print a message
-        int number = 42;
-        boolean isActive = true;
-        char letter = 'A';
-        String textBlock = """
-            This is a text block.
-            It spans multiple lines.
-            """;
-    }
-}
+--[[
+    This is a multi-line comment
+    spanning multiple lines.
+]]
+
+--[=[
+    This is a multi-line comment
+    using equals signs in the delimiters.
+]=]
+
+local function greet(name)
+    print("Hello, " .. name .. "!")
+
+    local short_str = 'This is a single-quoted string.'
+    local another_str = "This is a double-quoted string."
+
+    local long_str = [[
+        This is a long string
+        that spans multiple lines.
+    ]]
+
+    local complex_str = [=[
+        This is a long string with ]] inside it.
+    ]=]
+
+    if name == "Lua" then
+        return true
+    else
+        return false
+    end
+end
+
+greet("World")
 `
             ]
         },
@@ -47,307 +65,165 @@ public class HelloWorld {
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
-                            'elem': {'text': '/**\n * This is a JavaDoc comment\n */'}
+                            'elem': {'text': '-- This is a single-line comment'}
                         },
-                        {'text': '\n'},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'public'}
-                        },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'class'}
-                        },
-                        {'text': ' HelloWorld {\n\n    '},
+                        {'text': '\n\n'},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
-                            'elem': {'text': '// Single-line comment'}
+                            'elem': {'text': '--[[\n    This is a multi-line comment\n    spanning multiple lines.\n]]'}
                         },
-                        {'text': '\n    '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'public'}
-                        },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'static'}
-                        },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'void'}
-                        },
-                        {'text': ' main('},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'String'}
-                        },
-                        {'text': '[] args) {\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'System'}
-                        },
-                        {'text': '.out.println('},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': '"Hello, World!"'}
-                        },
-                        {'text': '); '},
+                        {'text': '\n\n'},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
-                            'elem': {'text': '// Print a message'}
-                        },
-                        {'text': '\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'int'}
-                        },
-                        {'text': ' number = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': '42'}
-                        },
-                        {'text': ';\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'boolean'}
-                        },
-                        {'text': ' isActive = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': 'true'}
-                        },
-                        {'text': ';\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'char'}
-                        },
-                        {'text': ' letter = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': "'A'"}
-                        },
-                        {'text': ';\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'String'}
-                        },
-                        {'text': ' textBlock = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {
-                                'text': '"""\n            This is a text block.\n            It spans multiple lines.\n            """'
-                            }
-                        },
-                        {'text': ';\n    }\n}\n'}
-                    ]
-                }
-            }
-        ]
-    );
-});
-
-
-test('codeBlockElements, javascript', () => {
-    const elements = codeBlockElements(
-        {
-            'language': 'javascript',
-            'lines': [
-        `\
-// Iterate over an array
-for (const number in [1, 2, 3]) {
-    console.log(\`Number \${number}\`);
-}
-
-/*
- * Multiline comment
- */
-
-const str = 'single' + "double";
-`
-            ]
-        },
-        null
-    );
-    assert.deepEqual(
-        elements,
-        [
-            null,
-            {
-                'html': 'pre',
-                'attr': null,
-                'elem': {
-                    'html': 'code',
-                    'elem': [
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
-                            'elem': {'text': '// Iterate over an array'}
-                        },
-                        {'text': '\n'},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'for'}
-                        },
-                        {'text': ' ('},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'const'}
-                        },
-                        {'text': ' number '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'in'}
-                        },
-                        {'text': ' ['},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': '1'}
-                        },
-                        {'text': ', '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': '2'}
-                        },
-                        {'text': ', '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': '3'}
-                        },
-                        {'text': ']) {\n    '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'console'}
-                        },
-                        {'text': '.log('},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': '`Number ${number}`'} // eslint-disable-line no-template-curly-in-string
-                        },
-                        {'text': ');\n}\n\n'},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
-                            'elem': {'text': '/*\n * Multiline comment\n */'}
+                            'elem': {'text': '--[=[\n    This is a multi-line comment\n    using equals signs in the delimiters.\n]=]'}
                         },
                         {'text': '\n\n'},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'const'}
+                            'elem': {'text': 'local'}
                         },
-                        {'text': ' str = '},
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'function'}
+                        },
+                        {'text': ' greet(name)\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'print'}
+                        },
+                        {'text': '('},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': "'single'"}
+                            'elem': {'text': '"Hello, "'}
                         },
-                        {'text': ' + '},
+                        {'text': ' .. name .. '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': '"double"'}
+                            'elem': {'text': '"!"'}
                         },
-                        {'text': ';\n'}
-                    ]
-                }
-            }
-        ]
-    );
-});
-
-
-test('codeBlockElements, json', () => {
-    const elements = codeBlockElements(
-        {
-            'language': 'json',
-            'lines': [
-        `\
-{
-    "a": 123,
-    "b": true,
-    "c": null
-}
-`
-            ]
-        },
-        null
-    );
-    assert.deepEqual(
-        elements,
-        [
-            null,
-            {
-                'html': 'pre',
-                'attr': null,
-                'elem': {
-                    'html': 'code',
-                    'elem': [
-                        {'text': '{\n    '},
+                        {'text': ')\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'local'}
+                        },
+                        {'text': ' short_str = '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': '"a"'}
+                            'elem': {'text': "'This is a single-quoted string.'"}
                         },
-                        {'text': ': '},
+                        {'text': '\n    '},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': '123'}
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'local'}
                         },
-                        {'text': ',\n    '},
+                        {'text': ' another_str = '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': '"b"'}
+                            'elem': {'text': '"This is a double-quoted string."'}
                         },
-                        {'text': ': '},
+                        {'text': '\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'local'}
+                        },
+                        {'text': ' long_str = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '[[\n        This is a long string\n        that spans multiple lines.\n    ]]'}
+                        },
+                        {'text': '\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'local'}
+                        },
+                        {'text': ' complex_str = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '[=[\n        This is a long string with ]] inside it.\n    ]=]'}
+                        },
+                        {'text': '\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'if'}
+                        },
+                        {'text': ' name == '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Lua"'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'then'}
+                        },
+                        {'text': '\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'return'}
+                        },
+                        {'text': ' '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
                             'elem': {'text': 'true'}
                         },
-                        {'text': ',\n    '},
+                        {'text': '\n    '},
                         {
                             'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': '"c"'}
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'else'}
                         },
-                        {'text': ': '},
+                        {'text': '\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'return'}
+                        },
+                        {'text': ' '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': 'null'}
+                            'elem': {'text': 'false'}
                         },
-                        {'text': '\n}\n'}
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'end'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'end'}
+                        },
+                        {'text': '\n\ngreet('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"World"'}
+                        },
+                        {'text': ')\n'}
                     ]
                 }
             }
@@ -703,6 +579,177 @@ Goodbye
                             'elem': {'text': '"""Goodbye\n"""'}
                         },
                         {'text': '\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
+test('codeBlockElements, r', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'r',
+            'lines': [
+        `\
+# Calculate statistics of a numeric vector
+numbers <- c(1, 2, NA, Inf)
+
+if (length(numbers) > 0) {
+    result_mean <- mean(numbers, na.rm = TRUE)
+    result_sum <- sum(numbers, na.rm = TRUE)
+    print(paste("The mean is", result_mean))
+    print(paste("The sum is", result_sum))
+} else {
+    print("No numbers to calculate.")
+}`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Calculate statistics of a numeric vector'}
+                        },
+                        {'text': '\nnumbers <- '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'c'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '1'}
+                        },
+                        {'text': ', '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '2'}
+                        },
+                        {'text': ', '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'NA'}
+                        },
+                        {'text': ', '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'Inf'}
+                        },
+                        {'text': ')\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'if'}
+                        },
+                        {'text': ' ('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'length'}
+                        },
+                        {'text': '(numbers) > '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '0'}
+                        },
+                        {'text': ') {\n    result_mean <- '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'mean'}
+                        },
+                        {'text': '(numbers, na.rm = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'TRUE'}
+                        },
+                        {'text': ')\n    result_sum <- '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'sum'}
+                        },
+                        {'text': '(numbers, na.rm = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'TRUE'}
+                        },
+                        {'text': ')\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'print'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'paste'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"The mean is"'}
+                        },
+                        {'text': ', result_mean))\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'print'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'paste'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"The sum is"'}
+                        },
+                        {'text': ', result_sum))\n} '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'else'}
+                        },
+                        {'text': ' {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'print'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"No numbers to calculate."'}
+                        },
+                        {'text': ')\n}\n'}
                     ]
                 }
             }

@@ -787,6 +787,262 @@ Line3";
 });
 
 
+test('codeBlockElements, css', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'css',
+            'lines': [
+        `\
+/*
+ * CSS Example
+ */
+
+body {
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333;
+    font-family: 'Arial, sans-serif';
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.button {
+    background: linear-gradient(to right, #4CAF50, #45a049);
+    padding: 15px 32px;
+    font-size: 16px;
+}
+
+a:hover {
+    color: #ff0000;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 600px) {
+    .container {
+        flex-direction: column;
+    }
+}
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/*\n * CSS Example\n */'}
+                        },
+                        {'text': '\n\nbody {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'background-color:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '#f0f0f0'}
+                        },
+                        {'text': '; '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/* Light gray background */'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'color:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '#333'}
+                        },
+                        {'text': ';\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'font-family:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'Arial, sans-serif'"}
+                        },
+                        {'text': ';\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'margin:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '0'}
+                        },
+                        {'text': ';\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'padding:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '0'}
+                        },
+                        {'text': ';\n}\n\n.container {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'display:'}
+                        },
+                        {'text': ' flex;\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'justify-content:'}
+                        },
+                        {'text': ' center;\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'align-items:'}
+                        },
+                        {'text': ' center;\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'height:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '100vh'}
+                        },
+                        {'text': ';\n}\n\n.button {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'background:'}
+                        },
+                        {'text': ' linear-gradient(to right, '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '#4CAF50'}
+                        },
+                        {'text': ', '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '#45a049'}
+                        },
+                        {'text': ');\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'padding:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '15px'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '32px'}
+                        },
+                        {'text': ';\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'font-size:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '16px'}
+                        },
+                        {'text': ';\n}\n\na:hover {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'color:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '#ff0000'}
+                        },
+                        {'text': ';\n}\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/* Media Query for smaller screens */'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '@media'}
+                        },
+                        {'text': ' ('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'max-width:'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '600px'}
+                        },
+                        {'text': ') {\n    .container {\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'flex-direction:'}
+                        },
+                        {'text': ' column;\n    }\n}\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
 test('codeBlockElements, go', () => {
     const elements = codeBlockElements(
         {
@@ -1178,6 +1434,356 @@ test('codeBlockElements, html', () => {
                             'elem': {'text': '</html'}
                         },
                         {'text': '>\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
+test('codeBlockElements, java', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'java',
+            'lines': [
+        `\
+/**
+ * This is a JavaDoc comment
+ */
+public class HelloWorld {
+
+    // Single-line comment
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); // Print a message
+        int number = 42;
+        boolean isActive = true;
+        char letter = 'A';
+        String textBlock = """
+            This is a text block.
+            It spans multiple lines.
+            """;
+    }
+}
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/**\n * This is a JavaDoc comment\n */'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'public'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'class'}
+                        },
+                        {'text': ' HelloWorld {\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Single-line comment'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'public'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'static'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'void'}
+                        },
+                        {'text': ' main('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'String'}
+                        },
+                        {'text': '[] args) {\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'System'}
+                        },
+                        {'text': '.out.println('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Hello, World!"'}
+                        },
+                        {'text': '); '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Print a message'}
+                        },
+                        {'text': '\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'int'}
+                        },
+                        {'text': ' number = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '42'}
+                        },
+                        {'text': ';\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'boolean'}
+                        },
+                        {'text': ' isActive = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'true'}
+                        },
+                        {'text': ';\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'char'}
+                        },
+                        {'text': ' letter = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'A'"}
+                        },
+                        {'text': ';\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'String'}
+                        },
+                        {'text': ' textBlock = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {
+                                'text': '"""\n            This is a text block.\n            It spans multiple lines.\n            """'
+                            }
+                        },
+                        {'text': ';\n    }\n}\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
+test('codeBlockElements, javascript', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'javascript',
+            'lines': [
+        `\
+// Iterate over an array
+for (const number in [1, 2, 3]) {
+    console.log(\`Number \${number}\`);
+}
+
+/*
+ * Multiline comment
+ */
+
+const str = 'single' + "double";
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Iterate over an array'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'for'}
+                        },
+                        {'text': ' ('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'const'}
+                        },
+                        {'text': ' number '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'in'}
+                        },
+                        {'text': ' ['},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '1'}
+                        },
+                        {'text': ', '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '2'}
+                        },
+                        {'text': ', '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '3'}
+                        },
+                        {'text': ']) {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'console'}
+                        },
+                        {'text': '.log('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '`Number ${number}`'} // eslint-disable-line no-template-curly-in-string
+                        },
+                        {'text': ');\n}\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/*\n * Multiline comment\n */'}
+                        },
+                        {'text': '\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'const'}
+                        },
+                        {'text': ' str = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'single'"}
+                        },
+                        {'text': ' + '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"double"'}
+                        },
+                        {'text': ';\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
+test('codeBlockElements, json', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'json',
+            'lines': [
+        `\
+{
+    "a": 123,
+    "b": true,
+    "c": null
+}
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {'text': '{\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"a"'}
+                        },
+                        {'text': ': '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '123'}
+                        },
+                        {'text': ',\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"b"'}
+                        },
+                        {'text': ': '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'true'}
+                        },
+                        {'text': ',\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"c"'}
+                        },
+                        {'text': ': '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'null'}
+                        },
+                        {'text': '\n}\n'}
                     ]
                 }
             }
