@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.5 (2024-10-24)
+
+- [6e35b81](https://github.com/craigahobbs/markdown-model/commit/6e35b81) - fix syntax highlighting match confusion
+
 ## 2.2.4 (2024-10-21)
 
 - [c835949](https://github.com/craigahobbs/markdown-model/commit/c835949) - add css, lua, r syntax highlighting
