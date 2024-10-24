@@ -139,6 +139,45 @@ test('codeBlockElements, copy known language', () => {
 });
 
 
+test('codeBlockElements, keyword within multiline string', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'javascript',
+            'lines': [
+                '~~~javascript',
+                'a = `',
+                'if x',
+                '`',
+                '~~~'
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {'text': '~~~javascript\na = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '`\nif x\n`'}
+                        },
+                        {'text': '\n~~~\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
 test('codeBlockElements, barescript', () => {
     const elements = codeBlockElements(
         {
