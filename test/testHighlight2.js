@@ -829,6 +829,231 @@ Link with title [GitHub](https://github.com "GitHub").
 });
 
 
+test('codeBlockElements, php', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'php',
+            'lines': [
+        `\
+<?php
+# Configuration
+define('DEBUG', true);  // Define a constant
+
+/**
+ * Simple function to demonstrate syntax
+ * @param array $items Input array
+ * @return int
+ */
+function processItems(array $items): int {
+    // Initialize counter
+    $count = 0;
+
+    foreach ($items as $item) {
+        $count += strlen($item);
+    }
+
+    return $count;
+}
+
+$strings = [
+    'single' => 'Hello World',
+    "double" => "Value: $count",
+    "heredoc" => <<<EOT
+    Multi-line
+    String
+    EOT,
+    "shell" => \`ls -la\`
+];
+
+echo json_encode($strings);
+?>
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {'text': '<?php\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Configuration'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'define'}
+                        },
+                        {'text': '('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'DEBUG'"}
+                        },
+                        {'text': ', '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'true'}
+                        },
+                        {'text': ');  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Define a constant'}
+                        },
+                        {'text': '\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/**\n * Simple function to demonstrate syntax\n' +
+                                     ' * @param array $items Input array\n * @return int\n */'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'function'}
+                        },
+                        {'text': ' processItems('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'array'}
+                        },
+                        {'text': ' $items): int {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Initialize counter'}
+                        },
+                        {'text': '\n    $'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'count'}
+                        },
+                        {'text': ' = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '0'}
+                        },
+                        {'text': ';\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'foreach'}
+                        },
+                        {'text': ' ($items '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'as'}
+                        },
+                        {'text': ' $item) {\n        $'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'count'}
+                        },
+                        {'text': ' += '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'strlen'}
+                        },
+                        {'text': '($item);\n    }\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'return'}
+                        },
+                        {'text': ' $'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'count'}
+                        },
+                        {'text': ';\n}\n\n$strings = [\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'single'"}
+                        },
+                        {'text': ' => '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'Hello World'"}
+                        },
+                        {'text': ',\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"double"'}
+                        },
+                        {'text': ' => '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Value: $count"'}
+                        },
+                        {'text': ',\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"heredoc"'}
+                        },
+                        {'text': ' => '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '<<<EOT\n    Multi-line\n    String\n    EOT'}
+                        },
+                        {'text': ',\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"shell"'}
+                        },
+                        {'text': ' => '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '`ls -la`'}
+                        },
+                        {'text': '\n];\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'echo'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'json_encode'}
+                        },
+                        {'text': '($strings);\n?>\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
 test('codeBlockElements, powershell', () => {
     const elements = codeBlockElements(
         {
