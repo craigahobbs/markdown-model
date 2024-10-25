@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.2.6 (2024-10-25)
+
+- [29b300b](https://github.com/craigahobbs/markdown-model/commit/29b300b) - add yaml syntax highlighting
+
+- [d969b5d](https://github.com/craigahobbs/markdown-model/commit/d969b5d) - improve syntax highlighting generic number
+
+- [5e97474](https://github.com/craigahobbs/markdown-model/commit/5e97474) - add powershell syntax highlighting
+
+- [98d951f](https://github.com/craigahobbs/markdown-model/commit/98d951f) - add systemverilog syntax highlighting
+
 ## 2.2.5 (2024-10-24)
 
 - [6e35b81](https://github.com/craigahobbs/markdown-model/commit/6e35b81) - fix syntax highlighting match confusion
