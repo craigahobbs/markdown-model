@@ -1407,3 +1407,175 @@ test('codeBlockElements, xml', () => {
         ]
     );
 });
+
+
+test('codeBlockElements, yaml', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'yaml',
+            'lines': [
+        `\
+# Comment:
+simple_key: value
+quoted: "double quoted"
+with-dash: 'single quoted'
+numbers:
+  - 42
+  - -17.5
+  - 1.23e-4
+dates:
+  - 2024-10-25
+  - 2024-10-25T15:30:00Z
+truth: true
+empty: null
+literal_block: |
+  This is a literal block
+  Line breaks are preserved
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Comment:'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': 'simple_key: '}
+                        },
+                        {'text': 'value\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': 'quoted: '}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"double quoted"'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': 'with-dash: '}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'single quoted'"}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': 'numbers:\n'}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': '  - '}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '42'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': '  - '}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '-17.5'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': '  - '}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '1.23e-4'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': 'dates:\n'}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': '  - '}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '2024-10-25'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': '  - '}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '2024-10-25T15:30:00Z'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': 'truth: '}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'true'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': 'empty: '}
+                        },
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'null'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-tag);'},
+                            'elem': {'text': 'literal_block: '}
+                        },
+                        {'text': '|\n  This is a literal block\n  Line breaks are preserved\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
