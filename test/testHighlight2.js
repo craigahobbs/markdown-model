@@ -1448,6 +1448,513 @@ let result = factorial(5)
 });
 
 
+test('codeBlockElements, systemverilog', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'systemverilog',
+            'lines': [
+        `\
+\`timescale 1ns/1ps
+
+// Simple counter module with a register output
+module counter #(
+    parameter WIDTH = 8
+) (
+    input  logic          clk,    // Clock input
+    input  logic          rst_n,  // Active-low reset
+    input  logic [1:0]    mode,   // Operating mode
+    output logic [WIDTH-1:0] count // Counter output
+);
+    /* Mode encoding:
+     * 2'b00: Hold
+     * 2'b01: Increment
+     * 2'b10: Decrement
+     * 2'b11: Reset
+     */
+
+    // Example literals
+    localparam HOLD  = 2'b00;
+    localparam MAX   = 8'hFF;
+    localparam STEP  = 3.14;
+
+    // Sequential logic
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            count <= '0;
+        end else begin
+            unique case (mode)
+                2'b00:   count <= count;           // Hold
+                2'b01:   count <= count + 1'b1;    // Increment
+                2'b10:   count <= count - 1'b1;    // Decrement
+                2'b11:   count <= '0;              // Reset
+                default: count <= 'x;              // Unknown
+            endcase
+        end
+    end
+
+    // Example assertion
+    assert property (@(posedge clk) disable iff (!rst_n)
+        mode == 2'b11 |=> count == '0);
+
+    initial $display("Counter initialized at time %0t", $time);
+
+endmodule
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '`timescale'}
+                        },
+                        {'text': ' 1ns/1ps\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Simple counter module with a register output'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'module'}
+                        },
+                        {'text': ' counter #(\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'parameter'}
+                        },
+                        {'text': ' WIDTH = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '8'}
+                        },
+                        {'text': '\n) (\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'input'}
+                        },
+                        {'text': '  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'logic'}
+                        },
+                        {'text': '          clk,    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Clock input'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'input'}
+                        },
+                        {'text': '  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'logic'}
+                        },
+                        {'text': '          rst_n,  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Active-low reset'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'input'}
+                        },
+                        {'text': '  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'logic'}
+                        },
+                        {'text': ' ['},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '1'}
+                        },
+                        {'text': ':'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '0'}
+                        },
+                        {'text': ']    mode,   '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Operating mode'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'output'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'logic'}
+                        },
+                        {'text': ' [WIDTH-'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '1'}
+                        },
+                        {'text': ':'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '0'}
+                        },
+                        {'text': '] count '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Counter output'}
+                        },
+                        {'text': '\n);\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': "/* Mode encoding:\n     * 2'b00: Hold\n     * 2'b01: Increment\n" +
+                                     "     * 2'b10: Decrement\n     * 2'b11: Reset\n     */"}
+                        },
+                        {'text': '\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Example literals'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'localparam'}
+                        },
+                        {'text': ' HOLD  = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "2'b00"}
+                        },
+                        {'text': ';\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'localparam'}
+                        },
+                        {'text': ' MAX   = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "8'hFF"}
+                        },
+                        {'text': ';\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'localparam'}
+                        },
+                        {'text': ' STEP  = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '3.14'}
+                        },
+                        {'text': ';\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Sequential logic'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'always_ff'}
+                        },
+                        {'text': ' @('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'posedge'}
+                        },
+                        {'text': ' clk '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'or'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'negedge'}
+                        },
+                        {'text': ' rst_n) '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'begin'}
+                        },
+                        {'text': '\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'if'}
+                        },
+                        {'text': ' (!rst_n) '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'begin'}
+                        },
+                        {'text': '\n            count <= '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "'0"}
+                        },
+                        {'text': ';\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'end'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'else'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'begin'}
+                        },
+                        {'text': '\n            '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'unique'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'case'}
+                        },
+                        {'text': ' (mode)\n                '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "2'b00"}
+                        },
+                        {'text': ':   count <= count;           '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Hold'}
+                        },
+                        {'text': '\n                '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "2'b01"}
+                        },
+                        {'text': ':   count <= count + '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "1'b1"}
+                        },
+                        {'text': ';    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Increment'}
+                        },
+                        {'text': '\n                '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "2'b10"}
+                        },
+                        {'text': ':   count <= count - '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "1'b1"}
+                        },
+                        {'text': ';    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Decrement'}
+                        },
+                        {'text': '\n                '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "2'b11"}
+                        },
+                        {'text': ':   count <= '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "'0"}
+                        },
+                        {'text': ';              '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Reset'}
+                        },
+                        {'text': '\n                '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'default'}
+                        },
+                        {'text': ': count <= '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "'x"}
+                        },
+                        {'text': ';              '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Unknown'}
+                        },
+                        {'text': '\n            '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'endcase'}
+                        },
+                        {'text': '\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'end'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'end'}
+                        },
+                        {'text': '\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Example assertion'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'assert'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'property'}
+                        },
+                        {'text': ' (@('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'posedge'}
+                        },
+                        {'text': ' clk) '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'disable'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'iff'}
+                        },
+                        {'text': ' (!rst_n)\n        mode == '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "2'b11"}
+                        },
+                        {'text': ' |=> count == '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': "'0"}
+                        },
+                        {'text': ');\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'initial'}
+                        },
+                        {'text': ' $display('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Counter initialized at time %0t"'}
+                        },
+                        {'text': ', $'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'time'}
+                        },
+                        {'text': ');\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'endmodule'}
+                        },
+                        {'text': '\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
 test('codeBlockElements, typescript', () => {
     const elements = codeBlockElements(
         {
