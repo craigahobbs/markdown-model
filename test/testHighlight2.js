@@ -6,168 +6,6 @@ import {codeBlockElements} from '../lib/highlight.js';
 import test from 'node:test';
 
 
-test('codeBlockElements, java', () => {
-    const elements = codeBlockElements(
-        {
-            'language': 'java',
-            'lines': [
-        `\
-/**
- * This is a JavaDoc comment
- */
-public class HelloWorld {
-
-    // Single-line comment
-    public static void main(String[] args) {
-        System.out.println("Hello, World!"); // Print a message
-        int number = 42;
-        boolean isActive = true;
-        char letter = 'A';
-        String textBlock = """
-            This is a text block.
-            It spans multiple lines.
-            """;
-    }
-}
-`
-            ]
-        },
-        null
-    );
-    assert.deepEqual(
-        elements,
-        [
-            null,
-            {
-                'html': 'pre',
-                'attr': null,
-                'elem': {
-                    'html': 'code',
-                    'elem': [
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
-                            'elem': {'text': '/**\n * This is a JavaDoc comment\n */'}
-                        },
-                        {'text': '\n'},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'public'}
-                        },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'class'}
-                        },
-                        {'text': ' HelloWorld {\n\n    '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
-                            'elem': {'text': '// Single-line comment'}
-                        },
-                        {'text': '\n    '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'public'}
-                        },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'static'}
-                        },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'void'}
-                        },
-                        {'text': ' main('},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'String'}
-                        },
-                        {'text': '[] args) {\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'System'}
-                        },
-                        {'text': '.out.println('},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': '"Hello, World!"'}
-                        },
-                        {'text': '); '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
-                            'elem': {'text': '// Print a message'}
-                        },
-                        {'text': '\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'int'}
-                        },
-                        {'text': ' number = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': '42'}
-                        },
-                        {'text': ';\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'boolean'}
-                        },
-                        {'text': ' isActive = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': 'true'}
-                        },
-                        {'text': ';\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
-                            'elem': {'text': 'char'}
-                        },
-                        {'text': ' letter = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': "'A'"}
-                        },
-                        {'text': ';\n        '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'String'}
-                        },
-                        {'text': ' textBlock = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {
-                                'text': '"""\n            This is a text block.\n            It spans multiple lines.\n            """'
-                            }
-                        },
-                        {'text': ';\n    }\n}\n'}
-                    ]
-                }
-            }
-        ]
-    );
-});
-
-
 test('codeBlockElements, javascript', () => {
     const elements = codeBlockElements(
         {
@@ -1497,6 +1335,200 @@ if (length(numbers) > 0) {
                             'elem': {'text': '"No numbers to calculate."'}
                         },
                         {'text': ')\n}\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
+test('codeBlockElements, ruby', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'ruby',
+            'lines': [
+        `\
+require 'json'
+
+# Customer class
+class Customer
+  def initialize(name, email)
+    @name = name    # Instance variable
+    @email = email  # Instance variable
+  end
+
+  def to_hash
+    {
+      id: 123,         # Symbol
+      name: @name,     # Symbol and instance var
+      email: @email,   # Symbol and instance var
+      active: true     # Keyword
+    }
+  end
+end
+
+customer = Customer.new("Alice", "alice@example.com")
+puts customer.to_hash
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'require'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'json'"}
+                        },
+                        {'text': '\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Customer class'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'class'}
+                        },
+                        {'text': ' Customer\n  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'def'}
+                        },
+                        {'text': ' initialize(name, email)\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '@name'}
+                        },
+                        {'text': ' = name    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Instance variable'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '@email'}
+                        },
+                        {'text': ' = email  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Instance variable'}
+                        },
+                        {'text': '\n  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'end'}
+                        },
+                        {'text': '\n\n  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'def'}
+                        },
+                        {'text': ' to_hash\n    {\n      id: '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '123'}
+                        },
+                        {'text': ',         '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Symbol'}
+                        },
+                        {'text': '\n      name: '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '@name'}
+                        },
+                        {'text': ',     '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Symbol and instance var'}
+                        },
+                        {'text': '\n      email: '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '@email'}
+                        },
+                        {'text': ',   '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Symbol and instance var'}
+                        },
+                        {'text': '\n      active: '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'true'}
+                        },
+                        {'text': '     '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '# Keyword'}
+                        },
+                        {'text': '\n    }\n  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'end'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'end'}
+                        },
+                        {'text': '\n\ncustomer = Customer.new('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Alice"'}
+                        },
+                        {'text': ', '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"alice@example.com"'}
+                        },
+                        {'text': ')\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'puts'}
+                        },
+                        {'text': ' customer.to_hash\n'}
                     ]
                 }
             }

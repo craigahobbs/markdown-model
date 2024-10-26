@@ -1479,3 +1479,165 @@ test('codeBlockElements, html', () => {
         ]
     );
 });
+
+
+test('codeBlockElements, java', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'java',
+            'lines': [
+        `\
+/**
+ * This is a JavaDoc comment
+ */
+public class HelloWorld {
+
+    // Single-line comment
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); // Print a message
+        int number = 42;
+        boolean isActive = true;
+        char letter = 'A';
+        String textBlock = """
+            This is a text block.
+            It spans multiple lines.
+            """;
+    }
+}
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/**\n * This is a JavaDoc comment\n */'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'public'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'class'}
+                        },
+                        {'text': ' HelloWorld {\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Single-line comment'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'public'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'static'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'void'}
+                        },
+                        {'text': ' main('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'String'}
+                        },
+                        {'text': '[] args) {\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'System'}
+                        },
+                        {'text': '.out.println('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Hello, World!"'}
+                        },
+                        {'text': '); '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Print a message'}
+                        },
+                        {'text': '\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'int'}
+                        },
+                        {'text': ' number = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '42'}
+                        },
+                        {'text': ';\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'boolean'}
+                        },
+                        {'text': ' isActive = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': 'true'}
+                        },
+                        {'text': ';\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'char'}
+                        },
+                        {'text': ' letter = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'A'"}
+                        },
+                        {'text': ';\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'String'}
+                        },
+                        {'text': ' textBlock = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {
+                                'text': '"""\n            This is a text block.\n            It spans multiple lines.\n            """'
+                            }
+                        },
+                        {'text': ';\n    }\n}\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
