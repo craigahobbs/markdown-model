@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.8 (2024-10-26)
+
+- [303f273](https://github.com/craigahobbs/markdown-model/commit/303f273) - add scala syntax highlighting
+
+- [fde774c](https://github.com/craigahobbs/markdown-model/commit/fde774c) - add kotlin syntax highlighting
+
+- [875141f](https://github.com/craigahobbs/markdown-model/commit/875141f) - syntax highlighting improvements
+
 ## 2.2.7 (2024-10-25)
 
 - [cfce6ca](https://github.com/craigahobbs/markdown-model/commit/cfce6ca) - add ruby syntax highlighting
