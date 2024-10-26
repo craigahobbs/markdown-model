@@ -939,9 +939,9 @@ Write-Output $result
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
-                            'elem': {'text': '#requires -Version'}
+                            'elem': {'text': '#requires'}
                         },
-                        {'text': ' '},
+                        {'text': ' -Version '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
@@ -959,19 +959,7 @@ Write-Output $result
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'function'}
                         },
-                        {'text': ' Convert-Input {\n    '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': '[string]'}
-                        },
-                        {'text': '$name = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'Read-Host'}
-                        },
-                        {'text': ' '},
+                        {'text': ' Convert-Input {\n    [string]$name = Read-Host '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
@@ -1019,31 +1007,31 @@ Write-Output $result
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'data'}
                         },
-                        {'text': ' = '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
-                            'elem': {'text': '@{\n        Name = $name.ToUpper()\n        Time = [datetime]::Now\n    }'}
-                        },
-                        {'text': '\n\n    '},
+                        {'text': ' = @{\n        Name = $name.ToUpper()\n        Time = [datetime]::Now\n    }\n\n    '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'return'}
                         },
-                        {'text': ' '},
+                        {'text': ' $($'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'data'}
+                        },
+                        {'text': '.Name): $(Get-Date $'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'data'}
+                        },
+                        {'text': '.Time -Format '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': '$($data.Name)'}
+                            'elem': {'text': '"yyyy-MM-dd"'}
                         },
-                        {'text': ': '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
-                            'elem': {'text': '$(Get-Date $data.Time -Format "yyyy-MM-dd")'}
-                        },
-                        {'text': '\n}\n\n'},
+                        {'text': ')\n}\n\n'},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
