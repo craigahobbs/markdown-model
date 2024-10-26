@@ -194,6 +194,140 @@ test('codeBlockElements, json', () => {
 });
 
 
+test('codeBlockElements, kotlin', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'kotlin',
+            'lines': [
+        `\
+@JvmInline
+class Example {
+    // A basic property
+    val x: Int = 42
+
+    /* Function showing various syntax elements */
+    fun test(): String {
+        val list = List<Any>(0)
+        return """
+            null
+            \${list.toString()}
+        """
+    }
+}
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '@JvmInline'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'class'}
+                        },
+                        {'text': ' Example {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// A basic property'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'val'}
+                        },
+                        {'text': ' x: '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'Int'}
+                        },
+                        {'text': ' = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '42'}
+                        },
+                        {'text': '\n\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/* Function showing various syntax elements */'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'fun'}
+                        },
+                        {'text': ' test(): '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'String'}
+                        },
+                        {'text': ' {\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'val'}
+                        },
+                        {'text': ' list = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'List'}
+                        },
+                        {'text': '<'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'Any'}
+                        },
+                        {'text': '>('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '0'}
+                        },
+                        {'text': ')\n        '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'return'}
+                        },
+                        {'text': ' '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            // eslint-disable-next-line no-template-curly-in-string
+                            'elem': {'text': '"""\n            null\n            ${list.toString()}\n        """'}
+                        },
+                        {'text': '\n    }\n}\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
 test('codeBlockElements, lua', () => {
     const elements = codeBlockElements(
         {
@@ -959,7 +1093,13 @@ Write-Output $result
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'function'}
                         },
-                        {'text': ' Convert-Input {\n    [string]$name = Read-Host '},
+                        {'text': ' Convert-Input {\n    [string]$name = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'Read-Host'}
+                        },
+                        {'text': ' '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
