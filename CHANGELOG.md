@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.7 (2024-10-25)
+
+- [cfce6ca](https://github.com/craigahobbs/markdown-model/commit/cfce6ca) - add ruby syntax highlighting
+
+- [275f85a](https://github.com/craigahobbs/markdown-model/commit/275f85a) - add php syntax highlighting
+
 ## 2.2.6 (2024-10-25)
 
 - [29b300b](https://github.com/craigahobbs/markdown-model/commit/29b300b) - add yaml syntax highlighting
