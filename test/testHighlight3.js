@@ -6,6 +6,161 @@ import {codeBlockElements} from '../lib/highlight.js';
 import test from 'node:test';
 
 
+test('codeBlockElements, scala', () => {
+    const elements = codeBlockElements(
+        {
+            'language': 'scala',
+            'lines': [
+        `\
+// Define a simple class
+class Person(val name: String) {
+  /*
+   * A method that returns a greeting
+   */
+  def greet(): Unit = {
+    val age = 42
+    println(s"""Hello, my name is $name
+      and I'm \${age} years old""")
+  }
+}
+
+@deprecated
+object Main extends App {
+  val bob = new Person("Bob")
+  bob.greet()  // prints the greeting
+}
+`
+            ]
+        },
+        null
+    );
+    assert.deepEqual(
+        elements,
+        [
+            null,
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// Define a simple class'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'class'}
+                        },
+                        {'text': ' Person('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'val'}
+                        },
+                        {'text': ' name: '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'String'}
+                        },
+                        {'text': ') {\n  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '/*\n   * A method that returns a greeting\n   */'}
+                        },
+                        {'text': '\n  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'def'}
+                        },
+                        {'text': ' greet(): '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'Unit'}
+                        },
+                        {'text': ' = {\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'val'}
+                        },
+                        {'text': ' age = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
+                            'elem': {'text': '42'}
+                        },
+                        {'text': '\n    '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
+                            'elem': {'text': 'println'}
+                        },
+                        {'text': '(s'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            // eslint-disable-next-line no-template-curly-in-string
+                            'elem': {'text': '"""Hello, my name is $name\n      and I\'m ${age} years old"""'}
+                        },
+                        {'text': ')\n  }\n}\n\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
+                            'elem': {'text': '@deprecated'}
+                        },
+                        {'text': '\n'},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'object'}
+                        },
+                        {'text': ' Main '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'extends'}
+                        },
+                        {'text': ' App {\n  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'val'}
+                        },
+                        {'text': ' bob = '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
+                            'elem': {'text': 'new'}
+                        },
+                        {'text': ' Person('},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': '"Bob"'}
+                        },
+                        {'text': ')\n  bob.greet()  '},
+                        {
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
+                            'elem': {'text': '// prints the greeting'}
+                        },
+                        {'text': '\n}\n'}
+                    ]
+                }
+            }
+        ]
+    );
+});
+
+
 test('codeBlockElements, schema-markdown', () => {
     const elements = codeBlockElements(
         {
