@@ -229,7 +229,7 @@ add_nums:          ; function label
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-preprocessor);'},
-                            'elem': {'text': 'global'},
+                            'elem': {'text': 'global'}
                         },
                         {'text': ' add_nums    '},
                         {
@@ -255,13 +255,7 @@ add_nums:          ; function label
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'push'}
                         },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'ebp'}
-                        },
-                        {'text': '       '},
+                        {'text': ' ebp       '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
@@ -273,19 +267,7 @@ add_nums:          ; function label
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'mov'}
                         },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'ebp'}
-                        },
-                        {'text': ', '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'esp'}
-                        },
-                        {'text': '   '},
+                        {'text': ' ebp, esp   '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
@@ -297,13 +279,7 @@ add_nums:          ; function label
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'mov'}
                         },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'eax'}
-                        },
-                        {'text': ', '},
+                        {'text': ' eax, '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
@@ -321,13 +297,7 @@ add_nums:          ; function label
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'add'}
                         },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'eax'}
-                        },
-                        {'text': ', '},
+                        {'text': ' eax, '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
@@ -345,13 +315,7 @@ add_nums:          ; function label
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'add'}
                         },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'al'}
-                        },
-                        {'text': ', '},
+                        {'text': ' al, '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
@@ -369,13 +333,7 @@ add_nums:          ; function label
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'add'}
                         },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'eax'}
-                        },
-                        {'text': ', '},
+                        {'text': ' eax, '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
@@ -393,13 +351,7 @@ add_nums:          ; function label
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'pop'}
                         },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'ebp'}
-                        },
-                        {'text': '        '},
+                        {'text': ' ebp        '},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-comment);'},
