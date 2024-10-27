@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.10 (2024-10-27)
+
+- [a0bb8f6](https://github.com/craigahobbs/markdown-model/commit/a0bb8f6) - simplify assembly syntax highlighting
+
 ## 2.2.9 (2024-10-27)
 
 - [031e4df](https://github.com/craigahobbs/markdown-model/commit/031e4df) - add assembly syntax highlighting
