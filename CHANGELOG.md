@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.9 (2024-10-27)
+
+- [031e4df](https://github.com/craigahobbs/markdown-model/commit/031e4df) - add assembly syntax highlighting
+
 ## 2.2.8 (2024-10-26)
 
 - [303f273](https://github.com/craigahobbs/markdown-model/commit/303f273) - add scala syntax highlighting
