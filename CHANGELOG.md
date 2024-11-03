@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.13 (2024-11-03)
+
+- [5327ffb](https://github.com/craigahobbs/markdown-model/commit/5327ffb) - remove h1 and h2 bottom border \(too much\)
+
 ## 2.2.12 (2024-11-03)
 
 - [c38140b](https://github.com/craigahobbs/markdown-model/commit/c38140b) - markdown-model.css - increase header font sizes and spacing, add h1 and h2 bottom border
