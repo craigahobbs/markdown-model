@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.12 (2024-11-03)
+
+- [c38140b](https://github.com/craigahobbs/markdown-model/commit/c38140b) - markdown-model.css - increase header font sizes and spacing, add h1 and h2 bottom border
+
 ## 2.2.11 (2024-10-27)
 
 - [104ffd3](https://github.com/craigahobbs/markdown-model/commit/104ffd3) - improve assembly syntax highlighting
