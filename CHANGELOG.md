@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.14 (2024-11-04)
+
+- [bc102ac](https://github.com/craigahobbs/markdown-model/commit/bc102ac) - reduce header spacing
+
 ## 2.2.13 (2024-11-03)
 
 - [5327ffb](https://github.com/craigahobbs/markdown-model/commit/5327ffb) - remove h1 and h2 bottom border \(too much\)
