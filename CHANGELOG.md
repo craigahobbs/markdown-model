@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.15 (2024-11-05)
+
+- [e1255ac](https://github.com/craigahobbs/markdown-model/commit/e1255ac) - decrease h1 font size
+
 ## 2.2.14 (2024-11-04)
 
 - [bc102ac](https://github.com/craigahobbs/markdown-model/commit/bc102ac) - reduce header spacing
