@@ -28,7 +28,7 @@ doc:
 	cp -R static/* build/doc/
 
     # Generate the Markdown model documentation
-	$(NODE_DOCKER) node --input-type=module -e "$$MODEL_JS" > build/doc/model/model.json
+	$(NODE_SHELL) node --input-type=module -e "$$MODEL_JS" > build/doc/model/model.json
 
 
 # JavaScript to generate the model documentation
