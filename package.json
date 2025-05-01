@@ -29,7 +29,7 @@
     "devDependencies": {
         "c8": "~10.1",
         "element-model": "~1.1",
-        "eslint": "~9.23",
+        "eslint": "~9.25",
         "jsdoc": "~4.0"
     }
 }
