@@ -386,7 +386,7 @@ test('codeBlockElements, barescript', () => {
                 '# Iterate over an array\n',
                 `\
 number5 = 'alive'
-for number in arrayNew(1, 2, 3):
+for number in [1, 2, 3]:
     markfownPrint('Number ' + number);
 endfor
 `
@@ -427,13 +427,7 @@ endfor
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-keyword);'},
                             'elem': {'text': 'in'}
                         },
-                        {'text': ' '},
-                        {
-                            'html': 'span',
-                            'attr': {'style': 'color: var(--markdown-model-color-highlight-builtin);'},
-                            'elem': {'text': 'arrayNew'}
-                        },
-                        {'text': '('},
+                        {'text': ' ['},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
@@ -451,7 +445,7 @@ endfor
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-literal);'},
                             'elem': {'text': '3'}
                         },
-                        {'text': '):\n    markfownPrint('},
+                        {'text': ']:\n    markfownPrint('},
                         {
                             'html': 'span',
                             'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
