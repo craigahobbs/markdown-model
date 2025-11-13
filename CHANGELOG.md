@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.16 (2025-11-13)
+
+- [7d9dfd5](https://github.com/craigahobbs/markdown-model/commit/7d9dfd5) - add support for HTML <br> tags
+
 ## 2.2.15 (2024-11-05)
 
 - [e1255ac](https://github.com/craigahobbs/markdown-model/commit/e1255ac) - decrease h1 font size
