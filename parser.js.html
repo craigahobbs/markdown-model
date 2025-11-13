@@ -458,6 +458,7 @@ const rLinkHref = '[ \\r\\n]*(?&lt;linkHref>' +
       '))?[ \\r\\n]*';
 const rSpans = new RegExp(
     '(?&lt;br>(?: {2,}|(?&lt;!\\\\)\\\\)\\r?\\n)|' +
+    '(?&lt;brHtml>&lt;br/?>)|' +
     `(?&lt;linkImg>\\[\\s*!\\[${rLinkText.replaceAll('&lt;link', '&lt;linkImg')}\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkImg')}\\)\\s*\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkImgLink')}\\))|` +
@@ -504,6 +505,10 @@ function paragraphSpans(text, linkRefs) {
 
         // Line break?
         if (typeof matchGroups.br !== 'undefined') {
+            spans.push({'br': 1});
+
+        // &lt;br> HTML line break?
+        } else if (typeof matchGroups.brHtml !== 'undefined') {
             spans.push({'br': 1});
 
         // Link with inline image?
