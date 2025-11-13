@@ -2536,6 +2536,31 @@ foo${'  '}
 });
 
 
+test('parseMarkdown, line break HTML', () => {
+    const markdown = parseMarkdown(`\
+foo<br>bar<br/>
+thud
+`);
+    validateMarkdownModel(markdown);
+    assert.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'foo'},
+                        {'br': 1},
+                        {'text': 'bar'},
+                        {'br': 1},
+                        {'text': '\nthud'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, escapes', () => {
     const markdown = parseMarkdown(`\
 \\!\\"\\#\\$\\%\\&\\'\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\=\\>\\?\\@\\[\\\\\\]\\^\\_\\\`\\{\\|\\}\\~
