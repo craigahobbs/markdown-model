@@ -2561,6 +2561,88 @@ thud
 });
 
 
+test('parseMarkdown, line break HTML whitespace', () => {
+    const markdown = parseMarkdown(`\
+foo<br >bar<br  />
+thud
+`);
+    validateMarkdownModel(markdown);
+    assert.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'foo'},
+                        {'br': 1},
+                        {'text': 'bar'},
+                        {'br': 1},
+                        {'text': '\nthud'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, line break HTML illegal whitespace', () => {
+    const markdown = parseMarkdown(`\
+foo< br>bar<br/ >
+thud
+`);
+    validateMarkdownModel(markdown);
+    assert.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'foo< br>bar<br/ >\nthud'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, line break HTML escape', () => {
+    const markdown = parseMarkdown('foo\\<br>bar');
+    validateMarkdownModel(markdown);
+    assert.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'foo<br>bar'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
+test('parseMarkdown, line break HTML entity escape', () => {
+    const markdown = parseMarkdown('foo&lt;br>bar');
+    validateMarkdownModel(markdown);
+    assert.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'paragraph': {
+                    'spans': [
+                        {'text': 'foo<br>bar'}
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, escapes', () => {
     const markdown = parseMarkdown(`\
 \\!\\"\\#\\$\\%\\&\\'\\(\\)\\*\\+\\,\\-\\.\\/\\:\\;\\<\\=\\>\\?\\@\\[\\\\\\]\\^\\_\\\`\\{\\|\\}\\~
