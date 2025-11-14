@@ -458,7 +458,7 @@ const rLinkHref = '[ \\r\\n]*(?&lt;linkHref>' +
       '))?[ \\r\\n]*';
 const rSpans = new RegExp(
     '(?&lt;br>(?: {2,}|(?&lt;!\\\\)\\\\)\\r?\\n)|' +
-    '(?&lt;brHtml>&lt;br/?>)|' +
+    '(?&lt;brHtml>(?&lt;!\\\\)&lt;br\\s*/?>)|' +
     `(?&lt;linkImg>\\[\\s*!\\[${rLinkText.replaceAll('&lt;link', '&lt;linkImg')}\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkImg')}\\)\\s*\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkImgLink')}\\))|` +
