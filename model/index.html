@@ -42,9 +42,9 @@
         const app = new MarkdownUp(window, {
             'markdownText': `\
 ~~~ markdown-script
-include 'https://craigahobbs.github.io/schema-markdown-doc/doc/app.bare'
+include <schemaDoc.bare>
 
-schemaMarkdownDoc('model.json', 'The Markdown Model')
+schemaDocMain('model.json', 'The Markdown Model')
 ~~~
 `});
         app.run();
