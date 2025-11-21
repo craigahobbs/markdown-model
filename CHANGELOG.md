@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.18 (2025-11-21)
+
+- [161ad2d](https://github.com/craigahobbs/markdown-model/commit/161ad2d) - update BareScript highlight model
+
+## 2.2.17 (2025-11-14)
+
+- [145b623](https://github.com/craigahobbs/markdown-model/commit/145b623) - improve inline html br tags
+
 ## 2.2.16 (2025-11-13)
 
 - [7d9dfd5](https://github.com/craigahobbs/markdown-model/commit/7d9dfd5) - add support for HTML <br> tags
