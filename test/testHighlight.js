@@ -109,12 +109,7 @@ test('codeBlockElements, copy known language', () => {
                 'elem': {
                     'html': 'code',
                     'elem': [
-                        {
-                            html: 'span',
-                            attr: {style: 'color: var(--markdown-model-color-highlight-builtin);'},
-                            elem: {text: 'markdownPrint'}
-                        },
-                        {text: '('},
+                        {text: 'markdownPrint('},
                         {
                             html: 'span',
                             attr: {style: 'color: var(--markdown-model-color-highlight-string);'},
