@@ -474,7 +474,7 @@ const rSpans = new RegExp(
     `(?&lt;link>!?\\[${rLinkText}\\]\\(${rLinkHref}\\))|` +
     `(?&lt;linkRef>(?&lt;!\\\\)!?(?:\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefOther')}\\])?` +
         `\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRef')}\\])|` +
-    '(?&lt;linkAlt>&lt;(?&lt;linkAltScheme>[[A-Za-z]{3,}:|[a-zA-Z0-9.!#$%&amp;\'*+/=?^_`{|}~-]+@)[^ \\r\\n]+>)|' +
+    '(?&lt;linkAlt>&lt;(?&lt;linkAltScheme>[A-Za-z]{3,}:|[a-zA-Z0-9.!#$%&amp;\'*+/=?^_`{|}~-]+@)[^ \\r\\n]+>)|' +
     '(?&lt;bold>(?&lt;!\\\\)(?&lt;!\\*)\\*{2,}(?!\\**\\s)(?:[^\\s\\\\*]|\\\\.|\\s(?!\\*{2,})|\\*(?!\\*))+\\*{2,})|' +
     '(?&lt;italic>(?&lt;!\\\\)(?&lt;!\\*)\\*(?!\\**\\s)(?:[^\\s\\\\*]|\\\\.|\\s(?!\\*))+\\*)|' +
     '(?&lt;boldu>(?&lt;!\\\\)(?&lt;!_)(?&lt;![A-Za-z0-9])_{2,}(?!_*\\s)(?:[^\\s\\\\_]|\\\\.|\\s(?!_{2,})|_(?!_))+_{2,}(?!_*[A-Za-z0-9]))|' +
