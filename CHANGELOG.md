@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0 (2026-07-13)
+
+- [07c77fe](https://github.com/craigahobbs/markdown-model/commit/07c77fe) - schema-markdown 1.3
+
 ## 2.2.18 (2025-11-21)
 
 - [161ad2d](https://github.com/craigahobbs/markdown-model/commit/161ad2d) - update BareScript highlight model
