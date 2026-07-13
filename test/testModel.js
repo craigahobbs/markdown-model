@@ -49,7 +49,7 @@ test('validateMarkdownModel, invalid', () => {
         },
         {
             'name': 'ValidationError',
-            'message': "Required member 'parts' missing"
+            'message': 'Required member "parts" missing'
         }
     );
 });
