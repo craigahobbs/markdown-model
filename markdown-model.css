@@ -94,6 +94,14 @@
     .markdown-model-no-print {
         display: none;
     }
+    /* Avoid splitting these blocks across page breaks */
+    blockquote, img, pre, table {
+        break-inside: avoid;
+    }
+    /* Keep a heading with the content that follows it */
+    h1, h2, h3, h4, h5, h6 {
+        break-after: avoid;
+    }
 }
 
 

@@ -31,8 +31,8 @@
 
 /** @module lib/highlight */
 
-import {getStructMembers, validateType} from 'schema-markdown/lib/schema.js';
 import {parseSchemaMarkdown} from 'schema-markdown/lib/parser.js';
+import {validateType} from 'schema-markdown/lib/schema.js';
 
 
 /**
@@ -43,23 +43,34 @@ import {parseSchemaMarkdown} from 'schema-markdown/lib/parser.js';
  * @returns {*} The code block's [element model]{@link https://github.com/craigahobbs/element-model#readme}
  */
 export function codeBlockElements(codeBlock, options) {
-    if ('language' in codeBlock) {
-        const language = codeBlock.language.toLowerCase();
+    // Code block language defined?
+    const {language: codeBlockLanguage} = codeBlock;
+    if (codeBlockLanguage) {
+        const language = codeBlockLanguage.toLowerCase();
 
         // Options-provided code block render function?
-        if (options !== null &amp;&amp; 'codeBlocks' in options &amp;&amp; language in options.codeBlocks) {
-            return options.codeBlocks[language](codeBlock, options);
+        if (options) {
+            const {codeBlocks} = options;
+            const renderFn = codeBlocks ? codeBlocks[language] : null;
+            if (renderFn) {
+                return renderFn(codeBlock, options);
+            }
         }
 
         // Built-in code block render function?
-        if (language in highlightBuiltin) {
-            return highlightBuiltin[language](codeBlock, options);
+        const renderFn = highlightBuiltin[language];
+        if (renderFn) {
+            return renderFn(codeBlock, options);
         }
     }
 
-    // No-syntax-highlighing code block render
+    // No-syntax-highlighting code block render
     return highlightElements(null, codeBlock.lines, options);
 }
+
+
+// The ordered highlight member names (excluding 'names')
+const highlightMemberNames = ['builtin', 'comment', 'keyword', 'literal', 'preprocessor', 'string', 'tag'];
 
 
 /**
@@ -72,31 +83,38 @@ export function codeBlockElements(codeBlock, options) {
 export function compileHighlightModels(highlights) {
     const highlightMap = {};
     for (const highlight of highlights) {
-        const highlightRegex = {};
-        const parts = [];
-
         // Validate the highlight model
         validateType(highlightTypes, 'Highlight', highlight);
 
-        // Create regex-based regex
-        for (const memberName of getStructMembers(highlightTypes, highlightTypes.Highlight.struct).map((member) => member.name)) {
-            if (memberName !== 'names' &amp;&amp; memberName in highlight) {
-                const part = highlight[memberName].map((str) => `(?:${str})`).join('|');
-                highlightRegex[memberName] = new RegExp(`^(?:${part})`);
-                parts.push(part);
+        // Build a named-group aggregate so a single match identifies the member type via its groups dict
+        const namedParts = [];
+        for (const memberName of highlightMemberNames) {
+            const memberPatterns = highlight[memberName];
+            if (memberPatterns) {
+                const partStrs = [];
+                for (const memberPattern of memberPatterns) {
+                    partStrs.push(`(?:${memberPattern})`);
+                }
+                namedParts.push(`(?&lt;${memberName}>${partStrs.join('|')})`);
             }
         }
 
-        // Add the special aggregate-highlight-matching regexp
-        highlightRegex.highlight = new RegExp(parts.map((part) => `(?:${part})`).join('|'), 'm');
-
-        // Add the name/alias to code block render function
-        const highlightFn = (codeBlock, options) => highlightElements(highlightRegex, codeBlock.lines, options);
-        for (const name of highlight.names) {
-            highlightMap[name] = highlightFn;
+        // Compile and register the language's render function
+        if (namedParts.length) {
+            const highlightRegex = new RegExp(namedParts.join('|'), 'gm');
+            const highlightFn = (codeBlock, options) => highlightRenderFn(highlightRegex, codeBlock, options);
+            for (const name of highlight.names) {
+                highlightMap[name] = highlightFn;
+            }
         }
     }
     return highlightMap;
+}
+
+
+// Helper render function for compiled highlight models
+function highlightRenderFn(highlightRegex, codeBlock, options) {
+    return highlightElements(highlightRegex, codeBlock.lines, options);
 }
 
 
@@ -112,73 +130,104 @@ export function compileHighlightModels(highlights) {
  */
 function highlightElements(highlightRegex, lines, options = null) {
     // Join the text lines
-    let text = lines.map((line) => (line.endsWith('\n') ? line : `${line}\n`)).join('');
+    const text = lines.map((line) => (line.endsWith('\n') ? line : `${line}\n`)).join('');
 
-    // The copy link elements
-    const copyElements = options === null || !('copyFn' in options) ? null : {
-        'html': 'p', 'attr': {'style': 'cursor: pointer; font-size: 0.85em; text-align: right; user-select: none;'}, 'elem': {
-            'html': 'a', 'elem': {'text': 'Copy'}, 'callback': (element) => {
-                element.addEventListener('click', () => {
-                    options.copyFn(`${lines.join('\n')}\n`);
-                }, false);
+    // The copy button element
+    let preAttr = null;
+    let codeAttr = null;
+    let copyElements = null;
+    if (options &amp;&amp; options.copyLinks) {
+        // Increment the copy links ID index
+        const copyLinksIndex = options.copyLinksIndex ?? 1;
+        options.copyLinksIndex = copyLinksIndex + 1;
+
+        // Generate the code block ID and copy button element
+        const preID = `__markdown_copy_${copyLinksIndex}`;
+        preAttr = {'id': preID, 'style': 'display: flex;'};
+        codeAttr = {'style': 'flex: 1; min-width: 0; overflow-x: auto;'};
+        copyElements = {
+            'svg': 'svg',
+            'attr': {
+                'class': 'markdown-model-no-print',
+                'width': '20',
+                'height': '20',
+                'viewBox': '0 0 24 24',
+                'style': 'align-self: flex-start; flex-shrink: 0; cursor: pointer; user-select: none;',
+                'onclick': `window.navigator.clipboard.writeText(document.getElementById('${preID}').innerText);`
+            },
+            'elem': {
+                'svg': 'path',
+                'attr': {
+                    'fill': 'var(--markdown-model-color-border)',
+                    'd': 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 ' +
+                        '2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z'
+                }
             }
+        };
+    }
+
+    // Determine the code element children
+    let codeChildren;
+    if (!highlightRegex) {
+        // No language specified or unknown language
+        codeChildren = {'text': text};
+    } else {
+        // Match the highlight spans
+        codeChildren = [];
+        let ixSearch = 0;
+        for (const mHighlight of text.matchAll(highlightRegex)) {
+            const matchGroups = mHighlight.groups;
+            const [highlightText] = mHighlight;
+            const highlightIndex = mHighlight.index;
+
+            // Add the pre-text span
+            if (ixSearch &lt; highlightIndex) {
+                codeChildren.push({'text': text.slice(ixSearch, highlightIndex)});
+            }
+
+            // Determine the highlight style from which named group matched
+            let attrStyle;
+            if (matchGroups.builtin) {
+                attrStyle = 'color: var(--markdown-model-color-highlight-builtin);';
+            } else if (matchGroups.comment) {
+                attrStyle = 'color: var(--markdown-model-color-highlight-comment);';
+            } else if (matchGroups.keyword) {
+                attrStyle = 'color: var(--markdown-model-color-highlight-keyword);';
+            } else if (matchGroups.literal) {
+                attrStyle = 'color: var(--markdown-model-color-highlight-literal);';
+            } else if (matchGroups.preprocessor) {
+                attrStyle = 'color: var(--markdown-model-color-highlight-preprocessor);';
+            } else if (matchGroups.string) {
+                attrStyle = 'color: var(--markdown-model-color-highlight-string);';
+            } else if (matchGroups.tag) {
+                attrStyle = 'color: var(--markdown-model-color-highlight-tag);';
+            }
+
+            // Add the highlight span
+            codeChildren.push({
+                'html': 'span',
+                'attr': {'style': attrStyle},
+                'elem': {'text': highlightText}
+            });
+
+            ixSearch = highlightIndex + highlightText.length;
         }
+
+        // Add the final un-matched text
+        if (ixSearch &lt; text.length) {
+            codeChildren.push({'text': text.slice(ixSearch)});
+        }
+    }
+
+    // Create the code block element, including the copy button when present
+    if (!copyElements) {
+        return {'html': 'pre', 'attr': preAttr, 'elem': {'html': 'code', 'elem': codeChildren}};
+    }
+    return {
+        'html': 'pre',
+        'attr': preAttr,
+        'elem': [{'html': 'code', 'attr': codeAttr, 'elem': codeChildren}, copyElements]
     };
-    const preAttr = (copyElements !== null ? {'style': 'margin-top: 0.25em'} : null);
-
-    // No language specified or unknown language?
-    if (highlightRegex === null) {
-        return [
-            copyElements,
-            {'html': 'pre', 'attr': preAttr, 'elem': {'html': 'code', 'elem': {'text': text}}}
-        ];
-    }
-
-    // Match the highlight spans
-    const spans = [];
-    const rHighlight = highlightRegex.highlight;
-    while (true) {
-        const mHighlight = rHighlight.exec(text);
-        if (mHighlight === null) {
-            break;
-        }
-        const [highlightText] = mHighlight;
-
-        // Add the pre-text span
-        if (mHighlight.index > 0) {
-            spans.push({'text': text.slice(0, mHighlight.index)});
-        }
-
-        // Determine the highlight color
-        let color;
-        for (const memberName of getStructMembers(highlightTypes, highlightTypes.Highlight.struct).map((member) => member.name)) {
-            if (memberName in highlightRegex &amp;&amp; highlightRegex[memberName].test(highlightText)) {
-                color = `var(--markdown-model-color-highlight-${memberName})`;
-                break;
-            }
-        }
-
-        // Add the highlight span
-        spans.push({
-            'html': 'span',
-            'attr': {'style': `color: ${color};`},
-            'elem': {'text': highlightText}
-        });
-
-        // Advance past the highlight match
-        text = text.slice(mHighlight.index + highlightText.length);
-    }
-
-    // Add the final un-matched text
-    if (text) {
-        spans.push({'text': text});
-    }
-
-    // Create the code block elements
-    return [
-        copyElements,
-        {'html': 'pre', 'attr': preAttr, 'elem': {'html': 'code', 'elem': spans}}
-    ];
 }
 
 
@@ -217,7 +266,11 @@ struct Highlight
 
 // Helper to create a word list regular expression
 function createWordListRegex(...words) {
-    return `\\b(?:${words.map((str) => escapeRegexText(str)).join('|')})\\b`;
+    const escapedParts = [];
+    for (const word of words) {
+        escapedParts.push(escapeRegexText(word));
+    }
+    return `\\b(?:${escapedParts.join('|')})\\b`;
 }
 
 
@@ -398,7 +451,7 @@ const highlightBuiltin = compileHighlightModels([
         'names': ['css'],
         'comment': [rCommentSlashStar],
         'keyword': [
-            `\\b(?:${[
+            `${createWordListRegex(
                 'align-content', 'align-items', 'align-self', 'animation', 'animation-delay', 'animation-direction',
                 'animation-duration', 'animation-fill-mode', 'animation-iteration-count', 'animation-name',
                 'animation-play-state', 'animation-timing-function', 'background', 'background-attachment',
@@ -428,7 +481,7 @@ const highlightBuiltin = compileHighlightModels([
                 'transform-style', 'transition', 'transition-delay', 'transition-duration', 'transition-property',
                 'transition-timing-function', 'vertical-align', 'visibility', 'white-space', 'width', 'word-break',
                 'word-spacing', 'word-wrap', 'z-index'
-            ].map((text) => escapeRegexText(text)).join('|')}):`
+            )}:`
         ],
         'literal': [
             '#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\\b',
@@ -620,7 +673,7 @@ const highlightBuiltin = compileHighlightModels([
             )
         ],
         'preprocessor': [
-            `^ *\\.(?:${[
+            `^ *\\.(?:${createWordListRegex(
                 'PHONY', 'SUFFIXES', 'DEFAULT', 'PRECIOUS', 'INTERMEDIATE', 'SECONDARY', 'SECONDEXPANSION',
                 'DELETE_ON_ERROR', 'LOW_RESOLUTION_TIME', 'SILENT', 'EXPORT_ALL_VARIABLES', 'IGNORE', 'POSIX', 'MAKE',
                 'NOTPARALLEL', 'ONESHELL', 'RECIPEPREFIX',
@@ -629,7 +682,7 @@ const highlightBuiltin = compileHighlightModels([
                 'phony', 'suffixes', 'default', 'precious', 'intermediate', 'secondary', 'secondexpansion',
                 'delete_on_error', 'low_resolution_time', 'silent', 'export_all_variables', 'ignore', 'posix', 'make',
                 'notparallel', 'oneshell', 'recipeprefix'
-            ].join('|')}) *:`
+            )}) *:`
         ],
         'string': [rStringSingle, rStringDouble],
         'tag': ['^ *[A-Za-z0-9_\\-][A-Za-z0-9_\\-/.]* *:(?!=)']
@@ -959,11 +1012,11 @@ const highlightBuiltin = compileHighlightModels([
         ],
         'literal': [createWordListRegex('false', 'nil', 'true'), rNumber],
         'preprocessor': [
-            `#(?:${[
+            `#(?:${createWordListRegex(
                 'available', 'colorLiteral', 'column', 'dsohandle', 'else', 'elseif', 'endif', 'error', 'file',
                 'fileID', 'fileLiteral', 'filePath', 'function', 'if', 'imageLiteral', 'keyPath', 'line', 'selector',
                 'sourceLocation', 'warning'
-            ].join('|')})\\b`
+            )})\\b`
         ],
         'string': ['"""[\\s\\S]*?"""', rStringDouble]
     },
@@ -1029,11 +1082,11 @@ const highlightBuiltin = compileHighlightModels([
             '\\b\\d+(?:_\\d+)*\\b'
         ],
         'preprocessor': [
-            `^[ \\t]*\`(?:${[
+            `^[ \\t]*\`(?:${createWordListRegex(
                 'begin_keywords', 'celldefine', 'default_nettype', 'define', 'else', 'elsif', 'end_keywords',
                 'endcelldefine', 'endif', 'ifdef', 'ifndef', 'include', 'line', 'nounconnected_drive', 'pragma',
                 'resetall', 'timescale', 'unconnected_drive', 'undef', 'undefineall'
-            ].join('|')})\\b`
+            )})\\b`
         ],
         'string': [rStringSingle, rStringDouble]
     },

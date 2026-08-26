@@ -210,7 +210,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line61">line 61</a>
+        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
@@ -416,7 +416,7 @@ Use this form of the function if you have one or more asynchronous code block fu
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line107">line 107</a>
+        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line112">line 112</a>
     </li></ul></dd>
     
 
@@ -575,7 +575,7 @@ Use this form of the function if you have one or more asynchronous code block fu
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line322">line 322</a>
+        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line355">line 355</a>
     </li></ul></dd>
     
 
@@ -803,7 +803,7 @@ Use this form of the function if you have one or more asynchronous code block fu
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line31">line 31</a>
+        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -969,7 +969,7 @@ Use this form of the function if you have one or more asynchronous code block fu
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line22">line 22</a>
+        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -1016,143 +1016,6 @@ Use this form of the function if you have one or more asynchronous code block fu
 </dl>
 
     
-
-
-
-
-
-            
-                
-
-    
-
-    
-    <h4 class="name" id="~CopyFn"><span class="type-signature"></span>CopyFn<span class="signature">(text)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>A copy (to the clipboard) function</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>text</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The text to copy</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line38">line 38</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1244,13 +1107,13 @@ Use this form of the function if you have one or more asynchronous code block fu
 
         <tr>
             
-                <td class="name"><code>copyFn</code></td>
+                <td class="name"><code>copyLinks</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -1268,8 +1131,40 @@ Use this form of the function if you have one or more asynchronous code block fu
 
             
 
-            <td class="description last"><p>The <a href="module-lib_elements.html#~CopyFn">copy function</a>. Copy links
-for fenced code blocks are only rendered when <code>codeFn</code> is present.</p></td>
+            <td class="description last"><p>If true, generate copy-to-clipboard buttons on fenced code
+blocks</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>copyLinksIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Next copy-button id index (default 1). Mutated when
+<code>copyLinks</code> is true.</p></td>
         </tr>
 
     
@@ -1524,7 +1419,7 @@ for fenced code blocks are only rendered when <code>codeFn</code> is present.</p
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line45">line 45</a>
+        <a href="elements.js.html">elements.js</a>, <a href="elements.js.html#line40">line 40</a>
     </li></ul></dd>
     
 
