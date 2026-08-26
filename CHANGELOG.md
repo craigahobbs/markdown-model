@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.0 (2026-08-26)
+
+- [b45dada](https://github.com/craigahobbs/markdown-model/commit/b45dada) - backport BareScript markdown include library optimizations
+
 ## 2.3.0 (2026-07-13)
 
 - [07c77fe](https://github.com/craigahobbs/markdown-model/commit/07c77fe) - schema-markdown 1.3
