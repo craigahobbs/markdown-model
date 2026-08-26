@@ -189,17 +189,14 @@ test('markdownElements', () => {
                     {'html': 'p', 'elem': [{'text': 'This is a paragraph.'}]}
                 ]
             },
-            [
-                null,
-                {
-                    'html': 'pre',
-                    'attr': null,
-                    'elem': {
-                        'html': 'code',
-                        'elem': {'text': 'Line 1\nLine 2\n'}
-                    }
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': {'text': 'Line 1\nLine 2\n'}
                 }
-            ]
+            }
         ]
     );
 });
@@ -258,14 +255,11 @@ test('markdownElementsAsync', async () => {
                     {
                         'html': 'li',
                         'elem': [
-                            [
-                                null,
-                                {
-                                    'html': 'pre',
-                                    'attr': null,
-                                    'elem': {'html': 'code', 'elem': {'text': 'Line 1\nLine 2\n'}}
-                                }
-                            ],
+                            {
+                                'html': 'pre',
+                                'attr': null,
+                                'elem': {'html': 'code', 'elem': {'text': 'Line 1\nLine 2\n'}}
+                            },
                             {'html': 'p', 'elem': {'text': 'Line 1, Line 2'}}
                         ]
                     }
@@ -274,14 +268,11 @@ test('markdownElementsAsync', async () => {
             {
                 'html': 'blockquote',
                 'elem': [
-                    [
-                        null,
-                        {
-                            'html': 'pre',
-                            'attr': null,
-                            'elem': {'html': 'code', 'elem': {'text': 'Line 1\nLine 2\n'}}
-                        }
-                    ],
+                    {
+                        'html': 'pre',
+                        'attr': null,
+                        'elem': {'html': 'code', 'elem': {'text': 'Line 1\nLine 2\n'}}
+                    },
                     {'html': 'p', 'elem': {'text': 'Line 1, Line 2'}}
                 ]
             }
@@ -755,19 +746,16 @@ test('markdownElements, code block with language', () => {
     assert.deepEqual(
         elements,
         [
-            [
-                null,
-                {
-                    'html': 'pre',
-                    'attr': null,
-                    'elem': {
-                        'html': 'code',
-                        'elem': [
-                            {'text': 'foo();\nbar();\n'}
-                        ]
-                    }
+            {
+                'html': 'pre',
+                'attr': null,
+                'elem': {
+                    'html': 'code',
+                    'elem': [
+                        {'text': 'foo();\nbar();\n'}
+                    ]
                 }
-            ]
+            }
         ]
     );
 });

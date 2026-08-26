@@ -9,9 +9,7 @@ import test from 'node:test';
 test('codeBlockElements, null language', () => {
     assert.deepEqual(
         codeBlockElements({'lines': ['foo\nbar']}, null),
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -19,7 +17,6 @@ test('codeBlockElements, null language', () => {
                     'elem': {'text': 'foo\nbar\n'}
                 }
             }
-        ]
     );
 });
 
@@ -27,9 +24,7 @@ test('codeBlockElements, null language', () => {
 test('codeBlockElements, unknown language', () => {
     assert.deepEqual(
         codeBlockElements({'language': 'unknown', 'lines': ['foo\nbar']}, null),
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -37,100 +32,104 @@ test('codeBlockElements, unknown language', () => {
                     'elem': {'text': 'foo\nbar\n'}
                 }
             }
-        ]
     );
 });
 
 
 test('codeBlockElements, copy unknown language', () => {
-    const copyCalls = [];
     const options = {
-        'copyFn': (text) => {
-            copyCalls.push(text);
-        }
+        'copyLinks': true
     };
-    const elements = codeBlockElements({'language': 'unknown', 'lines': ['foo', 'bar']}, options);
-    const elementCallback = elements[0].elem.callback;
-    assert.equal(typeof(elementCallback), 'function');
-    delete elements[0].elem.callback;
     assert.deepEqual(
-        elements,
-        [
-            {
-                html: 'p',
-                attr: {'style': 'cursor: pointer; font-size: 0.85em; text-align: right; user-select: none;'},
-                elem: {'html': 'a', 'elem': {'text': 'Copy'}}
+        codeBlockElements({'language': 'unknown', 'lines': ['foo', 'bar']}, options),
+        {
+            'html': 'pre',
+            'attr': {
+                'id': '__markdown_copy_1',
+                'style': 'display: flex;'
             },
-            {
-                'html': 'pre',
-                'attr': {'style': 'margin-top: 0.25em'},
-                'elem': {
+            'elem': [
+                {
                     'html': 'code',
+                    'attr': {'style': 'flex: 1; min-width: 0; overflow-x: auto;'},
                     'elem': {'text': 'foo\nbar\n'}
+                },
+                {
+                    'svg': 'svg',
+                    'attr': {
+                        'class': 'markdown-model-no-print',
+                        'width': '20',
+                        'height': '20',
+                        'viewBox': '0 0 24 24',
+                        'style': 'align-self: flex-start; flex-shrink: 0; cursor: pointer; user-select: none;',
+                        'onclick': "window.navigator.clipboard.writeText(document.getElementById('__markdown_copy_1').innerText);"
+                    },
+                    'elem': {
+                        'svg': 'path',
+                        'attr': {
+                            'fill': 'var(--markdown-model-color-border)',
+                            'd': 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 ' +
+                                '2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z'
+                        }
+                    }
                 }
-            }
-        ]
-    );
-
-    // Test the callback
-    const element = {
-        'addEventListener': (event, eventFn) => {
-            assert.equal(event, 'click');
-            eventFn();
+            ]
         }
-    };
-    elementCallback(element);
-    assert.deepEqual(copyCalls, ['foo\nbar\n']);
+    );
+    assert.equal(options.copyLinksIndex, 2);
 });
 
 
 test('codeBlockElements, copy known language', () => {
-    const copyCalls = [];
     const options = {
-        'copyFn': (text) => {
-            copyCalls.push(text);
-        }
+        'copyLinks': true,
+        'copyLinksIndex': 2
     };
-    const elements = codeBlockElements({'language': 'barescript', 'lines': ["markdownPrint('Hello!')"]}, options);
-    const elementCallback = elements[0].elem.callback;
-    assert.equal(typeof(elementCallback), 'function');
-    delete elements[0].elem.callback;
     assert.deepEqual(
-        elements,
-        [
-            {
-                html: 'p',
-                attr: {'style': 'cursor: pointer; font-size: 0.85em; text-align: right; user-select: none;'},
-                elem: {'html': 'a', 'elem': {'text': 'Copy'}}
+        codeBlockElements({'language': 'barescript', 'lines': ["markdownPrint('Hello!')"]}, options),
+        {
+            'html': 'pre',
+            'attr': {
+                'id': '__markdown_copy_2',
+                'style': 'display: flex;'
             },
-            {
-                'html': 'pre',
-                'attr': {'style': 'margin-top: 0.25em'},
-                'elem': {
+            'elem': [
+                {
                     'html': 'code',
+                    'attr': {'style': 'flex: 1; min-width: 0; overflow-x: auto;'},
                     'elem': [
-                        {text: 'markdownPrint('},
+                        {'text': 'markdownPrint('},
                         {
-                            html: 'span',
-                            attr: {style: 'color: var(--markdown-model-color-highlight-string);'},
-                            elem: {text: "'Hello!'"}
+                            'html': 'span',
+                            'attr': {'style': 'color: var(--markdown-model-color-highlight-string);'},
+                            'elem': {'text': "'Hello!'"}
                         },
-                        {text: ')\n'}
+                        {'text': ')\n'}
                     ]
+                },
+                {
+                    'svg': 'svg',
+                    'attr': {
+                        'class': 'markdown-model-no-print',
+                        'width': '20',
+                        'height': '20',
+                        'viewBox': '0 0 24 24',
+                        'style': 'align-self: flex-start; flex-shrink: 0; cursor: pointer; user-select: none;',
+                        'onclick': "window.navigator.clipboard.writeText(document.getElementById('__markdown_copy_2').innerText);"
+                    },
+                    'elem': {
+                        'svg': 'path',
+                        'attr': {
+                            'fill': 'var(--markdown-model-color-border)',
+                            'd': 'M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 ' +
+                                '2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z'
+                        }
+                    }
                 }
-            }
-        ]
-    );
-
-    // Test the callback
-    const element = {
-        'addEventListener': (event, eventFn) => {
-            assert.equal(event, 'click');
-            eventFn();
+            ]
         }
-    };
-    elementCallback(element);
-    assert.deepEqual(copyCalls, ["markdownPrint('Hello!')\n"]);
+    );
+    assert.equal(options.copyLinksIndex, 3);
 });
 
 
@@ -150,9 +149,7 @@ test('codeBlockElements, keyword within multiline string', () => {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -168,7 +165,6 @@ test('codeBlockElements, keyword within multiline string', () => {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -201,9 +197,7 @@ add_nums:          ; function label
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -368,7 +362,6 @@ add_nums:          ; function label
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -391,9 +384,7 @@ endfor
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -456,7 +447,6 @@ endfor
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -487,9 +477,7 @@ int main() {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -582,7 +570,6 @@ int main() {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -621,9 +608,7 @@ Line3)";
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -818,7 +803,6 @@ Line3)";
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -861,9 +845,7 @@ Line3";
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1010,7 +992,6 @@ Line3";
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1063,9 +1044,7 @@ a:hover {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1266,7 +1245,6 @@ a:hover {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1300,9 +1278,7 @@ It spans multiple lines without needing escape sequences.\`)
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1413,7 +1389,6 @@ It spans multiple lines without needing escape sequences.\`)
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1450,9 +1425,7 @@ test('codeBlockElements, html', () => {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1665,7 +1638,6 @@ test('codeBlockElements, html', () => {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1700,9 +1672,7 @@ public class HelloWorld {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1827,6 +1797,5 @@ public class HelloWorld {
                     ]
                 }
             }
-        ]
     );
 });

@@ -36,9 +36,7 @@ object Main extends App {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -156,7 +154,6 @@ object Main extends App {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -193,9 +190,7 @@ enum Colors
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -270,7 +265,6 @@ enum Colors
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -293,9 +287,7 @@ done
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -358,7 +350,6 @@ done
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -383,9 +374,7 @@ select 'string', true, abs(-1);
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -460,7 +449,6 @@ select 'string', true, abs(-1);
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -507,9 +495,7 @@ let result = factorial(5)
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -692,7 +678,6 @@ let result = factorial(5)
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -755,9 +740,7 @@ endmodule
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1199,7 +1182,6 @@ endmodule
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1242,9 +1224,7 @@ class Example {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1404,7 +1384,6 @@ class Example {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1435,9 +1414,7 @@ test('codeBlockElements, xml', () => {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1559,7 +1536,6 @@ test('codeBlockElements, xml', () => {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1593,9 +1569,7 @@ literal_block: |
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1731,6 +1705,5 @@ literal_block: |
                     ]
                 }
             }
-        ]
     );
 });

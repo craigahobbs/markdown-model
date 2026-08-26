@@ -9,8 +9,8 @@ import {validateMarkdownModel} from '../lib/model.js';
 
 test('escapeMarkdownText', () => {
     assert.equal(
-        escapeMarkdownText('Escape me: \\ [ ] ( ) < > " \' * _ ~ ` # | -'),
-        'Escape me: \\\\ \\[ \\] \\( \\) \\< \\> \\" \\\' \\* \\_ \\~ \\` \\# \\| \\-'
+        escapeMarkdownText('Escape me: \\ [ ] ( ) < > " \' * _ ~ ` # = + | -'),
+        'Escape me: \\\\ \\[ \\] \\( \\) \\< \\> \\" \\\' \\* \\_ \\~ \\` \\# \\= \\+ \\| \\-'
     );
 });
 
@@ -45,6 +45,24 @@ test('getMarkdownTitle, image', () => {
 });
 
 
+test('getMarkdownTitle, code', () => {
+    // Code spans have no title text
+    const markdownModel = parseMarkdown(`\
+# The \`foo\` function
+`);
+    assert.equal(getMarkdownTitle(markdownModel), 'The  function');
+});
+
+
+test('getMarkdownTitle, break', () => {
+    // Line break spans have no title text
+    const markdownModel = parseMarkdown(`\
+# Foo <br> Bar
+`);
+    assert.equal(getMarkdownTitle(markdownModel), 'Foo  Bar');
+});
+
+
 test('getMarkdownTitle, no title', () => {
     const markdownModel = parseMarkdown(`\
 This is some text
@@ -64,6 +82,13 @@ Some other text
 `);
     const [{paragraph}] = markdownModel.parts;
     assert.equal(getMarkdownParagraphText(paragraph), 'This is a link\nand some more text');
+});
+
+
+test('getMarkdownParagraphText, code and break', () => {
+    const markdownModel = parseMarkdown('This is `code` and a break\\\nnext');
+    const [{paragraph}] = markdownModel.parts;
+    assert.equal(getMarkdownParagraphText(paragraph), 'This is  and a breaknext');
 });
 
 
@@ -1130,7 +1155,7 @@ another
 });
 
 
-test('parseMarkdown, list paragraph-adjascent', () => {
+test('parseMarkdown, list paragraph-adjacent', () => {
     const markdown = parseMarkdown(`\
 Foo
 - bar
@@ -1160,7 +1185,7 @@ Foo
 });
 
 
-test('parseMarkdown, list numbered paragraph-adjascent', () => {
+test('parseMarkdown, list numbered paragraph-adjacent', () => {
     const markdown = parseMarkdown(`\
 Foo
 1. bar

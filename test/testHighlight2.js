@@ -29,9 +29,7 @@ const str = 'single' + "double";
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -118,7 +116,6 @@ const str = 'single' + "double";
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -141,9 +138,7 @@ test('codeBlockElements, json', () => {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -189,7 +184,6 @@ test('codeBlockElements, json', () => {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -221,9 +215,7 @@ class Example {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -323,7 +315,6 @@ class Example {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -376,9 +367,7 @@ greet("World")
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -549,7 +538,6 @@ greet("World")
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -591,9 +579,7 @@ $(TARGET):
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -692,7 +678,6 @@ $(TARGET):
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -731,9 +716,7 @@ Link with title [GitHub](https://github.com "GitHub").
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -796,7 +779,6 @@ Link with title [GitHub](https://github.com "GitHub").
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -846,9 +828,7 @@ echo json_encode($strings);
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1021,7 +1001,6 @@ echo json_encode($strings);
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1062,9 +1041,7 @@ Write-Output $result
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1187,7 +1164,6 @@ Write-Output $result
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1216,9 +1192,7 @@ Goodbye
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1295,7 +1269,6 @@ Goodbye
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1323,9 +1296,7 @@ if (length(numbers) > 0) {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1466,7 +1437,6 @@ if (length(numbers) > 0) {
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1505,9 +1475,7 @@ puts customer.to_hash
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1660,7 +1628,6 @@ puts customer.to_hash
                     ]
                 }
             }
-        ]
     );
 });
 
@@ -1695,9 +1662,7 @@ fn main() {
     );
     assert.deepEqual(
         elements,
-        [
-            null,
-            {
+        {
                 'html': 'pre',
                 'attr': null,
                 'elem': {
@@ -1814,6 +1779,5 @@ fn main() {
                     ]
                 }
             }
-        ]
     );
 });

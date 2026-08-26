@@ -681,7 +681,7 @@ test('parseMarkdown, underscore italic character', () => {
 });
 
 
-test('parseMarkdown, uderscore italic whitespace', () => {
+test('parseMarkdown, underscore italic whitespace', () => {
     const markdown = parseMarkdown('a _ foo bar_');
     validateMarkdownModel(markdown);
     assert.deepEqual(
@@ -699,7 +699,7 @@ test('parseMarkdown, uderscore italic whitespace', () => {
 });
 
 
-test('parseMarkdown, uderscore italic whitespace 2', () => {
+test('parseMarkdown, underscore italic whitespace 2', () => {
     const markdown = parseMarkdown('a _foo bar _');
     validateMarkdownModel(markdown);
     assert.deepEqual(
@@ -717,7 +717,7 @@ test('parseMarkdown, uderscore italic whitespace 2', () => {
 });
 
 
-test('parseMarkdown, uderscore italic whitespace 3', () => {
+test('parseMarkdown, underscore italic whitespace 3', () => {
     const markdown = parseMarkdown('a _foo bar\n_');
     validateMarkdownModel(markdown);
     assert.deepEqual(
@@ -2142,7 +2142,7 @@ test('parseMarkdown, code span backslash', () => {
 });
 
 
-test('parseMarkdown, code span large delimeter', () => {
+test('parseMarkdown, code span large delimiter', () => {
     const markdown = parseMarkdown('``foo`bar``');
     validateMarkdownModel(markdown);
     assert.deepEqual(
@@ -2160,7 +2160,7 @@ test('parseMarkdown, code span large delimeter', () => {
 });
 
 
-test('parseMarkdown, code span small delimeter', () => {
+test('parseMarkdown, code span small delimiter', () => {
     const markdown = parseMarkdown('`foo``bar`');
     validateMarkdownModel(markdown);
     assert.deepEqual(
@@ -4566,6 +4566,54 @@ test('parseMarkdown, link and image reference', () => {
                                     {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
                                 ]
                             }}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, link reference empty text', () => {
+    // Full reference with empty link text - the link resolves with no text spans
+    const markdown = parseMarkdown(`\
+[][ref]
+
+[ref]: /url
+`);
+    validateMarkdownModel(markdown);
+    assert.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'link': {'href': '/url', 'spans': []}}
+                        ]
+                    }}
+                ]
+            }}
+        ]
+    });
+});
+
+
+test('parseMarkdown, image reference empty text', () => {
+    // Full reference with empty image text - the image resolves with empty alt text
+    const markdown = parseMarkdown(`\
+![][ref]
+
+[ref]: /url
+`);
+    validateMarkdownModel(markdown);
+    assert.deepEqual(markdown, {
+        'parts': [
+            {'paragraph': {
+                'spans': [
+                    {'linkRef': {
+                        'spans': [
+                            {'image': {'alt': '', 'src': '/url'}}
                         ]
                     }}
                 ]
