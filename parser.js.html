@@ -112,7 +112,7 @@ const rTable = /^ {0,3}(?::?-+:?\s*)?(?:\|\s*:?-+:?\s*)+(?:\|\s*)?$/;
 const rTableRow = /^ {0,3}(?:(?:\\\||[^|])+\s*)?(?:\|\s*(?:\\\||[^|])*?\s*)+(?:\|\s*)?/;
 const rTableRowTrim = /^\s*\|?/;
 const rTableCell = /^\s*(?&lt;cell>(?:\\\||[^|])*?)\s*\|/;
-const rTableEscape = /\\(\\|)/g;
+const rTableEscape = /\\(\|)/g;
 
 
 /**
@@ -471,22 +471,22 @@ const rLinkHref = '[ \\r\\n]*(?&lt;linkHref>' +
 const rSpans = new RegExp(
     '(?&lt;br>(?: {2,}|(?&lt;!\\\\)\\\\)\\r?\\n)|' +
     '(?&lt;brHtml>(?&lt;!\\\\)&lt;br\\s*/?>)|' +
-    `(?&lt;linkImg>\\[\\s*!\\[${rLinkText.replaceAll('&lt;link', '&lt;linkImg')}\\]` +
+    `(?&lt;linkImg>(?&lt;!\\\\)\\[\\s*!\\[${rLinkText.replaceAll('&lt;link', '&lt;linkImg')}\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkImg')}\\)\\s*\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkImgLink')}\\))|` +
-    `(?&lt;linkImgRef>\\[(?&lt;linkImgRefFull>\\s*!(?:\\[${rLinkText.replaceAll('&lt;link', '&lt;linkImgRefImg')}\\])?` +
+    `(?&lt;linkImgRef>(?&lt;!\\\\)\\[(?&lt;linkImgRefFull>\\s*!(?:\\[${rLinkText.replaceAll('&lt;link', '&lt;linkImgRefImg')}\\])?` +
         `\\[${rLinkText.replaceAll('&lt;link', '&lt;linkImgRef')}\\])\\s*\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkImgRefLink')}\\))|` +
-    `(?&lt;linkRefImg>\\[\\s*!\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefImg')}\\]` +
+    `(?&lt;linkRefImg>(?&lt;!\\\\)\\[\\s*!\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefImg')}\\]` +
         `\\(${rLinkHref.replaceAll('&lt;link', '&lt;linkRefImg')}\\)\\s*\\]` +
         `\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefImgLink')}\\])|` +
-    `(?&lt;linkRefImgRef>\\[(?&lt;linkRefImgRefFull>\\s*!(?:\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefImgRefImg')}\\])?` +
+    `(?&lt;linkRefImgRef>(?&lt;!\\\\)\\[(?&lt;linkRefImgRefFull>\\s*!(?:\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefImgRefImg')}\\])?` +
         `\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefImgRef')}\\])\\s*\\]` +
         `\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefImgRefLink')}\\])|` +
-    `(?&lt;link>!?\\[${rLinkText}\\]\\(${rLinkHref}\\))|` +
+    `(?&lt;link>(?&lt;!\\\\)!?\\[${rLinkText}\\]\\(${rLinkHref}\\))|` +
     `(?&lt;linkRef>(?&lt;!\\\\)!?(?:\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRefOther')}\\])?` +
         `\\[${rLinkText.replaceAll('&lt;link', '&lt;linkRef')}\\])|` +
-    '(?&lt;linkAlt>&lt;(?&lt;linkAltScheme>[A-Za-z]{3,}:|[a-zA-Z0-9.!#$%&amp;\'*+/=?^_`{|}~-]+@)[^ \\r\\n]+>)|' +
+    '(?&lt;linkAlt>(?&lt;!\\\\)&lt;(?&lt;linkAltScheme>[A-Za-z]{3,}:|[a-zA-Z0-9.!#$%&amp;\'*+/=?^_`{|}~-]+@)[^ \\r\\n]+>)|' +
     '(?&lt;bold>(?&lt;!\\\\)(?&lt;!\\*)\\*{2,}(?!\\**\\s)(?:[^\\s\\\\*]|\\\\.|\\s(?!\\*{2,})|\\*(?!\\*))+\\*{2,})|' +
     '(?&lt;italic>(?&lt;!\\\\)(?&lt;!\\*)\\*(?!\\**\\s)(?:[^\\s\\\\*]|\\\\.|\\s(?!\\*))+\\*)|' +
     '(?&lt;boldu>(?&lt;!\\\\)(?&lt;!_)(?&lt;![A-Za-z0-9])_{2,}(?!_*\\s)(?:[^\\s\\\\_]|\\\\.|\\s(?!_{2,})|_(?!_))+_{2,}(?!_*[A-Za-z0-9]))|' +
@@ -721,36 +721,42 @@ function createFallbackSpan(text, linkRefs, textFallback) {
 }
 
 
-// Helper function to remove span text escapes and replace character references
+// Remove span text escapes and replace character references. This is a single left-to-right pass -
+// an escape or a character reference is consumed as a unit and its replacement is never re-scanned,
+// so an escape hides a character reference and a replacement is never replaced again by a later pass.
 function removeEscapes(text, href = false) {
-    // Remove escapes
-    let result;
-    if (text.includes('\\')) {
-        result = text.replace(href ? rEscapeHref : rEscape, '$1');
-    } else {
-        result = text;
+    // No character references? Removing the escapes is then a single substitution.
+    if (!text.includes('&amp;')) {
+        if (!text.includes('\\')) {
+            return text;
+        }
+        return text.replace(href ? rEscapeHref : rEscape, '$1');
     }
 
-    // Replace entity and numeric character references
-    if (text.includes('&amp;')) {
-        result = result.replace(rEntityRef, (match, entity) => {
-            const entityChar = entityRefs[entity] ?? null;
-            return entityChar !== null ? entityChar : match;
-        }).
-            replace(rDecimalRef, (match, decimal) => String.fromCharCode(parseInt(decimal, 10))).
-            replace(rHexRef, (match, hex) => String.fromCharCode(parseInt(hex, 16)));
-    }
+    return text.replace(href ? rUnescapeHref : rUnescape, (match, escaped, name, decimal, hex) => {
+        // Escape?
+        if (escaped !== undefined) {
+            return escaped;
+        }
 
-    return result;
+        // Entity reference? An unknown entity name is left as-is.
+        if (name !== undefined) {
+            return entityRefs[name] ?? match;
+        }
+
+        // Decimal or hexadecimal numeric character reference
+        return String.fromCharCode(decimal !== undefined ? parseInt(decimal, 10) : parseInt(hex, 16));
+    });
 }
 
 
 // Escape and entity regex
 const rEscape = /\\([!-~])/g;
 const rEscapeHref = /\\([!-/:-@[-`{-~])/g;
-const rEntityRef = /&amp;([A-Za-z]+[0-9]*);/g;
-const rDecimalRef = /&amp;#([0-9]{1,7});/g;
-const rHexRef = /&amp;#[Xx]([A-Fa-f0-9]{1,6});/g;
+const rUnescape =
+    /\\(?&lt;escaped>[!-~])|&amp;(?&lt;name>[A-Za-z]+[0-9]*);|&amp;#(?&lt;decimal>[0-9]{1,7});|&amp;#[Xx](?&lt;hex>[A-Fa-f0-9]{1,6});/g;
+const rUnescapeHref =
+    /\\(?&lt;escaped>[!-/:-@[-`{-~])|&amp;(?&lt;name>[A-Za-z]+[0-9]*);|&amp;#(?&lt;decimal>[0-9]{1,7});|&amp;#[Xx](?&lt;hex>[A-Fa-f0-9]{1,6});/g;
 const entityRefs = {
     'acute': '\xb4',
     'amp': '\x26',
