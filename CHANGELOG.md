@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.1 (2026-08-31)
+
+- [05a244c](https://github.com/craigahobbs/markdown-model/commit/05a244c) - fix parser escape handling for links, table cells, and character references
+
 ## 2.4.0 (2026-08-26)
 
 - [b45dada](https://github.com/craigahobbs/markdown-model/commit/b45dada) - backport BareScript markdown include library optimizations
