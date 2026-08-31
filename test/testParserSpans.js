@@ -2785,13 +2785,30 @@ test('parseMarkdown, link escape start', () => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '\\'},
-                        {'link': {'href': '/uri', 'spans': [{'text': 'link'}]}}
+                        {'text': '[link](/uri)'}
                     ]
                 }}
             ]
         }
     );
+});
+
+
+test('parseMarkdown, escape character reference', () => {
+    // Escapes and character references are replaced in a single pass - an escape hides a character
+    // reference and a replacement is never replaced again
+    const cases = [
+        ['\\&copy;', '&copy;'],
+        ['\\\\&copy;', '\\\u00a9'],
+        ['&amp;copy; &amp;amp;', '&copy; &amp;'],
+        ['&#38;#x41;', '&#x41;'],
+        ['&foo;', '&foo;']
+    ];
+    for (const [source, text] of cases) {
+        const markdown = parseMarkdown(source);
+        validateMarkdownModel(markdown);
+        assert.deepEqual(markdown, {'parts': [{'paragraph': {'spans': [{'text': text}]}}]});
+    }
 });
 
 
@@ -3498,10 +3515,9 @@ test('parseMarkdown, link image escape start', () => {
             'parts': [
                 {'paragraph': {
                     'spans': [
-                        {'text': '\\'},
-                        {'link': {'href': 'url', 'spans': [
-                            {'image': {'alt': 'alt', 'src': 'src'}}
-                        ]}}
+                        {'text': '['},
+                        {'image': {'alt': 'alt', 'src': 'src'}},
+                        {'text': '](url)'}
                     ]
                 }}
             ]
@@ -4634,17 +4650,13 @@ test('parseMarkdown, link and image reference escape start', () => {
         'parts': [
             {'paragraph': {
                 'spans': [
-                    {'text': '\\'},
-                    {'link': {
-                        'href': '/url',
+                    {'text': '['},
+                    {'linkRef': {
                         'spans': [
-                            {'linkRef': {
-                                'spans': [
-                                    {'image': {'alt': 'img', 'src': 'moon.jpg'}}
-                                ]
-                            }}
+                            {'image': {'alt': 'img', 'src': 'moon.jpg'}}
                         ]
-                    }}
+                    }},
+                    {'text': '](/url)'}
                 ]
             }}
         ]
@@ -4785,14 +4797,14 @@ test('parseMarkdown, link reference and image escape start', () => {
         'parts': [
             {'paragraph': {
                 'spans': [
-                    {'text': '\\'},
+                    {'text': '['},
+                    {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}},
+                    {'text': ']'},
                     {'linkRef': {
                         'spans': [
                             {'link': {
                                 'href': '/uri',
-                                'spans': [
-                                    {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
-                                ],
+                                'spans': [{'text': 'ref'}],
                                 'title': 'moon-link'
                             }}
                         ]
@@ -4936,18 +4948,18 @@ test('parseMarkdown, link reference and image reference escape start', () => {
         'parts': [
             {'paragraph': {
                 'spans': [
-                    {'text': '\\'},
+                    {'text': '['},
+                    {'linkRef': {
+                        'spans': [
+                            {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
+                        ]
+                    }},
+                    {'text': ']'},
                     {'linkRef': {
                         'spans': [
                             {'link': {
                                 'href': '/uri',
-                                'spans': [
-                                    {'linkRef': {
-                                        'spans': [
-                                            {'image': {'alt': 'moon', 'src': 'moon.jpg', 'title': 'moon-image'}}
-                                        ]
-                                    }}
-                                ],
+                                'spans': [{'text': 'ref'}],
                                 'title': 'moon-link'
                             }}
                         ]

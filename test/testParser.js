@@ -2692,6 +2692,37 @@ test('parseMarkdown, table escapes', () => {
 });
 
 
+test('parseMarkdown, table escapes span', () => {
+    // Only an escaped pipe is unescaped at the cell level - every other escape is left for the span parser
+    const markdown = parseMarkdown(`\
+| H |
+| - |
+| \\*em\\* |
+| \\[x](y) |
+| a \\\\ b |
+| *em* |
+`);
+    validateMarkdownModel(markdown);
+    assert.deepEqual(
+        markdown,
+        {
+            'parts': [
+                {'table': {
+                    'headers': [[{'text': 'H'}]],
+                    'aligns': ['left'],
+                    'rows': [
+                        [[{'text': '*em*'}]],
+                        [[{'text': '[x](y)'}]],
+                        [[{'text': 'a \\ b'}]],
+                        [[{'style': {'style': 'italic', 'spans': [{'text': 'em'}]}}]]
+                    ]
+                }}
+            ]
+        }
+    );
+});
+
+
 test('parseMarkdown, table mismatched delimiter', () => {
     const markdown = parseMarkdown(`\
 | abc | def |
