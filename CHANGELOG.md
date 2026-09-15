@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.4.2 (2026-09-15)
+
+- [de2c058](https://github.com/craigahobbs/markdown-model/commit/de2c058) - order the span and highlight dispatches by frequency
+
+- [f691c2b](https://github.com/craigahobbs/markdown-model/commit/f691c2b) - optimize the parser - parseMarkdown is 6.9% faster
+
+- [ea838e6](https://github.com/craigahobbs/markdown-model/commit/ea838e6) - update javascript-build
+
 ## 2.4.1 (2026-08-31)
 
 - [05a244c](https://github.com/craigahobbs/markdown-model/commit/05a244c) - fix parser escape handling for links, table cells, and character references
