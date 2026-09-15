@@ -305,14 +305,10 @@ function paragraphSpanElements(spans, options) {
             continue;
         }
 
-        // Style span?
-        const {style} = span;
-        if (style) {
-            const {style: styleStyle} = style;
-            spanElements.push({
-                'html': (styleStyle === 'bold' ? 'strong' : (styleStyle === 'italic' ? 'em' : 'del')),
-                'elem': paragraphSpanElements(style.spans, options)
-            });
+        // Code span?
+        const {code} = span;
+        if (code) {
+            spanElements.push({'html': 'code', 'elem': {'text': code}});
             continue;
         }
 
@@ -335,17 +331,21 @@ function paragraphSpanElements(spans, options) {
             continue;
         }
 
+        // Style span?
+        const {style} = span;
+        if (style) {
+            const {style: styleStyle} = style;
+            spanElements.push({
+                'html': (styleStyle === 'bold' ? 'strong' : (styleStyle === 'italic' ? 'em' : 'del')),
+                'elem': paragraphSpanElements(style.spans, options)
+            });
+            continue;
+        }
+
         // Link reference span?
         const {linkRef} = span;
         if (linkRef) {
             spanElements.push(...paragraphSpanElements(linkRef.spans, options));
-            continue;
-        }
-
-        // Code span?
-        const {code} = span;
-        if (code) {
-            spanElements.push({'html': 'code', 'elem': {'text': code}});
             continue;
         }
 
