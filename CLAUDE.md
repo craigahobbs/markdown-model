@@ -1,4 +1,4 @@
-# AGENTS.md
+# CLAUDE.md
 
 Notes for coding agents working in this repository.
 
@@ -20,41 +20,50 @@ The ports should stay as close to line-for-line identical as the languages allow
 core**: control flow, branching order, regex, highlight language tables, element-model shape, and
 test cases (adapted only for language idioms). Prefer structural parity over a JS-only rewrite.
 
-The two BareScript trees share one copy of the `.bare` sources. Edit them in `../bare-script/`, run
-`make test-include`, then `make -C ../bare-script sync` to push to the Python repo. Do not hand-edit
-the Python tree's copies. Each repo has its own `make commit` gate.
+The two BareScript trees share one copy of the `.bare` sources. Edit them in
+`../bare-script/lib/include/`, run `make -C ../bare-script test-include`, then
+`make -C ../bare-script sync` to push to the Python repo, then `make -C ../bare-script-py test-include`.
+Never run `sync` from `bare-script-py` — it copies the other way with `--delete` and reverts the work.
+Do not hand-edit the Python tree's copies. Each repo has its own `make commit` gate.
+
+`markdownString.bare` (`markdownToString`) and `markdownUp.bare` are BareScript-only; they have no JS
+counterpart, but `markdownString.bare` consumes the model shape, so model changes must update it too.
 
 ### Host-language carve-out (allowed differences)
 
 | Area | JavaScript (this repo) | BareScript |
 | --- | --- | --- |
-| Naming | `parseMarkdown`, `escapeMarkdownText`, `getMarkdownTitle`, `markdownElements`, `codeBlockElements` | `markdownParse`, `markdownEscape`, `markdownTitle`, `markdownElements`, `markdownHighlightCodeBlockElements` |
+| Naming | `parseMarkdown`, `escapeMarkdownText`, `getMarkdownTitle`, `getMarkdownParagraphText`, `validateMarkdownModel`, `markdownModelTypes`, `markdownElements`, `codeBlockElements`, `highlightTypes`, `compileHighlightModels`, `highlightBuiltin`, `highlightMemberNames` | `markdownParse`, `markdownEscape`, `markdownTitle`, `markdownParagraphText`, `markdownValidate`, `markdownTypes`, `markdownElements`, `markdownHighlightCodeBlockElements`, `markdownHighlightTypes`, `markdownHighlightCompileHighlightModels`, `markdownHighlightBuiltin`, `markdownHighlightMemberNames` |
 | Type names | `Paragraph`, `Span`, `Highlight`, … | `MarkdownParagraph`, `MarkdownSpan`, `MarkdownHighlight`, … (prefixed to avoid include collisions) |
-| `parseMarkdown` args | `(string\|string[], startLineNumber=1)`; null entries skipped | `markdownParse(lines...)` then `arrayFlat` |
+| `parseMarkdown` args | `(string\|string[], startLineNumber=1)`; null entries skipped | `markdownParse(lines...)` (variadic, nested arrays flattened internally; no start-line arg, always 1) |
 | `usedHeaderIds` | `Set` | plain object used as a set |
 | Copy UI | `copyLinks` boolean; SVG uses `markdown-model-no-print` and `--markdown-model-color-*` | same option; `barescript-no-print` and `--barescript-color-*` |
-| CSS | `static/markdown-model.css` (`--markdown-model-dark-mode` calc) | `static/markdown.css` (`light-dark()`, `color-scheme`) |
+| CSS | `static/markdown-model.css` (`--markdown-model-dark-mode` calc) | `../bare-script/static/markdown.css` (`light-dark()`, `color-scheme`) |
 | Async | `markdownElementsAsync` awaits Promise-returning `codeBlocks` functions | separate `markdownElementsAsync` / `markdownHighlightCodeBlockElementsAsync` |
 | Validation extras | `validateMarkdownModel` throws | also `markdownValidateEx` (non-throwing) |
 | Nested helpers | `closeParagraph` may be a closure over parse state | named top-level function (no nested closures) |
 | Code-block line join | preserve a line's existing trailing newline, else append `\n` | `arrayJoin(lines, '\n') + '\n'` |
+| Options types | JSDoc typedefs in `lib/elements.js` | Schema Markdown `markdownElementsTypes` (`MarkdownElementsOptions`, `MarkdownElementsCodeBlock`) |
 | Tests / lint | `node --test`, eslint, c8 | `unittest.bare`; `make test-include` |
 
 ### Parallel modules
 
 | JavaScript | BareScript | Role |
 | --- | --- | --- |
-| `lib/parser.js` | `markdownParser.bare` (+ `markdownEscape` / `markdownTitle` / `markdownParagraphText` / `markdownHeaderId` in `markdown.bare`) | Parse GFM → Markdown model; title/escape helpers |
+| `lib/parser.js` | `markdownParser.bare` (+ `markdownEscape` / `markdownTitle` / `markdownParagraphText` in `markdown.bare`) | Parse GFM → Markdown model; title/escape helpers |
 | `lib/model.js` | `markdown.bare` (`markdownTypes`, `markdownValidate`) | Schema Markdown type model |
-| `lib/elements.js` | `markdownElements.bare` | Markdown model → element model |
+| `lib/elements.js` | `markdownElements.bare` (+ `markdownHeaderId` in `markdown.bare`) | Markdown model → element model |
 | `lib/highlight.js` | `markdownHighlight.bare` | Fenced-code highlighting + copy button |
-| `test/testParser.js`, `testParserSpans.js` | `test/testMarkdownParser.bare`, `testMarkdownParserSpans.bare`, `testMarkdown.bare` | Parser / model tests |
-| `test/testElements.js` | `test/testMarkdownElements.bare` | Renderer tests |
-| `test/testHighlight*.js` | `test/testMarkdownHighlight*.bare` | Highlighter tests |
+| `test/testParser.js`, `testParserSpans.js` | `testMarkdownParser.bare`, `testMarkdownParserSpans.bare`, `testMarkdown.bare` (escape/title/paragraph-text) | Parser tests |
+| `test/testModel.js` | `testMarkdown.bare` (validate tests) | Model validation tests |
+| `test/testElements.js` | `testMarkdownElements.bare` | Renderer tests |
+| `test/testHighlight*.js` | `testMarkdownHighlight*.bare` | Highlighter tests |
+
+BareScript test files live in `../bare-script/lib/include/test/`.
 
 **Workflow:** when editing either port, open the paired file and apply the change in both before
-considering the work done. Run `make test` (and ideally `make commit`) here, and `make test-include`
-in `../bare-script/` (then `make -C ../bare-script sync`).
+considering the work done. Run `make test` (and ideally `make commit`) here, and follow the BareScript
+test-and-sync steps above.
 
 ## Overview
 
@@ -118,8 +127,9 @@ strings (null entries skipped). `startLineNumber` is stored on code blocks.
 
 After each span regex match, update the search index immediately and `continue`
 from the common cases (bold, italic, code, link, …) before rare nested
-link-image forms — same order as `markdownParser.bare`. Skip escape/entity
-rewrites when the text has no `\\` or `&`.
+link-image forms — same order as `markdownParser.bare`. In escape removal, skip
+the entity pass when the text has no `&`, and return it unchanged when it has
+no `\` either.
 
 ### `lib/elements.js`
 
@@ -148,11 +158,13 @@ match color is `var(--markdown-model-color-highlight-<member>)`. Iterate with
 `matchAll` and an index — do not slice the remaining text (that breaks `^` /
 `$` with the `m` flag).
 
-Adding a language is a new object in the `highlightBuiltin` array plus a golden
-test. Adding a *category* also needs the Highlight schema, `highlightMemberNames`,
-the named-group `if` chain, and a CSS variable. The BareScript highlighter's
-`builtin` list is a keyword snapshot for coloring, not a runtime dependency on
-BareScript.
+Adding a language is a new object in the array passed to `compileHighlightModels`
+(which builds `highlightBuiltin`) plus a golden test — mirrored in
+`markdownHighlightBuiltin` and `testMarkdownHighlight*.bare`. Adding a *category*
+also needs the Highlight schema, `highlightMemberNames`, the named-group `if`
+chain, and a CSS variable — in both ports and both stylesheets. The `barescript`
+language entry's `builtin` list is a keyword snapshot for coloring, not a runtime
+dependency on BareScript.
 
 `copyLinks` wraps the `<code>` and an SVG clipboard icon as children of `<pre>`
 (`display: flex`). Host-only names: class `markdown-model-no-print`, fill
